@@ -1,0 +1,9 @@
+# .gitignore para frontend Angular
+/node_modules/
+/dist/
+/.angular/
+.env
+.idea/
+.vscode/
+.DS_Store
+*.log
