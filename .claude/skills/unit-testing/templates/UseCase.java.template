@@ -1,0 +1,67 @@
+// Insurance-Quoter-Back/src/test/java/.../usecase/<Feature>UseCaseTest.java
+// TDD: create this file BEFORE the use case implementation
+
+package com.sofka.insurancequoter.application.usecase;
+
+import com.sofka.insurancequoter.domain.model.<Feature>;
+import com.sofka.insurancequoter.domain.port.out.<Feature>Repository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class <Feature>UseCaseTest {
+
+    @Mock
+    private <Feature>Repository <feature>Repository;
+
+    @InjectMocks
+    private <Feature>UseCaseImpl <feature>UseCase;
+
+    // ─── Happy Path ──────────────────────────────────────────────────────────
+
+    @Test
+    void should<Result>_when<Scenario>_then<Expectation>() {
+        // GIVEN
+        when(<feature>Repository.save(any())).thenReturn(<feature>Mock());
+
+        // WHEN
+        var result = <feature>UseCase.create(<feature>CreateMock());
+
+        // THEN
+        assertThat(result.getId()).isNotNull();
+        verify(<feature>Repository).save(any(<Feature>.class));
+    }
+
+    // ─── Error Path ──────────────────────────────────────────────────────────
+
+    @Test
+    void shouldThrow_whenEntityNotFound() {
+        // GIVEN
+        when(<feature>Repository.findById("nonexistent")).thenReturn(java.util.Optional.empty());
+
+        // WHEN / THEN
+        assertThatThrownBy(() -> <feature>UseCase.getById("nonexistent"))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    // ─── Helpers ─────────────────────────────────────────────────────────────
+
+    private <Feature> <feature>Mock() {
+        // return new <Feature>(...);
+        return null;
+    }
+
+    private <Feature>Create <feature>CreateMock() {
+        // return new <Feature>Create(...);
+        return null;
+    }
+}

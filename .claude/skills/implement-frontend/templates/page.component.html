@@ -1,0 +1,12 @@
+<!-- src/app/features/<feature>/pages/<feature>.page.html -->
+<div class="page-container">
+  @if (data$ | async; as data) {
+    <!-- organisms van aquí -->
+  } @else {
+    <p>Cargando...</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  }
+</div>

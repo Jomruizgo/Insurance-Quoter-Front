@@ -51,18 +51,46 @@ Se aplica **TDD (Test-Driven Development)** en la capa de lógica del frontend:
 
 La razón es maximizar ROI: la lógica de negocio en services es estable y crítica; los templates cambian con frecuencia y su valor de test es bajo.
 
+## Atomic Design — Estructura de Componentes
+
+El frontend sigue **Atomic Design** para organizar los componentes de UI en cinco niveles de complejidad creciente.
+
+| Nivel | Carpeta | Descripción | Ejemplos |
+|-------|---------|-------------|----------|
+| **Atoms** | `shared/ui/atoms/` | Elemento UI mínimo, sin dependencias internas de componentes | `ButtonComponent`, `InputComponent`, `LabelComponent`, `SpinnerComponent` |
+| **Molecules** | `shared/ui/molecules/` | Composición de 2-5 átomos con comportamiento propio | `FormFieldComponent`, `SelectInputComponent`, `AlertMessageComponent` |
+| **Organisms** | `shared/ui/organisms/` | Sección de UI compleja que combina moléculas | `QuoteHeaderComponent`, `LocationCardComponent`, `CoverageTableComponent` |
+| **Templates** | `shared/ui/templates/` | Layout estructural sin data real; define slots con `<ng-content>` | `QuoteLayoutComponent`, `WizardLayoutComponent` |
+| **Pages** | `features/<feature>/pages/` | Instancia de un template con data real del service | `GeneralInfoPage`, `LocationsPage` |
+
+### Reglas de composición
+
+- Los **átomos** solo importan módulos Angular core (`CommonModule`, `FormsModule`). No importan otros componentes del proyecto.
+- Las **moléculas** solo importan átomos.
+- Los **organismos** importan átomos y moléculas; pueden tener lógica local mínima (`@Output` de eventos, estado de visibilidad).
+- Los **templates** definen layout con `<ng-content select="...">` y no contienen lógica de negocio.
+- Las **pages** consumen services vía `inject()`, componen organisms y templates, y son los componentes de ruta.
+
+### Componentes de feature vs. shared
+
+- Reutilizable en más de un feature → `shared/ui/molecules/` u `organisms/`
+- Exclusivo de un feature → `features/<feature>/components/`
+
 ## Arquitectura por Capas
 
 ```
-services → components/smart → components/dumb → pages (route components)
+services (TDD) → atoms → molecules → organisms → templates → pages (route components)
 ```
 
 | Capa | Carpeta | Responsabilidad | Prohibido |
 |------|---------|----------------|-----------|
-| `pages/` / route components | `app/<feature>/` | Layout, composición de componentes, usa servicios vía DI | Lógica de negocio, llamadas HTTP directas |
-| `components/` | `shared/components/` o `<feature>/components/` | Render UI, recibir `@Input()`, emitir `@Output()` | Estado global, llamadas HTTP |
 | `services/` | `<feature>/services/` o `core/services/` | Llamadas HTTP (HttpClient), transformación de datos | Estado de UI, lógica de render |
 | `models/` | `shared/models/` o `<feature>/models/` | Interfaces y tipos TypeScript del dominio | Lógica de negocio, HTTP |
+| `atoms/` | `shared/ui/atoms/` | UI mínima (`@Input`, `@Output`), sin dependencias internas | Importar otros componentes del proyecto |
+| `molecules/` | `shared/ui/molecules/` | Composición de átomos | Importar organisms, llamadas HTTP |
+| `organisms/` | `shared/ui/organisms/` o `<feature>/components/` | Composición de moléculas + átomos, lógica de presentación | Llamadas HTTP directas |
+| `templates/` | `shared/ui/templates/` | Layout con `<ng-content>`, sin lógica | Lógica de negocio, HTTP |
+| `pages/` | `features/<feature>/pages/` | Composición final + data real del service | Llamadas HTTP directas (siempre vía service) |
 
 ## Convenciones Obligatorias
 
@@ -124,15 +152,20 @@ export class CotizacionService {
 Insurance-Quoter-Front/src/
 ├── app/
 │   ├── core/
-│   │   ├── services/          ← servicios singleton (http, auth)
+│   │   ├── services/          ← servicios singleton (http, auth) — TDD obligatorio
 │   │   └── models/            ← interfaces de dominio compartidas
 │   ├── shared/
-│   │   └── components/        ← componentes reutilizables
+│   │   └── ui/
+│   │       ├── atoms/         ← Button, Input, Label, Spinner, Badge, Icon
+│   │       ├── molecules/     ← FormField, SelectInput, AlertMessage, SearchBar
+│   │       ├── organisms/     ← QuoteHeader, LocationCard, CoverageTable, NavBar
+│   │       └── templates/     ← QuoteLayout, MainLayout (layout sin data real)
 │   └── features/
 │       ├── cotizador/         ← feature principal
-│       │   ├── pages/
-│       │   ├── components/
-│       │   ├── services/
+│       │   ├── pages/         ← instancias de templates con data real
+│       │   ├── components/    ← organisms exclusivos de este feature
+│       │   ├── services/      ← TDD obligatorio
+│       │   ├── models/        ← interfaces del feature
 │       │   └── cotizador.routes.ts
 │       └── ...
 ├── environments/

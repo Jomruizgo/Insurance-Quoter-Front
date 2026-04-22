@@ -1,0 +1,72 @@
+// Insurance-Quoter-Back/src/test/java/.../adapter/in/rest/<Feature>ControllerTest.java
+// Uses @WebMvcTest — does NOT start the full Spring context
+
+package com.sofka.insurancequoter.infrastructure.adapter.in.rest;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sofka.insurancequoter.domain.port.in.<Feature>UseCase;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(<Feature>Controller.class)
+class <Feature>ControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockBean
+    private <Feature>UseCase <feature>UseCase;
+
+    // ─── 200 / 201 ───────────────────────────────────────────────────────────
+
+    @Test
+    void shouldReturn201_whenCreateSucceeds() throws Exception {
+        // GIVEN
+        when(<feature>UseCase.create(any())).thenReturn(<feature>ResponseMock());
+
+        // WHEN / THEN
+        mockMvc.perform(post("/v1/<resources>")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(<feature>RequestMock())))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data.id").isNotEmpty());
+    }
+
+    // ─── 400 / 422 ───────────────────────────────────────────────────────────
+
+    @Test
+    void shouldReturn422_whenRequestBodyIsInvalid() throws Exception {
+        mockMvc.perform(post("/v1/<resources>")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+            .andExpect(status().isUnprocessableEntity());
+    }
+
+    // ─── 404 ─────────────────────────────────────────────────────────────────
+
+    @Test
+    void shouldReturn404_whenEntityNotFound() throws Exception {
+        when(<feature>UseCase.getById("nonexistent"))
+            .thenThrow(new IllegalArgumentException("Not found"));
+
+        mockMvc.perform(get("/v1/<resources>/nonexistent"))
+            .andExpect(status().isNotFound());
+    }
+
+    // ─── Helpers ─────────────────────────────────────────────────────────────
+
+    private Object <feature>RequestMock() { return new Object(); }
+    private Object <feature>ResponseMock() { return new Object(); }
+}

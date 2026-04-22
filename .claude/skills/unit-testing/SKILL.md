@@ -17,52 +17,108 @@ argument-hint: "<nombre-feature> [backend|frontend|ambos]"
 
 ```
 .claude/specs/<feature>.spec.md        (criterios de aceptación)
-código implementado en backend/ y/o frontend/
-.claude/rules/backend.md               (stack de test: pytest + pytest-asyncio)
-.claude/rules/frontend.md              (stack de test: Vitest + Testing Library)
+código implementado en los módulos correspondientes
+.claude/rules/backend.md               (stack de test: JUnit 5 + Mockito + Spring Boot Test)
+.claude/rules/frontend.md              (stack de test: Jasmine + Karma — solo lógica)
+.claude/rules/testing.md               (principios AAA, pirámide, convenciones)
 ```
 
 ## Output por scope
 
-### Backend → `backend/tests/`
+### Backend → `Insurance-Quoter-Back/src/test/`
 
 | Archivo | Cubre |
 |---------|-------|
-| `routes/test_<feature>_router.py` | Endpoints: 200/201, 400, 401, 404, 422 |
-| `services/test_<feature>_service.py` | Lógica: happy path + errores de negocio |
-| `repositories/test_<feature>_repository.py` | Queries: parámetros y retornos correctos |
+| `..../usecase/<Feature>UseCaseTest.java` | Lógica de negocio: happy path + errores + edge cases |
+| `..../adapter/in/rest/<Feature>ControllerTest.java` | Endpoints: 200/201, 400, 404, 422, 409 |
+| `..../adapter/out/persistence/<Feature>PersistenceAdapterTest.java` | Queries: parámetros y retornos correctos |
 
-### Frontend → `frontend/src/__tests__/`
+Framework: **JUnit 5** + **Mockito** + `@WebMvcTest` / `@DataJpaTest` / `@SpringBootTest`.
+
+### Frontend → `Insurance-Quoter-Front/src/` (junto al código fuente, como `*.spec.ts`)
+
+**Alcance estricto — solo lógica pura:**
 
 | Archivo | Cubre |
 |---------|-------|
-| `components/<Feature>.test.*` | Render + interacciones (click, submit) |
-| `hooks/use<Feature>.test.*` | Estado inicial + respuesta API + error handling |
-| `pages/<Feature>Page.test.*` | Render completo con providers |
+| `<feature>/services/<feature>.service.spec.ts` | HTTP: happy path + 404 + 409 + 422 + 500 |
+| `core/guards/<guard>.guard.spec.ts` | Acceso permitido + redirección + estado intermedio |
+| `shared/pipes/<pipe>.pipe.spec.ts` | Valores válidos + límites + entradas inválidas |
+
+**No se generan tests para:**
+- ❌ Atoms, Molecules, Organisms (`*.component.ts`)
+- ❌ Templates de layout
+- ❌ Pages (componentes de ruta)
+- ❌ Templates HTML (`.html`)
+
+Framework: **Jasmine** + **Karma** (Angular default). Ver plantilla en `templates/service.spec.ts`.
 
 ## Patrones core
 
-```python
-# Backend — AAA con AsyncMock (pytest-asyncio)
-@pytest.mark.asyncio
-async def test_create_success():
-    # GIVEN
-    repo = AsyncMock()
-    repo.find_by_name.return_value = None
-    repo.insert.return_value = {"id": "abc", "name": "test"}
-    # WHEN
-    result = await FeatureService(repo).create(FeatureCreate(name="test"))
-    # THEN
-    assert result["id"] == "abc"
-    repo.insert.assert_called_once()
+```java
+// Backend — JUnit 5 + Mockito
+@ExtendWith(MockitoExtension.class)
+class FeatureUseCaseTest {
+
+    @Mock
+    private FeatureRepository featureRepository;
+
+    @InjectMocks
+    private FeatureUseCaseImpl featureUseCase;
+
+    @Test
+    void shouldCreate_whenValidData_thenReturnCreated() {
+        // GIVEN
+        when(featureRepository.save(any())).thenReturn(featureMock());
+
+        // WHEN
+        var result = featureUseCase.create(featureCreateMock());
+
+        // THEN
+        assertThat(result.getId()).isNotNull();
+        verify(featureRepository).save(any(Feature.class));
+    }
+}
 ```
 
-```js
-// Frontend — mock service + renderHook (Vitest + Testing Library)
-vi.mock('../../services/featureService');
-getFeatures.mockResolvedValue([{ id: '1' }]);
-const { result } = renderHook(() => useFeature());
-await waitFor(() => expect(result.current.items).toHaveLength(1));
+```typescript
+// Frontend — Jasmine + Karma + Angular Testing
+describe('FeatureService', () => {
+  let service: FeatureService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [FeatureService, provideHttpClient(), provideHttpClientTesting()]
+    });
+    service = TestBed.inject(FeatureService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => httpMock.verify());
+
+  it('should return data when request succeeds', () => {
+    // GIVEN
+    const mockResponse = { id: '1' };
+
+    // WHEN
+    service.getAll().subscribe(res => {
+      // THEN
+      expect(res).toEqual(mockResponse);
+    });
+
+    const req = httpMock.expectOne(`${environment.apiUrl}/v1/feature`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
+  it('should propagate HTTP 404 error', () => {
+    service.getAll().subscribe({ error: (err) => expect(err.status).toBe(404) });
+    httpMock.expectOne(`${environment.apiUrl}/v1/feature`).flush(
+      'Not found', { status: 404, statusText: 'Not Found' }
+    );
+  });
+});
 ```
 
 ## Reglas
@@ -71,5 +127,7 @@ Ver `.claude/rules/testing.md` — AAA, aislamiento, determinismo, cobertura ≥
 
 ## Restricciones
 
-- Solo `tests/` o `__tests__/`. No modificar código fuente.
+- Backend: solo `Insurance-Quoter-Back/src/test/`. No modificar código de producción.
+- Frontend: solo archivos `*.spec.ts` junto al código fuente. No crear `__tests__/`.
 - Nunca conectar a DB real ni servicios externos — siempre mocks.
+- Frontend: nunca generar tests de componentes (atoms/molecules/organisms/templates/pages).

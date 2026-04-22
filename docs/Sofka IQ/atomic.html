@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sofka IQ — Atomic Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="src/tokens.css"/>
+<link rel="stylesheet" href="src/components.css"/>
+<style>
+  body { background: var(--bg); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+  .section { margin-top: 48px; }
+  .section h2 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); font-weight: 500; margin-bottom: 4px; }
+  .section h3 { font-size: 28px; letter-spacing: -0.02em; font-weight: 600; margin: 0 0 8px; }
+  .section p.lead { color: var(--text-dim); font-size: 14px; max-width: 700px; margin: 0 0 24px; }
+  .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .item { padding: 16px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+  .item .name { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+  .item .title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .item .desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+  .token-swatch { display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; background: var(--surface); }
+  .chip { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+  .dna { display: grid; grid-template-columns: 80px 1fr; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .dna:last-child { border-bottom: none; }
+  .dna .k { font-family: var(--font-mono); color: var(--text-dim); font-size: 12px; }
+</style>
+</head>
+<body data-theme="light" data-density="standard" data-primary="lime">
+
+<header style="padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; gap: 16px;">
+  <a href="Sofka IQ.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+    <div style="width: 28px; height: 28px; border-radius: 8px; background: var(--ink-900); color: var(--brand-500); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 13px; font-weight: 700;">IQ</div>
+    <div><strong style="font-size: 14px;">Sofka IQ</strong> <span style="color: var(--text-dim); font-size: 13px;">· Atomic Design Inventory</span></div>
+  </a>
+  <div style="flex: 1"></div>
+  <a href="Sofka IQ.html" class="btn btn-secondary btn-sm">← Volver al prototipo</a>
+</header>
+
+<div class="wrap">
+
+  <!-- Intro -->
+  <div style="padding: 24px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); margin-top: 32px;">
+    <h1 style="margin: 0 0 8px; font-size: 32px; letter-spacing: -0.02em;">Inventario Atomic Design</h1>
+    <p style="color: var(--text-dim); max-width: 760px; margin: 0;">
+      Mapeo del prototipo en los cinco niveles de Atomic Design (Brad Frost) para guiar la implementación en Angular. Cada elemento apunta a su ubicación aproximada en el código del prototipo y una sugerencia de nombre/selector Angular.
+    </p>
+  </div>
+
+  <!-- TOKENS -->
+  <div class="section">
+    <h2>0 · Tokens de diseño</h2>
+    <h3>Design tokens</h3>
+    <p class="lead">Variables CSS base. En Angular: exponerlos como SCSS vars + CSS custom properties. Soportan light/dark + 4 primarios + 3 densidades.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      <div class="item">
+        <div class="title" style="margin-bottom: 12px;">Paleta — Brand (verde vibrante)</div>
+        <div class="level-grid" style="grid-template-columns: repeat(5, 1fr); gap: 6px;">
+          <div class="token-swatch"><div class="chip" style="background: var(--brand-100);"></div>100</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--brand-300);"></div>300</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--brand-500);"></div>500</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--brand-700);"></div>700</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--brand-900);"></div>900</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="title" style="margin-bottom: 12px;">Paleta — Ink (neutros cálidos)</div>
+        <div class="level-grid" style="grid-template-columns: repeat(5, 1fr); gap: 6px;">
+          <div class="token-swatch"><div class="chip" style="background: var(--ink-50);"></div>50</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--ink-200);"></div>200</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--ink-500);"></div>500</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--ink-700);"></div>700</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--ink-900);"></div>900</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="title" style="margin-bottom: 12px;">Semánticos</div>
+        <div class="level-grid" style="grid-template-columns: repeat(4, 1fr); gap: 6px;">
+          <div class="token-swatch"><div class="chip" style="background: var(--ok);"></div>ok</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--warn);"></div>warn</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--err);"></div>err</div>
+          <div class="token-swatch"><div class="chip" style="background: var(--info);"></div>info</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="title" style="margin-bottom: 12px;">Tipografía</div>
+        <div style="font-family: 'Geist'; font-size: 24px; letter-spacing: -0.02em; font-weight: 600;">Geist · Display</div>
+        <div style="font-family: 'Geist'; font-size: 14px; color: var(--text-dim);">Geist · Body</div>
+        <div class="mono" style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Geist Mono · Code / números</div>
+      </div>
+      <div class="item">
+        <div class="title" style="margin-bottom: 8px;">Escala de espaciado (4px base)</div>
+        <div style="display: flex; gap: 6px; align-items: flex-end;">
+          <div style="width: 4px; height: 24px; background: var(--brand-500);"></div>
+          <div style="width: 8px; height: 24px; background: var(--brand-500);"></div>
+          <div style="width: 12px; height: 24px; background: var(--brand-500);"></div>
+          <div style="width: 16px; height: 24px; background: var(--brand-500);"></div>
+          <div style="width: 24px; height: 24px; background: var(--brand-500);"></div>
+          <div style="width: 32px; height: 24px; background: var(--brand-500);"></div>
+          <div style="width: 48px; height: 24px; background: var(--brand-500);"></div>
+        </div>
+        <div class="mono" style="font-size: 11px; color: var(--text-dim); margin-top: 8px;">--s-1 … --s-12</div>
+      </div>
+      <div class="item">
+        <div class="title" style="margin-bottom: 8px;">Radios · shadows</div>
+        <div style="display: flex; gap: 8px;">
+          <div style="width: 44px; height: 44px; border-radius: 4px; background: var(--ink-100); display: flex; align-items: center; justify-content: center; font-size: 10px;">4</div>
+          <div style="width: 44px; height: 44px; border-radius: 8px; background: var(--ink-100); display: flex; align-items: center; justify-content: center; font-size: 10px;">8</div>
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--ink-100); display: flex; align-items: center; justify-content: center; font-size: 10px;">12</div>
+          <div style="width: 44px; height: 44px; border-radius: 999px; background: var(--ink-100); display: flex; align-items: center; justify-content: center; font-size: 10px;">pill</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATOMS -->
+  <div class="section">
+    <h2>1 · Átomos</h2>
+    <h3>Componentes indivisibles</h3>
+    <p class="lead">Bloques mínimos de UI. En Angular serían componentes sin lógica de negocio, standalone, altamente reusables. Prefijo sugerido: <code>sf-</code> (Sofka).</p>
+
+    <div class="level-grid">
+      <Item name="sf-button" title="Button" desc="5 variantes × 4 tamaños. Primary / Secondary / Ghost / Danger + Icon-only. Soporta icono L+R y estado disabled."/>
+      <Item name="sf-input" title="Input" desc="Text, number, email. Estados: default, focus, invalid, disabled. Integración con FormControl."/>
+      <Item name="sf-select" title="Select" desc="Native <select> con estilizado custom + chevron SVG."/>
+      <Item name="sf-textarea" title="Textarea" desc="Auto-resize opcional, min-height 80px."/>
+      <Item name="sf-checkbox" title="Checkbox" desc="Indeterminate support para filas seleccionables."/>
+      <Item name="sf-switch" title="Switch/Toggle" desc="Accesible por teclado (Enter/Space). Data attribute [data-on]."/>
+      <Item name="sf-radio-card" title="RadioCard" desc="Radio visualmente presentado como card seleccionable (usado en LocationType y ConstructionType)."/>
+      <Item name="sf-badge" title="Badge" desc="6 variantes: default, ok, warn, err, info, brand. Con dot opcional."/>
+      <Item name="sf-icon" title="Icon" desc="Wrapper SVG sobre ~25 iconos inline (Lucide-like). Prop [name], [size], [stroke]."/>
+      <Item name="sf-progress" title="Progress" desc="Barra lineal 0-100%. Animada vía width."/>
+      <Item name="sf-divider" title="Divider" desc="1px horizontal."/>
+      <Item name="sf-kbd" title="Kbd" desc="Atajo de teclado (⌘K)."/>
+      <Item name="sf-spinner" title="Spinner" desc="Loading state — CSS keyframes."/>
+      <Item name="sf-avatar" title="Avatar" desc="Iniciales sobre bg brand-200."/>
+      <Item name="sf-empty-block" title="EmptyBlock" desc="Placeholder dashed — used in drop zones / 'añadir ubicación'."/>
+      <Item name="sf-stat-value" title="StatValue" desc="Tabular-nums, font-weight 600, letter-spacing tight."/>
+    </div>
+  </div>
+
+  <!-- MOLECULES -->
+  <div class="section">
+    <h2>2 · Moléculas</h2>
+    <h3>Combinaciones funcionales de átomos</h3>
+    <p class="lead">Pequeños grupos con responsabilidad única. Reutilizables entre múltiples organismos.</p>
+
+    <div class="level-grid">
+      <Item name="sf-field" title="Field (label + input + error)" desc="Átomos: label + input/select + field-help + field-error. Integra ReactiveForms directamente."/>
+      <Item name="sf-search-input" title="SearchInput" desc="Input + icon search + keyboard hint (⌘K)."/>
+      <Item name="sf-status-badge" title="StatusBadge" desc="Badge + label mapeado del enum quoteStatus (CREATED/IN_PROGRESS/CALCULATED/ISSUED)."/>
+      <Item name="sf-stepper-item" title="StepperItem" desc="step-num + label + estado (complete/current/incomplete). Clickeable."/>
+      <Item name="sf-progress-row" title="ProgressRow" desc="Label + progress + % tabular. Usado en filas de dashboard."/>
+      <Item name="sf-stat-card" title="StatCard" desc="Label + value + sub + accent-border top (tone: neutral/brand/info)."/>
+      <Item name="sf-alert" title="Alert" desc="Icon + title + content + optional action. Variantes: warn/err/info."/>
+      <Item name="sf-guarantee-row" title="GuaranteeRow" desc="Checkbox + texto + input monetario con prefijo MXN."/>
+      <Item name="sf-segmented" title="Segmented (tabs compactas)" desc="Grupo de botones tipo pill para Theme/Density/Data picker en Tweaks."/>
+      <Item name="sf-breadcrumb" title="Breadcrumb" desc="Cadena de navegación en header (Cotizaciones / FOL-2026-...)."/>
+      <Item name="sf-currency-input" title="CurrencyInput" desc="Input numérico + prefijo MXN + format tabular."/>
+      <Item name="sf-location-row" title="LocationRow" desc="Fila completa de tabla de ubicaciones: checkbox + nombre + dirección + giro + SA + estado + acciones."/>
+      <Item name="sf-coverage-card" title="CoverageCard" desc="Header con switch + código + contenido con deducible/coaseguro. Usada en CoverageStep."/>
+      <Item name="sf-menu-item" title="MenuItem" desc="Item de popover menu. Variante danger para acciones destructivas."/>
+      <Item name="sf-tweak-row" title="TweakRow" desc="Label uppercase + control (segmented/colors/switch)."/>
+    </div>
+  </div>
+
+  <!-- ORGANISMS -->
+  <div class="section">
+    <h2>3 · Organismos</h2>
+    <h3>Secciones funcionales autónomas</h3>
+    <p class="lead">Piezas grandes con lógica de negocio o estado propio. Consumen servicios Angular (HttpClient, stores).</p>
+
+    <div class="level-grid">
+      <Item name="sf-app-header" title="AppHeader" desc="Logo + breadcrumb + search global + user + tweaks toggle. Sticky top."/>
+      <Item name="sf-stepper" title="Stepper" desc="Navegación entre pasos del wizard. Sticky bajo AppHeader. Estado: complete/current/incomplete."/>
+      <Item name="sf-status-bar" title="StatusBar" desc="Footer sticky: folio + progreso + versión + last-saved. Persistente durante todo el flujo del folio."/>
+      <Item name="sf-folios-table" title="FoliosTable" desc="Tabla de dashboard con filtros, búsqueda, toggle list/grid, acciones por fila."/>
+      <Item name="sf-folios-stats" title="FoliosStats" desc="Grid 4 StatCards con KPIs (total, en progreso, calculados, monto acumulado)."/>
+      <Item name="sf-insured-form" title="InsuredForm" desc="Formulario de datos del asegurado (razón social, RFC, email, teléfono). Reactive form."/>
+      <Item name="sf-underwriting-form" title="UnderwritingForm" desc="Formulario de suscripción (suscriptor, agente, clasificación, tipo negocio). Con cascade: agente depende de suscriptor."/>
+      <Item name="sf-layout-config" title="LayoutConfigCard" desc="Número de ubicaciones + tipo (SINGLE/MULTIPLE/DISTRIBUTED)."/>
+      <Item name="sf-locations-table" title="LocationsTable" desc="Tabla de ubicaciones con selección múltiple, footer de totales, alertas por fila, acciones de edición."/>
+      <Item name="sf-location-drawer" title="LocationDrawer" desc="Drawer lateral con 4 tabs (Datos / Construcción / Giro / Garantías). PATCH por versión optimista al guardar."/>
+      <Item name="sf-coverage-options" title="CoverageOptions" desc="Grid de CoverageCards. Maneja selected/deductible/coinsurance por cobertura."/>
+      <Item name="sf-calculate-empty" title="CalculateEmpty" desc="Estado previo al cálculo: resumen de calculables/incompletas + botón disparador."/>
+      <Item name="sf-premium-breakdown" title="PremiumBreakdown" desc="Tabla cruzada: componentes técnicos × ubicaciones + totales por fila y columna."/>
+      <Item name="sf-premium-hero" title="PremiumHero" desc="Grid 3: prima neta (ink-900), prima comercial (brand), desglose por ubicación."/>
+      <Item name="sf-incomplete-alerts" title="IncompleteAlerts" desc="Resumen de ubicaciones no calculables con sus alertas bloqueantes."/>
+      <Item name="sf-new-folio-modal" title="NewFolioModal" desc="Modal centrado para creación idempotente de folio."/>
+      <Item name="sf-tweaks-panel" title="TweaksPanel" desc="Panel flotante bottom-right con theme/density/primary/data controls. Persiste en localStorage."/>
+    </div>
+  </div>
+
+  <!-- TEMPLATES -->
+  <div class="section">
+    <h2>4 · Templates</h2>
+    <h3>Layouts sin contenido</h3>
+    <p class="lead">Contenedores estructurales. En Angular: componentes de layout con slots (<code>&lt;ng-content&gt;</code>).</p>
+
+    <div class="level-grid">
+      <Item name="sf-dashboard-template" title="DashboardTemplate" desc="Header + main(1400px centered) + sin stepper ni status bar. Usado para landing."/>
+      <Item name="sf-folio-template" title="FolioTemplate" desc="Header + Stepper + main + StatusBar. Layout del wizard de 5 pasos."/>
+      <Item name="sf-step-template" title="StepTemplate" desc="SectionHeader + slot contenido + footer de navegación (prev/next). Reusado por los 5 pasos."/>
+      <Item name="sf-drawer-template" title="DrawerTemplate" desc="Backdrop + drawer con header/tabs/body/footer. Slot para contenido por tab."/>
+      <Item name="sf-modal-template" title="ModalTemplate" desc="Backdrop + card centrada. Header/body/footer con slots."/>
+    </div>
+  </div>
+
+  <!-- PAGES -->
+  <div class="section">
+    <h2>5 · Páginas (rutas)</h2>
+    <h3>Templates + contenido real</h3>
+    <p class="lead">Rutas Angular que ensamblan templates con datos reales y orquestan servicios/guards.</p>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;">
+      <div class="dna"><span class="k">/cotizador</span><div><strong>CotizadorPage</strong> — Dashboard. DashboardTemplate + FoliosStats + FoliosTable.</div></div>
+      <div class="dna"><span class="k">/quotes/:folio/general-info</span><div><strong>GeneralInfoPage</strong> — Paso 1. StepTemplate + InsuredForm + UnderwritingForm.</div></div>
+      <div class="dna"><span class="k">/quotes/:folio/layout</span><div><strong>LayoutPage</strong> — Paso 2. StepTemplate + LayoutConfigCard.</div></div>
+      <div class="dna"><span class="k">/quotes/:folio/locations</span><div><strong>LocationsPage</strong> — Paso 3. StepTemplate + LocationsTable (+ LocationDrawer en outlet secundario).</div></div>
+      <div class="dna"><span class="k">/quotes/:folio/locations/:index</span><div><strong>LocationEditPage</strong> — Outlet del drawer. Router child route.</div></div>
+      <div class="dna"><span class="k">/quotes/:folio/coverage-options</span><div><strong>CoveragePage</strong> — Paso 4. StepTemplate + CoverageOptions.</div></div>
+      <div class="dna"><span class="k">/quotes/:folio/calculate</span><div><strong>CalculatePage</strong> — Paso 5. StepTemplate + CalculateEmpty ↔ (PremiumHero + PremiumBreakdown + IncompleteAlerts).</div></div>
+    </div>
+  </div>
+
+  <!-- Arquitectura sugerida -->
+  <div class="section">
+    <h2>Sugerencias de implementación Angular</h2>
+    <h3>Mapeo a arquitectura</h3>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;">
+      <div class="dna"><span class="k">tokens</span><div>SCSS con variables CSS globales (misma estrategia que este prototipo). Cargar antes que Material/PrimeNG si se usan.</div></div>
+      <div class="dna"><span class="k">components/atoms</span><div>Standalone components puros, sin HttpClient ni Store. Cubrir con spec.ts unitarios (isolated).</div></div>
+      <div class="dna"><span class="k">components/molecules</span><div>Standalone, input/output. Pueden inyectar FormControl vía @Input.</div></div>
+      <div class="dna"><span class="k">components/organisms</span><div>Inyectan servicios (QuoteService, FolioService). Controlan estado local; para estado compartido usar signal store o NgRx Component Store.</div></div>
+      <div class="dna"><span class="k">features/folio</span><div>FeatureModule con rutas hijas — lazy-loaded. Resolver sobre GET /v1/quotes/:folio para hidratar el stepper de entrada.</div></div>
+      <div class="dna"><span class="k">state</span><div>Signals + computed para stepStatus derivado. Optimistic update: guardar versión previa antes del PUT/PATCH; rollback en 409 VERSION_CONFLICT.</div></div>
+      <div class="dna"><span class="k">a11y</span><div>FocusTrap en drawer/modal. Atajos: Esc cierra, ⌘K busca. Todos los switches/steps ya navegables por teclado en este prototipo.</div></div>
+      <div class="dna"><span class="k">i18n</span><div>@angular/localize · todas las cadenas en es-MX. Money / date con Intl API del runtime.</div></div>
+      <div class="dna"><span class="k">testing</span><div>Átomos y moléculas → Jasmine/Jest isolated. Organismos → TestBed con HttpClientTestingModule. Flujos → Cypress/Playwright: crear folio → capturar ubicación → calcular.</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Tiny template helper so the markup above reads clean
+const items = document.querySelectorAll('Item');
+items.forEach(el => {
+  const name = el.getAttribute('name');
+  const title = el.getAttribute('title');
+  const desc = el.getAttribute('desc');
+  const div = document.createElement('div');
+  div.className = 'item';
+  div.innerHTML = `<div class="name">${name}</div><div class="title">${title}</div><div class="desc">${desc}</div>`;
+  el.replaceWith(div);
+});
+</script>
+
+</body>
+</html>

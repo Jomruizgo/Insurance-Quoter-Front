@@ -1,36 +1,81 @@
 ---
 name: implement-frontend
-description: Implementa un feature completo en el frontend. Requiere spec con status APPROVED en .claude/specs/.
+description: Implementa un feature completo en el frontend con Angular 19 + Atomic Design. Requiere spec con status APPROVED en .claude/specs/.
 argument-hint: "<nombre-feature>"
 ---
 
 # Implement Frontend
 
 ## Prerequisitos
-1. Leer spec: `.claude/specs/<feature>.spec.md` — sección 2.3 (componentes, páginas, hooks)
-2. Leer stack: `.claude/rules/backend.md`
-3. Leer arquitectura: `.claude/rules/backend.md`
+
+Lee en paralelo antes de implementar:
+
+```
+CLAUDE.md
+.claude/rules/frontend.md
+.claude/docs/lineamientos/dev-guidelines.md
+.claude/specs/<feature>.spec.md
+docs/api-contracts.md
+```
 
 ## Orden de implementación
+
+Seguir la jerarquía de Atomic Design — cada nivel depende del anterior:
+
 ```
-services → hooks/state → components → pages/views → registrar ruta
+models/interfaces → services (TDD) → guards/pipes (TDD) → atoms → molecules → organisms → templates → pages → registrar ruta
 ```
 
-| Capa | Responsabilidad |
-|------|-----------------|
-| **Services** | Llamadas HTTP al backend — sin estado, sin lógica de negocio |
-| **Hooks / State** | Estado local, efectos, acciones — consume services |
-| **Components** | UI reutilizable — recibe props, emite eventos |
-| **Pages / Views** | Composición final — layout + rutas |
+| Capa | Carpeta | Responsabilidad | Tests |
+|------|---------|-----------------|-------|
+| **Models** | `<feature>/models/` | Interfaces TypeScript del dominio | No |
+| **Services** | `<feature>/services/` | Llamadas HTTP al backend | **TDD obligatorio** |
+| **Guards / Pipes** | `core/guards/`, `shared/pipes/` | Navegación, transformaciones | **TDD obligatorio** |
+| **Atoms** | `shared/ui/atoms/` | Elemento UI mínimo (`@Input`/`@Output`) | No |
+| **Molecules** | `shared/ui/molecules/` | Composición de 2-5 átomos | No |
+| **Organisms** | `shared/ui/organisms/` o `<feature>/components/` | Sección UI compleja | No |
+| **Templates** | `shared/ui/templates/` | Layout con `<ng-content>`, sin data real | No |
+| **Pages** | `<feature>/pages/` | Instancia de template con data real | No |
+
+## TDD para services y guards
+
+Aplicar el ciclo RED → GREEN → REFACTOR:
+
+```
+a) Crear <feature>.service.spec.ts — ver plantilla en templates/service.spec.ts
+b) Escribir el test del método → ng test → confirmar RED
+c) Crear <feature>.service.ts con el método
+d) ng test → confirmar GREEN
+e) Refactorizar si aplica
+f) Repetir para el siguiente método
+```
 
 ## Patrones obligatorios
-- Auth state: consumir SÓLO desde el hook/store de auth del proyecto (ver contexto)
-- Variables de entorno: URL del API siempre desde variables de entorno, nunca hardcodeada
-- Token en header: `Authorization: Bearer <token>` en todas las llamadas protegidas
-- Estilos: usar ÚNICAMENTE el sistema de estilos aprobado en el proyecto (ver contexto)
 
-Ver patrones específicos en `.claude/rules/frontend.md` y `.claude/rules/backend.md`.
+- `environment.apiUrl` para URL base — nunca hardcodear
+- `inject()` para inyección de dependencias
+- Standalone components — sin NgModules
+- `async pipe` o `takeUntilDestroyed()` para suscripciones en componentes
+- `@Input()` y `@Output()` para comunicación entre componentes (no state global en atoms/molecules)
+- Control flow moderno (`@if`, `@for`) en templates — no `*ngIf` ni `*ngFor`
 
 ## Restricciones
-- Solo `frontend/` (o equivalente del proyecto). No tocar `backend/`.
-- No generar tests (responsabilidad de `test-engineer-frontend`).
+
+- Solo trabajar en `Insurance-Quoter-Front/`.
+- Los atoms no importan otros componentes del proyecto (solo Angular core).
+- Las molecules solo importan atoms.
+- Los organisms importan atoms y molecules; pueden emitir eventos hacia la page.
+- Las pages son los únicos componentes que inyectan services.
+- Contratos de API en `docs/api-contracts.md` como referencia — no inventar endpoints.
+
+## Templates de referencia
+
+```
+.claude/skills/implement-frontend/templates/
+├── atom.component.ts      ← estructura base de un atom
+├── atom.component.html
+├── organism.component.ts  ← estructura base de un organism/feature component
+├── page.component.ts      ← estructura base de una page
+├── page.component.html
+└── page.component.scss
+```

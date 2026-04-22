@@ -36,19 +36,26 @@ Aplica el ciclo RED → GREEN → REFACTOR en cada unidad de lógica:
 - ✅ Resolvers — escribe el spec antes del resolver
 
 **Qué NO tiene tests:**
-- ❌ Componentes (`*.component.ts`) — implementar directamente, sin test
-- ❌ Templates (`.html`) — sin test
+- ❌ Atoms, Molecules, Organisms (`*.component.ts`) — implementar directamente, sin test
+- ❌ Templates de layout — sin test
+- ❌ Pages (componentes de ruta) — sin test
+- ❌ Templates HTML (`.html`) — sin test
 
-## Orden de implementación (TDD por capa)
+## Orden de implementación (TDD por capa + Atomic Design)
 
 ```
 1. Models/Interfaces   → sin tests (son tipos TypeScript)
 2. Services            → TDD obligatorio: spec antes de implementar
 3. Guards / Pipes      → TDD obligatorio: spec antes de implementar
-4. Components          → implementar directamente (sin test)
-5. Pages               → implementar directamente (sin test)
-6. Registrar ruta      → en app.routes.ts o feature.routes.ts
+4. Atoms               → implementar directamente (sin test)
+5. Molecules           → implementar directamente (sin test)
+6. Organisms           → implementar directamente (sin test)
+7. Templates           → implementar directamente (sin test)
+8. Pages               → implementar directamente (sin test)
+9. Registrar ruta      → en app.routes.ts o feature.routes.ts
 ```
+
+El orden de UI sigue la jerarquía de Atomic Design: los átomos primero porque las moléculas los consumen, y los organismos dependen de ambos.
 
 ### Ejemplo del ciclo TDD para un service
 
@@ -61,18 +68,21 @@ e) Refactorizar si aplica
 f) Repetir para el siguiente método del service
 ```
 
-## Arquitectura del Frontend
+## Arquitectura del Frontend — Atomic Design
 
 ```
-services (TDD) → guards/pipes (TDD) → components → pages → ruta
+services (TDD) → guards/pipes (TDD) → atoms → molecules → organisms → templates → pages → ruta
 ```
 
-| Capa | Responsabilidad | Prohibido |
-|------|-----------------|-----------|
-| `services/` | Llamadas HTTP (HttpClient), TDD | Estado, lógica de render |
-| `guards/` | Control de navegación, TDD | Lógica de negocio compleja |
-| `components/` | UI reutilizable — props + eventos | Estado global, llamadas API directas |
-| `pages/` | Composición + layout de route | Llamadas HTTP directas |
+| Capa | Carpeta | Responsabilidad | Prohibido |
+|------|---------|-----------------|-----------|
+| `services/` | `<feature>/services/` | Llamadas HTTP (HttpClient), TDD | Estado, lógica de render |
+| `guards/` | `core/guards/` | Control de navegación, TDD | Lógica de negocio compleja |
+| `atoms/` | `shared/ui/atoms/` | Elemento UI mínimo (`@Input`/`@Output`) | Importar otros componentes del proyecto |
+| `molecules/` | `shared/ui/molecules/` | Composición de átomos | Importar organisms, llamadas HTTP |
+| `organisms/` | `shared/ui/organisms/` o `<feature>/components/` | Composición de moléculas + átomos | Llamadas HTTP directas |
+| `templates/` | `shared/ui/templates/` | Layout con `<ng-content>`, sin lógica | Lógica de negocio, HTTP |
+| `pages/` | `<feature>/pages/` | Composición final, data real del service | Llamadas HTTP directas |
 
 ## Convenciones Obligatorias
 
