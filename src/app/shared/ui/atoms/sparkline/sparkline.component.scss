@@ -1,0 +1,13 @@
+.progress {
+  width: 100%;
+  background: var(--border);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+
+  &-bar {
+    height: 100%;
+    background: var(--brand-500);
+    border-radius: var(--r-pill);
+    transition: width var(--t) var(--ease);
+  }
+}

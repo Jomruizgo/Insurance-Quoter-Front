@@ -1,0 +1,11 @@
+<button
+  type="button"
+  role="switch"
+  [attr.aria-checked]="on.toString()"
+  [attr.aria-disabled]="disabled ? 'true' : null"
+  [class]="'switch' + (on ? ' switch-on' : '') + (disabled ? ' switch-disabled' : '')"
+  [tabIndex]="disabled ? -1 : 0"
+  (click)="toggle()"
+>
+  <span class="switch-thumb"></span>
+</button>

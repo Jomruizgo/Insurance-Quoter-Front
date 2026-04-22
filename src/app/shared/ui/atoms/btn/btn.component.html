@@ -1,0 +1,14 @@
+<button
+  [type]="type"
+  [disabled]="disabled"
+  [attr.aria-disabled]="disabled ? 'true' : null"
+  [class]="'btn btn-' + variant + (size ? ' btn-' + size : '') + (disabled ? ' btn-disabled' : '')"
+>
+  @if (iconLeft) {
+    <app-icon [name]="iconLeft" [size]="iconSize" />
+  }
+  <ng-content />
+  @if (iconRight) {
+    <app-icon [name]="iconRight" [size]="iconSize" />
+  }
+</button>
