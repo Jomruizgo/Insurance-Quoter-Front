@@ -18,6 +18,15 @@ CLAUDE.md
 docs/api-contracts.md
 ```
 
+Obtén la lista de issues abiertas del feature y guárdala en memoria de trabajo:
+
+```bash
+gh issue list --state open --limit 100
+```
+
+Busca en esa lista los títulos que correspondan a las tareas del `## 3. LISTA DE TAREAS` de la spec.
+Cada tarea que implementes debe cerrar su issue correspondiente **en el momento en que la tarea queda terminada**, no al final.
+
 ## Orden de implementación
 
 Seguir la jerarquía de Atomic Design — cada nivel depende del anterior:
@@ -67,6 +76,23 @@ f) Repetir para el siguiente método
 - Los organisms importan atoms y molecules; pueden emitir eventos hacia la page.
 - Las pages son los únicos componentes que inyectan services.
 - Contratos de API en `docs/api-contracts.md` como referencia — no inventar endpoints.
+
+## Cierre de issues
+
+Al terminar **cada tarea individual** del checklist de la spec:
+
+1. Identificar el número de issue por coincidencia de título con la tarea.
+2. Cerrar inmediatamente con evidencia del archivo implementado:
+
+```bash
+gh issue close <N> --comment "Implementado: <ruta/archivo.ts>. Build limpio."
+```
+
+3. Marcar la tarea como `[x]` en la spec.
+
+**Regla:** una tarea = un issue cerrado = un `[x]` en la spec. No acumular cierres para el final.
+
+Si no existe issue para una tarea (fue omitida en `tasks-to-issues`), continuar sin crearla.
 
 ## Templates de referencia
 

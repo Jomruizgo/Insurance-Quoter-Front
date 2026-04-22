@@ -1,0 +1,17 @@
+<div class="field" [style.grid-column]="span ? 'span ' + span : null">
+  @if (label) {
+    <label class="field-label">
+      {{ label }}
+      @if (required) { <span class="field-required" aria-hidden="true">*</span> }
+    </label>
+  }
+  <ng-content />
+  @if (error) {
+    <div class="field-error" role="alert">
+      <app-icon name="alert" [size]="12" />
+      <span>{{ error }}</span>
+    </div>
+  } @else if (help) {
+    <div class="field-help">{{ help }}</div>
+  }
+</div>

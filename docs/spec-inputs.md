@@ -40,6 +40,154 @@ El prototipo está en `docs/Sofka IQ/` dentro de `Insurance-Quoter-Front/`. Los 
 
 ---
 
+## Requisito transversal: Contenedorización con Docker
+
+**Este requisito aplica a TODOS los inputs.** El spec-generator debe incluirlo en la sección de arquitectura y en el DoD de cada spec.
+
+### Motivación
+
+El frontend debe poder ejecutarse y probarse en contenedores Docker sin necesidad de tener Node.js ni Angular CLI instalados localmente. Esto es especialmente crítico para:
+- Pruebas E2E con Serenity BDD cuando se integra con el backend en `docker-compose`
+- Entornos CI/CD sin dependencia de versiones globales
+- Onboarding rápido: `docker compose up` sin instalar nada
+
+### Estrategia de contenedorización
+
+**`Dockerfile` — multi-stage:**
+```
+Stage 1 (build): node:20-alpine
+  → npm ci
+  → ng build --configuration=production
+
+Stage 2 (serve): nginx:alpine
+  → copiar dist/ al directorio de nginx
+  → nginx.conf personalizado para SPA (todas las rutas → index.html)
+```
+
+**`Dockerfile.dev` — desarrollo con hot reload:**
+```
+FROM node:20-alpine
+→ npm ci
+→ ng serve --host 0.0.0.0 --poll 500
+→ volumen montado sobre /app/src
+→ puerto 4200 expuesto
+```
+
+**`docker-compose.yml` (en la raíz del monorepo `Sofka-IQ/`):**
+```yaml
+services:
+  frontend:
+    build: ./Insurance-Quoter-Front
+    ports: ["4200:80"]
+    depends_on: [backend, core]
+
+  frontend-dev:
+    build:
+      context: ./Insurance-Quoter-Front
+      dockerfile: Dockerfile.dev
+    ports: ["4200:4200"]
+    volumes: ["./Insurance-Quoter-Front/src:/app/src"]
+    depends_on: [backend]
+
+  backend:   # plataforma-danos-back  → puerto 8080
+  core:      # plataforma-core-ohs   → puerto 8081
+```
+
+**`nginx.conf` mínimo (SPA routing):**
+```nginx
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+  index index.html;
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}
+```
+
+### Variables de entorno por perfil
+
+| Variable | Desarrollo (Dockerfile.dev) | Producción (Dockerfile) |
+|----------|-----------------------------|-------------------------|
+| `API_URL` | `http://backend:8080` | configurable vía `--build-arg` |
+| `CORE_URL` | `http://core:8081` | configurable vía `--build-arg` |
+
+La URL del API se inyecta en `environment.ts` en tiempo de build con `--replace` o mediante `APP_INITIALIZER` con un `config.json` cargado en runtime para evitar re-builds por cambio de entorno.
+
+### DoD adicional para todos los features
+
+Cada spec debe añadir a su Definición de Hecho:
+- [ ] `docker build -t sofka-iq-front .` construye sin errores
+- [ ] `docker-compose up frontend` sirve la SPA correctamente en `http://localhost:4200`
+- [ ] Las rutas de la SPA no devuelven 404 al hacer refresh directo en el navegador
+- [ ] `docker-compose up frontend backend core` integra los tres servicios sin configuración manual adicional
+
+---
+
+## Input 0 — Infraestructura Docker del frontend
+
+```
+Necesito que generes una spec técnica ASDD para el feature "frontend-docker-setup".
+
+**Antes de cualquier otra acción**, crea una rama de Git siguiendo GitFlow:
+1. Ejecuta `git fetch origin` para tener la última versión de `develop`.
+2. Crea la rama desde el HEAD actualizado de develop: `git checkout -b feature/FE-00-docker-setup origin/develop`.
+3. Trabaja en esa rama durante toda la generación de la spec.
+
+**Descripción del feature:**
+Contenedorización del frontend Angular 19 para que pueda ejecutarse, desarrollarse y probarse sin necesidad de tener Node.js ni Angular CLI instalados localmente. Es el prerequisito de infraestructura para la integración E2E con el backend.
+
+**Artefactos a especificar:**
+
+1. `Insurance-Quoter-Front/Dockerfile` — imagen de producción multi-stage:
+   - Stage 1 (`build`): `node:20-alpine` — instala dependencias (`npm ci`) y construye la app (`ng build --configuration=production`)
+   - Stage 2 (`serve`): `nginx:alpine` — copia `dist/` y sirve con configuración SPA
+   - La imagen final no contiene Node.js ni el código fuente
+
+2. `Insurance-Quoter-Front/Dockerfile.dev` — imagen de desarrollo:
+   - Base: `node:20-alpine`
+   - Ejecuta `ng serve --host 0.0.0.0 --poll 500`
+   - Diseñada para usar volumen montado sobre `/app/src` (hot reload sin rebuild de imagen)
+
+3. `Insurance-Quoter-Front/nginx.conf` — configuración SPA:
+   - `try_files $uri $uri/ /index.html` para que el router de Angular maneje todas las rutas
+   - Sin caché en `index.html`; caché larga en assets con hash
+
+4. `Sofka-IQ/docker-compose.yml` (raíz del monorepo) — orquestación de los tres servicios:
+   - `frontend` (producción): build desde `./Insurance-Quoter-Front`, puerto 4200:80
+   - `frontend-dev` (desarrollo): build desde `Dockerfile.dev`, puerto 4200:4200, volumen sobre `src/`
+   - `backend`: `./Insurance-Quoter-Back`, puerto 8080:8080
+   - `core`: `./Insurance-Quoter-Core`, puerto 8081:8081
+   - Health checks para que `frontend` espere a que `backend` y `core` estén listos
+
+5. `Insurance-Quoter-Front/.dockerignore`:
+   - Excluir: `node_modules/`, `.git/`, `dist/`, `*.md`, `.claude/`
+
+6. `Insurance-Quoter-Front/src/assets/config.json` — configuración runtime (opcional pero recomendado):
+   - Permite cambiar la URL del API sin re-build de imagen
+   - Cargado mediante `APP_INITIALIZER` antes de que Angular levante la app
+   - Campos: `{ "apiUrl": "http://localhost:8080", "coreUrl": "http://localhost:8081" }`
+
+**Variables de entorno y estrategia de configuración:**
+- URL del API: se prefiere `config.json` cargado en runtime sobre `--build-arg` para evitar imágenes distintas por entorno
+- Si se usa `environment.ts` con `--build-arg`, documentar el proceso de re-build
+
+**Stack:** Angular 19, Node 20 LTS, nginx:alpine, Docker Compose v2.
+
+**Sin lógica de negocio → sin tests unitarios.** Los criterios de aceptación se verifican con comandos Docker.
+
+**Contratos API:** Ninguno directo. La spec debe definir cómo se configura `environment.apiUrl` dentro del contenedor para apuntar al backend.
+
+**Criterios de aceptación:**
+- `docker build -t sofka-iq-front .` ejecutado desde `Insurance-Quoter-Front/` termina sin errores.
+- `docker run -p 4200:80 sofka-iq-front` sirve la SPA y `/cotizador` responde con HTTP 200.
+- Navegar a cualquier ruta de la SPA (ej. `/quotes/FOL-001/general-info`) y hacer F5 devuelve la app, no un 404.
+- `docker-compose up frontend-dev` levanta la app con hot reload; un cambio en un archivo `.ts` recarga el navegador sin rebuild de imagen.
+- `docker-compose up frontend backend core` levanta los tres servicios sin configuración manual adicional y el frontend puede hacer peticiones al backend.
+```
+
+---
+
 ## Input 1 — Sistema de diseño (Atoms)
 
 ```
@@ -619,7 +767,8 @@ El Reto indica que el estado `ISSUED` existe en el dominio. Si no hay un endpoin
 Los specs deben generarse en este orden para evitar dependencias bloqueantes:
 
 ```
-1. FE-01 (design-system-atoms)       → Base de todo lo demás
+0. FE-00 (docker-setup)              → Infraestructura base — prerequisito de todo
+1. FE-01 (design-system-atoms)       → Sistema de diseño — base visual de todo lo demás
 2. FE-02 (app-shell)                 → Layout global + servicios de folio
 3. FE-03 (dashboard)                 → Primera pantalla funcional
 4. FE-04 (general-info)              → Paso 1 (más simple, base del wizard)
@@ -630,6 +779,9 @@ Los specs deben generarse en este orden para evitar dependencias bloqueantes:
 9. FE-09 (terms-and-conditions)      → Paso 6 (diseño desde cero, requiere resultado calculado)
 ```
 
-Los specs 6 y 7 pueden generarse en paralelo. El 9 depende conceptualmente del 8 (necesita entender el resultado del cálculo para el resumen ejecutivo).
+**Paralelismo posible:**
+- FE-00 y FE-01 pueden generarse en paralelo (son independientes entre sí).
+- FE-06 y FE-07 pueden generarse en paralelo.
+- FE-09 depende conceptualmente de FE-08 (necesita el modelo del resultado de cálculo para el resumen ejecutivo).
 
 Los specs de pasos 6 y 7 pueden generarse en paralelo (son independientes entre sí). Los demás son secuenciales por dependencias de diseño.
