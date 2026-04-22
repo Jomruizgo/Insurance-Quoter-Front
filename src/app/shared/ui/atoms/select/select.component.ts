@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, forwardRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -8,8 +8,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   imports: [CommonModule],
   template: `
     <select
+      #selectEl
       class="select"
-      [value]="value"
       [disabled]="disabled"
       (change)="onSelect($event)"
       (blur)="onTouched()"
@@ -20,20 +20,42 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   styleUrl: './select.component.scss',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true }]
 })
-export class SelectComponent implements ControlValueAccessor {
-  value: string = '';
-  disabled: boolean = false;
-  onChange: (v: string) => void = () => {};
-  onTouched: () => void = () => {};
+export class SelectComponent implements ControlValueAccessor, AfterViewInit {
+  @ViewChild('selectEl') private selectEl!: ElementRef<HTMLSelectElement>;
 
-  writeValue(val: string): void { this.value = val ?? ''; }
-  registerOnChange(fn: (v: string) => void): void { this.onChange = fn; }
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
-  setDisabledState(disabled: boolean): void { this.disabled = disabled; }
+  protected value: string = '';
+  protected disabled: boolean = false;
+
+  private readonly cdr = inject(ChangeDetectorRef);
+  private _onChange: (v: string) => void = () => {};
+  private _onTouched: () => void = () => {};
+
+  ngAfterViewInit(): void {
+    if (this.value && this.selectEl) {
+      this.selectEl.nativeElement.value = this.value;
+    }
+  }
+
+  writeValue(val: string): void {
+    this.value = val ?? '';
+    if (this.selectEl) {
+      this.selectEl.nativeElement.value = this.value;
+    }
+    this.cdr.markForCheck();
+  }
+
+  registerOnChange(fn: (v: string) => void): void { this._onChange = fn; }
+  registerOnTouched(fn: () => void): void { this._onTouched = fn; }
+  setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
+    this.cdr.markForCheck();
+  }
 
   onSelect(e: Event): void {
     const val = (e.target as HTMLSelectElement).value;
     this.value = val;
-    this.onChange(val);
+    this._onChange(val);
   }
+
+  onTouched(): void { this._onTouched(); }
 }

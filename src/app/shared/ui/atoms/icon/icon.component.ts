@@ -64,10 +64,11 @@ export class IconComponent {
   @Input() stroke: number = 1.6;
   @Input() className?: string;
 
-  private sanitizer = inject(DomSanitizer);
+  private readonly sanitizer = inject(DomSanitizer);
 
-  get safePath(): SafeHtml {
-    const path = ICONS[this.name] ?? '';
+  get safePath(): SafeHtml | string {
+    const path = ICONS[this.name];
+    if (!path) return '';
     return this.sanitizer.bypassSecurityTrustHtml(path);
   }
 }

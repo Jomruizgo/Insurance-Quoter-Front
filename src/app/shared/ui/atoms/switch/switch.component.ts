@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostListener, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, HostListener, forwardRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -11,24 +11,43 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SwitchComponent), multi: true }]
 })
 export class SwitchComponent implements ControlValueAccessor {
-  @Input() on: boolean = false;
+  private _on: boolean = false;
+  private _cvaActive: boolean = false;
+
+  get on(): boolean { return this._on; }
+
+  // @Input() is ignored once a FormControl is attached (CVA takes over).
+  @Input() set on(value: boolean) {
+    if (!this._cvaActive) this._on = value;
+  }
+
   @Output() change = new EventEmitter<boolean>();
 
-  disabled: boolean = false;
-  onChange: (v: boolean) => void = () => {};
-  onTouched: () => void = () => {};
+  protected disabled: boolean = false;
 
-  writeValue(val: boolean): void { this.on = !!val; }
-  registerOnChange(fn: (v: boolean) => void): void { this.onChange = fn; }
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
-  setDisabledState(disabled: boolean): void { this.disabled = disabled; }
+  private readonly cdr = inject(ChangeDetectorRef);
+  private _onChange: (v: boolean) => void = () => {};
+  private _onTouched: () => void = () => {};
+
+  writeValue(val: boolean): void {
+    this._cvaActive = true;
+    this._on = !!val;
+    this.cdr.markForCheck();
+  }
+
+  registerOnChange(fn: (v: boolean) => void): void { this._onChange = fn; }
+  registerOnTouched(fn: () => void): void { this._onTouched = fn; }
+  setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
+    this.cdr.markForCheck();
+  }
 
   toggle(): void {
     if (this.disabled) return;
-    this.on = !this.on;
-    this.onChange(this.on);
-    this.change.emit(this.on);
-    this.onTouched();
+    this._on = !this._on;
+    this._onChange(this._on);
+    this.change.emit(this._on);
+    this._onTouched();
   }
 
   @HostListener('keydown', ['$event'])

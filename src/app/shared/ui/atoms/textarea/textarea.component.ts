@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, ChangeDetectorRef, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -18,19 +18,30 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TextareaComponent), multi: true }]
 })
 export class TextareaComponent implements ControlValueAccessor {
-  value: string = '';
-  disabled: boolean = false;
-  onChange: (v: string) => void = () => {};
-  onTouched: () => void = () => {};
+  protected value: string = '';
+  protected disabled: boolean = false;
 
-  writeValue(val: string): void { this.value = val ?? ''; }
-  registerOnChange(fn: (v: string) => void): void { this.onChange = fn; }
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
-  setDisabledState(disabled: boolean): void { this.disabled = disabled; }
+  private readonly cdr = inject(ChangeDetectorRef);
+  private _onChange: (v: string) => void = () => {};
+  private _onTouched: () => void = () => {};
+
+  writeValue(val: string): void {
+    this.value = val ?? '';
+    this.cdr.markForCheck();
+  }
+
+  registerOnChange(fn: (v: string) => void): void { this._onChange = fn; }
+  registerOnTouched(fn: () => void): void { this._onTouched = fn; }
+  setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
+    this.cdr.markForCheck();
+  }
 
   onInput(e: Event): void {
     const val = (e.target as HTMLTextAreaElement).value;
     this.value = val;
-    this.onChange(val);
+    this._onChange(val);
   }
+
+  onTouched(): void { this._onTouched(); }
 }
