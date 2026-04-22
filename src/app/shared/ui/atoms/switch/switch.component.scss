@@ -1,15 +1,27 @@
+// Switch dimensions scale with density via --btn-h:
+// compact → 28px track → thumb 14px; standard → 36px → 18px; cozy → 44px → 22px
 .switch {
+  --switch-h: calc(var(--btn-h) * 0.61);
+  --thumb-size: calc(var(--switch-h) - 6px);
+  --thumb-travel: calc(var(--switch-h) - var(--thumb-size) - 3px);
+  --switch-w: calc(var(--switch-h) * 1.82);
+
   position: relative;
   display: inline-flex;
   align-items: center;
-  width: 40px;
-  height: 22px;
+  width: var(--switch-w);
+  height: var(--switch-h);
   border-radius: var(--r-pill);
   background: var(--border-strong);
   border: none;
   cursor: pointer;
   padding: 0;
   transition: background var(--t-fast) var(--ease);
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+  }
 
   &-on { background: var(--brand-500); }
 
@@ -21,13 +33,13 @@
   &-thumb {
     position: absolute;
     left: 3px;
-    width: 16px;
-    height: 16px;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     border-radius: 50%;
     background: var(--ink-0);
     box-shadow: var(--sh-1);
     transition: transform var(--t-fast) var(--ease);
   }
 
-  &-on .switch-thumb { transform: translateX(18px); }
+  &-on .switch-thumb { transform: translateX(var(--thumb-travel)); }
 }

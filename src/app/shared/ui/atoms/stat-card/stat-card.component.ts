@@ -21,6 +21,6 @@ export class StatCardComponent {
       info:    'var(--info)',
       neutral: 'var(--text-dim)',
     };
-    return map[this.tone];
+    return map[this.tone] ?? 'var(--text-dim)';
   }
 }
