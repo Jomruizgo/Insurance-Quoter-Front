@@ -18,6 +18,7 @@
 
   <!-- ─── STAT CARDS ─── -->
   <section class="dashboard__stats" aria-label="Métricas del portafolio">
+    <p class="dashboard__stats-note">Las métricas reflejan el total de tu portafolio</p>
     <app-stat-card
       label="Folios totales"
       [value]="isLoading ? '—' : stats.total.toString()"
@@ -97,7 +98,9 @@
 </div>
 
 <!-- ─── NEW FOLIO MODAL ─── -->
-<app-new-folio-modal
-  [isOpen]="isModalOpen"
-  (closed)="onModalClosed()"
-/>
+@if (isModalOpen) {
+  <app-new-folio-modal
+    [isOpen]="isModalOpen"
+    (closed)="onModalClosed()"
+  />
+}

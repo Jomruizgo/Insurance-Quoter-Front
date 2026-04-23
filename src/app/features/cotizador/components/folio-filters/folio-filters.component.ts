@@ -11,6 +11,7 @@ import {
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { DashboardFilters, ViewMode, QuoteStatus } from '../../models/folio-summary.model';
 import { BtnComponent } from '../../../../shared/ui/atoms/btn/btn.component';
 
@@ -37,12 +38,14 @@ export class FolioFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.patchForm();
-    this.subscription = this.form.valueChanges.subscribe(value => {
-      this.filtersChange.emit({
-        searchText: value.searchText ?? '',
-        statusFilter: (value.statusFilter ?? 'ALL') as QuoteStatus | 'ALL',
+    this.subscription = this.form.valueChanges
+      .pipe(debounceTime(200))
+      .subscribe(value => {
+        this.filtersChange.emit({
+          searchText: value.searchText ?? '',
+          statusFilter: (value.statusFilter ?? 'ALL') as QuoteStatus | 'ALL',
+        });
       });
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

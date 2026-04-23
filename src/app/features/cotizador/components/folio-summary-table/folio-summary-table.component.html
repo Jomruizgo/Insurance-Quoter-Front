@@ -3,7 +3,7 @@
     <thead class="folio-table__head">
       <tr>
         <th class="folio-table__th folio-table__th--check" scope="col">
-          <input type="checkbox" class="folio-table__checkbox" aria-label="Seleccionar todos" />
+          <input type="checkbox" class="folio-table__checkbox" aria-label="Seleccionar todos" disabled title="Próximamente" />
         </th>
         <th class="folio-table__th" scope="col">Folio</th>
         <th class="folio-table__th" scope="col">Cliente</th>
@@ -20,7 +20,7 @@
       @for (folio of folios; track folio.folioNumber) {
         <tr class="folio-table__row" (click)="onRowClick($event, folio.folioNumber)">
           <td class="folio-table__td folio-table__td--check">
-            <input type="checkbox" class="folio-table__checkbox" aria-label="Seleccionar folio" />
+            <input type="checkbox" class="folio-table__checkbox" aria-label="Seleccionar folio" disabled title="Próximamente" />
           </td>
           <td class="folio-table__td folio-table__td--folio">
             <span class="folio-table__mono">{{ folio.folioNumber }}</span>
@@ -49,7 +49,7 @@
             {{ folio.updatedAt | date:'dd/MM/yyyy' }}
           </td>
           <td class="folio-table__td folio-table__td--opts">
-            <button class="folio-table__options-btn" type="button" aria-label="Opciones del folio">
+            <button class="folio-table__options-btn" type="button" aria-label="Opciones del folio" disabled title="Próximamente">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/>
               </svg>

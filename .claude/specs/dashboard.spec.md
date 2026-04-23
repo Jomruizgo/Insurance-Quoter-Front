@@ -309,6 +309,8 @@ export interface DashboardFilters {
 - **Response 500:** `{ "error": "Internal server error", "code": "INTERNAL_ERROR" }`
 
 > **Decisión de diseño**: `completionPct` lo calcula el backend (sabe qué pasos están completos). El frontend no recalcula el progreso.
+>
+> **Nota QA (R-011)**: Los valores de `completionPct` en los datos mock (10, 60, 85, 100, 45) son aproximaciones para desarrollo. El QA funcional debe validar el cálculo real contra el backend, ya que el algoritmo definitivo puede diferir. Los tests contra el mock no detectarán discrepancias de progreso.
 
 ---
 

@@ -2,8 +2,9 @@ import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, switchMap } from 'rxjs';
 
-import { FolioListService } from '../services/folio.service';
+import { FolioListService } from '../services/folio-list.service';
 import { DashboardFilterService } from '../services/dashboard-filter.service';
 import { FolioSummary, DashboardFilters, DashboardStats, ViewMode } from '../models/folio-summary.model';
 
@@ -43,6 +44,9 @@ export class CotizadorDashboardPage implements OnInit {
   protected filters: DashboardFilters = { searchText: '', statusFilter: 'ALL' };
   protected viewMode: ViewMode = 'list';
 
+  // Single trigger for initial load + retries — switchMap cancels in-flight requests
+  private readonly loadTrigger$ = new Subject<void>();
+
   // Stats always reflect the full (unfiltered) folio list — business rule
   protected get stats(): DashboardStats {
     return this.filterService.computeStats(this.folios);
@@ -54,19 +58,24 @@ export class CotizadorDashboardPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.folioService
-      .listFolios()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+    this.loadTrigger$
+      .pipe(
+        switchMap(() => this.folioService.listFolios()),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
         next: folios => {
           this.folios = folios;
           this.isLoading = false;
+          this.hasError = false;
         },
         error: () => {
           this.hasError = true;
           this.isLoading = false;
         },
       });
+
+    this.loadTrigger$.next();
   }
 
   protected onFiltersChange(filters: DashboardFilters): void {
@@ -77,7 +86,11 @@ export class CotizadorDashboardPage implements OnInit {
     this.viewMode = mode;
   }
 
+  // R-003: guard against empty/invalid folioNumber before navigating
   protected onFolioClick(folioNumber: string): void {
+    if (!folioNumber?.trim()) {
+      return;
+    }
     this.router.navigate(['/quotes', folioNumber, 'general-info']);
   }
 
@@ -92,19 +105,7 @@ export class CotizadorDashboardPage implements OnInit {
   protected retry(): void {
     this.hasError = false;
     this.isLoading = true;
-    this.folioService
-      .listFolios()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: folios => {
-          this.folios = folios;
-          this.isLoading = false;
-        },
-        error: () => {
-          this.hasError = true;
-          this.isLoading = false;
-        },
-      });
+    this.loadTrigger$.next();
   }
 
   protected formatPremium(value: number): string {

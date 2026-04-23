@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { FolioListService, USE_MOCK_FOLIOS } from './folio.service';
+import { FolioListService, USE_MOCK_FOLIOS, MOCK_FOLIOS } from './folio-list.service';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { FolioSummary, FolioListResponse } from '../models/folio-summary.model';
 
@@ -107,5 +107,36 @@ describe('FolioListService', () => {
       // THEN
       expect(errorReceived).toBeTrue();
     });
+  });
+});
+
+describe('FolioListService — mock path', () => {
+  let service: FolioListService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: USE_MOCK_FOLIOS, useValue: true },
+        {
+          provide: AppConfigService,
+          useValue: { apiUrl: API_URL, coreUrl: 'http://localhost:8081' },
+        },
+      ],
+    });
+    service = TestBed.inject(FolioListService);
+  });
+
+  it('should return MOCK_FOLIOS without making HTTP request when USE_MOCK_FOLIOS is true', () => {
+    // GIVEN
+    let result: FolioSummary[] = [];
+
+    // WHEN
+    service.listFolios().subscribe(folios => (result = folios));
+
+    // THEN — no HTTP request expected; result equals mock data
+    expect(result.length).toBe(MOCK_FOLIOS.length);
+    expect(result[0].folioNumber).toBe(MOCK_FOLIOS[0].folioNumber);
   });
 });
