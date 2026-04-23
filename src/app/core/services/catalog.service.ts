@@ -45,7 +45,7 @@ export class CatalogService {
   obtenerGiros(): Observable<BusinessLine[]> {
     if (!this.businessLines$) {
       this.businessLines$ = this.http
-        .get<{ businessLines: BusinessLine[] }>(`${this.config.apiUrl}/v1/business-lines`)
+        .get<{ businessLines: BusinessLine[] }>(`${this.config.coreUrl}/v1/business-lines`)
         .pipe(map(r => r.businessLines), shareReplay(1));
     }
     return this.businessLines$.pipe(
