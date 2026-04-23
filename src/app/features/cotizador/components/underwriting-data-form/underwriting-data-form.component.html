@@ -1,0 +1,51 @@
+<div class="card" [formGroup]="form">
+  <div class="card-header">
+    <app-section-header eyebrow="Suscripción" title="Datos de conducción" />
+    <app-badge [variant]="isComplete ? 'ok' : 'warn'">
+      {{ isComplete ? 'Completo' : 'Pendiente' }}
+    </app-badge>
+  </div>
+
+  <div class="alert alert-info">
+    Versionado optimista activo &mdash; versión actual:
+    <span class="mono">v{{ version }}</span>
+  </div>
+
+  <div class="card-body grid-2">
+    <app-field label="Suscriptor" [required]="true" [error]="subscriberIdError">
+      <app-select formControlName="subscriberId" (change)="onSubscriberChange($event)">
+        <option value="">Selecciona un suscriptor</option>
+        @for (sub of subscribers; track sub.id) {
+          <option [value]="sub.id">{{ sub.name }}</option>
+        }
+      </app-select>
+    </app-field>
+
+    <app-field label="Agente" [required]="true" [error]="agentCodeError">
+      <app-select formControlName="agentCode">
+        <option value="">Selecciona un agente</option>
+        @for (agent of agents; track agent.code) {
+          <option [value]="agent.code">{{ agent.name }}</option>
+        }
+      </app-select>
+    </app-field>
+
+    <app-field label="Clasificación de riesgo" [required]="true" [error]="riskError">
+      <app-select formControlName="riskClassification">
+        <option value="">Selecciona clasificación</option>
+        @for (opt of riskOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </app-select>
+    </app-field>
+
+    <app-field label="Tipo de negocio" [required]="true" [error]="businessError">
+      <app-select formControlName="businessType">
+        <option value="">Selecciona tipo de negocio</option>
+        @for (opt of businessOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </app-select>
+    </app-field>
+  </div>
+</div>
