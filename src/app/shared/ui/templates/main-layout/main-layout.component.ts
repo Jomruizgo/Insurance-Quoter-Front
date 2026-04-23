@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, switchMap, startWith, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { StepperComponent } from '../../organisms/stepper/stepper.component';
 import { StatusBarComponent } from '../../organisms/status-bar/status-bar.component';
 import { QuoteStateService } from '../../../../core/services/quote-state.service';
@@ -35,9 +35,11 @@ export class MainLayoutComponent {
   );
 
   readonly quoteState = toSignal(
-    this.route.paramMap.pipe(
-      map(p => p.get('folio')),
-      switchMap(folio =>
+    combineLatest([
+      this.route.paramMap.pipe(map(p => p.get('folio'))),
+      this.quoteStateService.refresh$.pipe(startWith(undefined)),
+    ]).pipe(
+      switchMap(([folio]) =>
         folio
           ? this.quoteStateService.obtenerEstado(folio).pipe(catchError(() => of(null)))
           : of(null)

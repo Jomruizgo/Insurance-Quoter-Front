@@ -1,0 +1,83 @@
+<app-section-header
+  [eyebrow]="'Folio ' + folio + ' · Paso 2 de 5'"
+  title="Layout de ubicaciones"
+  subtitle="Configura la cantidad y el tipo de ubicaciones para esta cotización"
+/>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="layout-form">
+  <div class="layout-form__grid">
+
+    <!-- Número de ubicaciones -->
+    <div class="layout-form__field">
+      <label class="layout-form__label" for="numberOfLocations">
+        Número de ubicaciones <span class="layout-form__required">*</span>
+      </label>
+      <input
+        id="numberOfLocations"
+        class="layout-form__input"
+        type="number"
+        formControlName="numberOfLocations"
+        placeholder="Ej. 3"
+        min="1"
+        max="50"
+        step="1"
+        inputmode="numeric"
+      />
+      @if (numberOfLocationsError) {
+        <p class="layout-form__error" role="alert">{{ numberOfLocationsError }}</p>
+      }
+    </div>
+
+    <!-- Tipo de ubicación — R-005: ARIA radio group -->
+    <div class="layout-form__field">
+      <p id="locationType-label" class="layout-form__label">
+        Tipo de ubicación <span class="layout-form__required">*</span>
+      </p>
+      <div
+        class="layout-form__radio-group"
+        role="radiogroup"
+        aria-labelledby="locationType-label"
+      >
+        @for (option of locationTypeOptions; track option.value) {
+          <button
+            type="button"
+            class="radio-card"
+            [class.selected]="isLocationTypeSelected(option.value)"
+            role="radio"
+            [attr.aria-checked]="isLocationTypeSelected(option.value)"
+            [attr.aria-label]="option.label"
+            (click)="selectLocationType(option.value)"
+          >
+            @if (isLocationTypeSelected(option.value)) {
+              <app-icon name="check-circle" [size]="18" class="radio-card__check" />
+            }
+            <span class="radio-card__label">{{ option.label }}</span>
+          </button>
+        }
+      </div>
+      @if (locationTypeError) {
+        <p class="layout-form__error" role="alert">{{ locationTypeError }}</p>
+      }
+    </div>
+
+  </div>
+
+  <!-- Divider + texto informativo -->
+  <hr class="layout-form__divider" />
+  <p class="layout-form__info">
+    <app-icon name="info" [size]="16" />
+    Este layout se replicará como plantilla al registrar ubicaciones. Podrás sobrescribirlo ubicación por ubicación.
+  </p>
+
+  <!-- Botón — R-004: también deshabilitado si no hay versión disponible -->
+  <div class="layout-form__actions">
+    <app-btn
+      type="submit"
+      variant="primary"
+      iconRight="arrow-right"
+      [disabled]="form.invalid || saveDisabled"
+    >
+      Guardar y continuar
+    </app-btn>
+  </div>
+</form>

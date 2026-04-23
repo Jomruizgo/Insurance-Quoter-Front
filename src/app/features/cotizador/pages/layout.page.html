@@ -1,0 +1,38 @@
+<div class="layout-page">
+
+  @if (loading()) {
+    <div class="layout-page__spinner">
+      <p>Cargando configuración...</p>
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="layout-page__alert layout-page__alert--error" role="alert">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (loadFailed() && !loading()) {
+    <div class="layout-page__retry">
+      <button type="button" class="layout-page__retry-btn" (click)="retryLoad()">
+        Reintentar carga
+      </button>
+    </div>
+  }
+
+  @if (!loading()) {
+    <app-layout-config-form
+      [folio]="folioNumber"
+      [initialData]="layoutData()"
+      [saveDisabled]="loadFailed()"
+      (saved)="onSaved($event)"
+    />
+  }
+
+  @if (saving()) {
+    <div class="layout-page__saving" aria-live="polite">
+      Guardando configuración...
+    </div>
+  }
+
+</div>

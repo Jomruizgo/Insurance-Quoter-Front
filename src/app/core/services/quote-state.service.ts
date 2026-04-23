@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { QuoteState } from '../models/folio.model';
 
@@ -9,7 +9,13 @@ export class QuoteStateService {
   private readonly http = inject(HttpClient);
   private readonly config = inject(AppConfigService);
 
+  readonly refresh$ = new Subject<void>();
+
   obtenerEstado(folio: string): Observable<QuoteState> {
     return this.http.get<QuoteState>(`${this.config.apiUrl}/v1/quotes/${folio}/state`);
+  }
+
+  refresh(): void {
+    this.refresh$.next();
   }
 }
