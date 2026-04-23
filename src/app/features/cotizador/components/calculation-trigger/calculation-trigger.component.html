@@ -1,0 +1,35 @@
+<div class="calculation-trigger">
+  <div class="calculation-trigger__icon">
+    <app-icon name="calculator" [size]="48" [stroke]="1.2"></app-icon>
+  </div>
+
+  <div class="calculation-trigger__content">
+    <p class="calculation-trigger__message">
+      Se calcularán <strong>{{ calculableCount }}</strong> ubicaciones completas.
+      @if (incompleteCount > 0) {
+        Las <strong>{{ incompleteCount }}</strong> incompletas generarán alerta pero no bloquearán el proceso.
+      }
+    </p>
+
+    <div class="calculation-trigger__badges">
+      <app-badge variant="ok">{{ calculableCount }} calculables</app-badge>
+      @if (incompleteCount > 0) {
+        <app-badge variant="warn">{{ incompleteCount }} con alertas</app-badge>
+      }
+    </div>
+  </div>
+
+  <div class="calculation-trigger__action">
+    <app-btn
+      variant="primary"
+      [disabled]="isDisabled"
+      (click)="onCalculate()"
+    >
+      @if (calculating) {
+        Calculando...
+      } @else {
+        Ejecutar cálculo
+      }
+    </app-btn>
+  </div>
+</div>
