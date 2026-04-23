@@ -1,0 +1,28 @@
+<nav class="stepper" aria-label="Progreso de cotización">
+  @for (step of steps; track step.key; let i = $index) {
+    <button
+      type="button"
+      class="stepper__step"
+      [class.stepper__step--active]="isActive(step.route)"
+      [class.stepper__step--complete]="statusOf(step.key) === 'COMPLETE'"
+      [class.stepper__step--incomplete]="statusOf(step.key) === 'INCOMPLETE'"
+      (click)="navigate(step.route)"
+      [attr.aria-current]="isActive(step.route) ? 'step' : null"
+    >
+      <span class="stepper__icon">
+        @if (statusOf(step.key) === 'COMPLETE') {
+          <app-icon name="check-circle" [size]="18" />
+        } @else if (statusOf(step.key) === 'INCOMPLETE') {
+          <app-icon name="alert" [size]="18" />
+        } @else {
+          <span class="stepper__number">{{ stepNumber(i) }}</span>
+        }
+      </span>
+      <span class="stepper__label">{{ step.label }}</span>
+    </button>
+
+    @if (i < steps.length - 1) {
+      <span class="stepper__connector" aria-hidden="true"></span>
+    }
+  }
+</nav>

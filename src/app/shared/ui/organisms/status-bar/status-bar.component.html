@@ -1,0 +1,22 @@
+<div class="status-bar" role="status" aria-label="Estado del folio activo">
+  <div class="status-bar__folio">
+    <span class="status-bar__folio-label">Folio</span>
+    <span class="status-bar__folio-number">{{ state.folioNumber }}</span>
+  </div>
+
+  <div class="status-bar__badge">
+    <app-status-badge [status]="state.quoteStatus" />
+  </div>
+
+  <div class="status-bar__progress">
+    <app-sparkline [pct]="state.completionPercentage" [height]="6" />
+    <span class="status-bar__progress-pct">{{ state.completionPercentage }}% completado</span>
+  </div>
+
+  <div class="status-bar__meta">
+    <span class="status-bar__version">v{{ state.version }}</span>
+    <span class="status-bar__updated">
+      Actualizado: {{ state.updatedAt | date:'dd/MM/yyyy HH:mm' }}
+    </span>
+  </div>
+</div>
