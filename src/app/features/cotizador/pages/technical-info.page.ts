@@ -4,8 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoverageService } from '../services/coverage.service';
+import { CoverageStateService } from '../services/coverage-state.service';
 import { LocationService } from '../services/location.service';
-import { CoverageOption, CoverageOptionRequest, DEFAULT_COVERAGE_OPTIONS } from '../models/coverage.model';
+import { CoverageOption, CoverageOptionRequest } from '../models/coverage.model';
 import { LocationSummaryItem } from '../models/location.model';
 import { SectionHeaderComponent } from '../../../shared/ui/atoms/section-header/section-header.component';
 import { BtnComponent } from '../../../shared/ui/atoms/btn/btn.component';
@@ -30,6 +31,7 @@ import { CoverageOptionsGridComponent } from '../components/coverages/coverage-o
 export class TechnicalInfoPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly coverageService = inject(CoverageService);
+  private readonly coverageStateService = inject(CoverageStateService);
   private readonly locationService = inject(LocationService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -72,10 +74,7 @@ export class TechnicalInfoPage implements OnInit {
       .subscribe({
         next: ({ coverages, summary }) => {
           this.version = coverages.version;
-          this.coverageOptions =
-            coverages.coverageOptions.length > 0
-              ? coverages.coverageOptions
-              : structuredClone(DEFAULT_COVERAGE_OPTIONS);
+          this.coverageOptions = this.coverageStateService.initializeOptions(coverages.coverageOptions);
 
           this.locations = summary.locations;
           if (this.locations.length > 0) {
@@ -115,9 +114,7 @@ export class TechnicalInfoPage implements OnInit {
   }
 
   onCoverageChanged(updated: CoverageOption): void {
-    this.coverageOptions = this.coverageOptions.map(opt =>
-      opt.code === updated.code ? updated : opt
-    );
+    this.coverageOptions = this.coverageStateService.updateCoverage(this.coverageOptions, updated);
     this.successMessage = null;
   }
 
@@ -126,12 +123,7 @@ export class TechnicalInfoPage implements OnInit {
     this.error = null;
     this.successMessage = null;
 
-    const requests: CoverageOptionRequest[] = this.coverageOptions.map(opt => ({
-      code: opt.code,
-      selected: opt.selected,
-      deductiblePercentage: opt.deductiblePercentage,
-      coinsurancePercentage: opt.coinsurancePercentage,
-    }));
+    const requests: CoverageOptionRequest[] = this.coverageStateService.buildRequests(this.coverageOptions);
 
     this.coverageService
       .guardar(this.folioNumber, requests, this.version)
