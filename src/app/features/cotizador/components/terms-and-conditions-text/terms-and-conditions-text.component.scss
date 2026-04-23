@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.terms-text {
+  padding: 16px;
+  background: var(--color-surface-alt, #f9fafb);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+
+  &__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: var(--color-text, #111827);
+  }
+
+  &__section {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__section-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--color-text, #111827);
+  }
+
+  &__section-body {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-text-muted, #4b5563);
+    margin: 0;
+  }
+}

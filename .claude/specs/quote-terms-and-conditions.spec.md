@@ -1,6 +1,6 @@
 ---
 id: SPEC-010
-status: DRAFT
+status: APPROVED
 feature: quote-terms-and-conditions
 created: 2026-04-23
 updated: 2026-04-23

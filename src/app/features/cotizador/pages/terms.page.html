@@ -1,0 +1,60 @@
+<div class="terms-page">
+  <div class="terms-page__header">
+    <div class="terms-page__header-content">
+      <h1 class="terms-page__title">Folio {{ folioNumber }} &middot; Términos y condiciones</h1>
+      <app-btn variant="ghost" size="sm" (click)="onBack()">
+        Volver al resultado
+      </app-btn>
+    </div>
+  </div>
+
+  <div class="terms-page__body">
+    @if (loading) {
+      <div class="terms-page__spinner">
+        <span class="terms-page__spinner-text">Cargando cotización...</span>
+      </div>
+    }
+
+    @if (!loading && error) {
+      <div class="terms-page__error">
+        <p class="terms-page__error-message">{{ error }}</p>
+        <app-btn variant="secondary" size="sm" (click)="onBack()">
+          Volver al cálculo
+        </app-btn>
+      </div>
+    }
+
+    @if (!loading && result && generalInfo) {
+      <app-quote-summary-card
+        [folioNumber]="folioNumber"
+        [result]="result"
+        [generalInfo]="generalInfo"
+      />
+
+      <app-terms-and-conditions-text />
+
+      <app-acceptance-form (formChange)="onFormChange($event)" />
+
+      @if (accepted) {
+        <div class="terms-page__confirmation">
+          <div class="terms-page__confirmation-content">
+            <span class="terms-page__confirmation-text">
+              Cotización finalizada &middot; Folio {{ acceptedFolio }}
+            </span>
+            <app-btn variant="primary" (click)="onBackToDashboard()">
+              Volver al panel
+            </app-btn>
+          </div>
+        </div>
+      }
+
+      <app-quote-finalization-bar
+        [calculatedAt]="result.calculatedAt"
+        [submitEnabled]="submitEnabled"
+        [accepting]="accepting"
+        (accept)="onAccept()"
+        (downloadPdf)="onDownloadPdf()"
+      />
+    }
+  </div>
+</div>

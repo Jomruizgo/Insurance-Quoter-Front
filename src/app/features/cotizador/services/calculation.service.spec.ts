@@ -138,4 +138,49 @@ describe('CalculationService', () => {
       { status: 422, statusText: 'Unprocessable Entity' }
     );
   });
+
+  // ─── obtenerResultado() — GET to correct URL ─────────────────────────────
+
+  it('should GET to correct URL for obtenerResultado()', () => {
+    // GIVEN / WHEN
+    service.obtenerResultado(folio).subscribe();
+
+    // THEN
+    const req = httpMock.expectOne(`${API_URL}/v1/quotes/${folio}/calculation-result`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockCalculationResult);
+  });
+
+  // ─── obtenerResultado() — returns CalculationResult on 200 ───────────────
+
+  it('should return Observable<CalculationResult> with correct data on 200', () => {
+    // GIVEN / WHEN
+    service.obtenerResultado(folio).subscribe((res: CalculationResult) => {
+      // THEN
+      expect(res).toEqual(mockCalculationResult);
+      expect(res.quoteStatus).toBe('CALCULATED');
+    });
+
+    const req = httpMock.expectOne(`${API_URL}/v1/quotes/${folio}/calculation-result`);
+    req.flush(mockCalculationResult);
+  });
+
+  // ─── obtenerResultado() — propagates 404 ─────────────────────────────────
+
+  it('should propagate HttpErrorResponse 404 when obtenerResultado() receives not found', () => {
+    // GIVEN / WHEN
+    service.obtenerResultado(folio).subscribe({
+      next: () => fail('expected a 404 error'),
+      // THEN
+      error: (err: { status: number }) => {
+        expect(err.status).toBe(404);
+      },
+    });
+
+    const req = httpMock.expectOne(`${API_URL}/v1/quotes/${folio}/calculation-result`);
+    req.flush(
+      { error: 'Not found' },
+      { status: 404, statusText: 'Not Found' }
+    );
+  });
 });
