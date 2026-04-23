@@ -8,3 +8,9 @@ export interface Agent {
   name: string;
   subscriberId: string;
 }
+
+export interface BusinessLine {
+  code: string;
+  description: string;
+  fireKey: string;
+}
