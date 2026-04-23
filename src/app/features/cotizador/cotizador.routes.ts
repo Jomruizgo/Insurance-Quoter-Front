@@ -7,6 +7,7 @@ import { LocationsPageComponent } from './pages/locations/locations-page.compone
 import { TechnicalInfoPage } from './pages/technical-info.page';
 import { TermsPage } from './pages/terms.page';
 import { CalculationPage } from './pages/calculation/calculation.page';
+import { termsGuard } from './guards/terms.guard';
 
 export const COTIZADOR_ROUTES: Routes = [
   { path: '', component: CotizadorDashboardPage },
@@ -19,7 +20,7 @@ export const COTIZADOR_ROUTES: Routes = [
       { path: 'locations',            component: LocationsPageComponent },
       { path: 'technical-info',       component: TechnicalInfoPage },
       { path: 'calculation',          component: CalculationPage },
-      { path: 'terms-and-conditions', component: TermsPage },
+      { path: 'terms-and-conditions', component: TermsPage, canActivate: [termsGuard] },
       { path: '', redirectTo: 'general-info', pathMatch: 'full' },
     ],
   },

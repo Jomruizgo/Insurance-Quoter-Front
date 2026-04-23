@@ -15,4 +15,10 @@ export class CalculationService {
       { version }
     );
   }
+
+  obtenerResultado(folio: string): Observable<CalculationResult> {
+    return this.http.get<CalculationResult>(
+      `${this.config.apiUrl}/v1/quotes/${folio}/calculation-result`
+    );
+  }
 }
