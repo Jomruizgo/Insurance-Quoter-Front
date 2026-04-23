@@ -1,0 +1,71 @@
+<div class="folio-filters" [formGroup]="form">
+  <!-- Search input -->
+  <div class="folio-filters__search">
+    <span class="folio-filters__search-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </span>
+    <input
+      class="folio-filters__input"
+      type="text"
+      formControlName="searchText"
+      placeholder="Buscar por folio o cliente..."
+      aria-label="Buscar por folio o cliente"
+    />
+  </div>
+
+  <!-- Status select -->
+  <select
+    class="folio-filters__select"
+    formControlName="statusFilter"
+    aria-label="Filtrar por estado"
+  >
+    <option value="ALL">Todos los estados</option>
+    <option value="CREATED">Creado</option>
+    <option value="IN_PROGRESS">En progreso</option>
+    <option value="CALCULATED">Calculado</option>
+    <option value="ISSUED">Emitido</option>
+  </select>
+
+  <!-- More filters button (visual only) -->
+  <app-btn variant="secondary" size="sm">
+    Más filtros
+  </app-btn>
+
+  <!-- View mode toggle -->
+  <div class="folio-filters__view-toggle" role="group" aria-label="Modo de visualización">
+    <button
+      class="folio-filters__view-btn"
+      [class.folio-filters__view-btn--active]="viewMode === 'list'"
+      (click)="setViewMode('list')"
+      type="button"
+      aria-label="Vista de lista"
+      [attr.aria-pressed]="viewMode === 'list'"
+    >
+      <!-- List icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+    </button>
+    <button
+      class="folio-filters__view-btn"
+      [class.folio-filters__view-btn--active]="viewMode === 'grid'"
+      (click)="setViewMode('grid')"
+      type="button"
+      aria-label="Vista de cuadrícula"
+      [attr.aria-pressed]="viewMode === 'grid'"
+    >
+      <!-- Grid icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+    </button>
+  </div>
+</div>
