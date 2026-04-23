@@ -1,9 +1,10 @@
 ---
 id: SPEC-010
-status: APPROVED
+status: IMPLEMENTED
 feature: quote-terms-and-conditions
 created: 2026-04-23
 updated: 2026-04-23
+implemented: 2026-04-23
 author: spec-generator
 version: "1.0"
 related-specs:

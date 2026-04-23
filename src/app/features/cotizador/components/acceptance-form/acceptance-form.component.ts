@@ -29,9 +29,10 @@ export class AcceptanceFormComponent implements OnInit {
   }
 
   private emitChange(): void {
+    const trimmed = (this.form.value.acceptedBy ?? '').trim();
     this.formChange.emit({
-      valid: this.form.valid,
-      acceptedBy: (this.form.value.acceptedBy ?? '').trim(),
+      valid: this.form.valid && trimmed.length >= 3,
+      acceptedBy: trimmed,
     });
   }
 }

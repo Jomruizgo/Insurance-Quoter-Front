@@ -117,4 +117,21 @@ describe('termsGuard', () => {
     const urlTree = result as UrlTree;
     expect(router.serializeUrl(urlTree)).toBe(`/cotizador/quotes/${folio}/calculation`);
   });
+
+  // ─── redirect to calculation when obtenerEstado() throws network error ────
+
+  it('should redirect to /cotizador/quotes/FOL-001/calculation when obtenerEstado() throws', async () => {
+    // GIVEN
+    const { throwError } = await import('rxjs');
+    quoteStateService.obtenerEstado.and.returnValue(throwError(() => new Error('Network error')));
+    const route = buildRoute(folio);
+
+    // WHEN
+    const result = await runGuard(route);
+
+    // THEN
+    expect(result).toBeInstanceOf(UrlTree);
+    const urlTree = result as UrlTree;
+    expect(router.serializeUrl(urlTree)).toBe(`/cotizador/quotes/${folio}/calculation`);
+  });
 });

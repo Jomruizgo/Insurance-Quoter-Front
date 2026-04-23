@@ -107,4 +107,21 @@ describe('TermsService', () => {
       { status: 422, statusText: 'Unprocessable Entity' }
     );
   });
+
+  // ─── aceptar() — 404 fallback optimista (RN-05) ─────────────────────────
+
+  it('should return optimistic AcceptanceResponse when aceptar() receives 404 (endpoint not yet implemented)', () => {
+    // GIVEN / WHEN
+    service.aceptar(folio, 'Juan', 8).subscribe((res: AcceptanceResponse) => {
+      // THEN — fallback optimista
+      expect(res.quoteStatus).toBe('ISSUED');
+      expect(res.folioNumber).toBe(folio);
+      expect(res.acceptedBy).toBe('Juan');
+      expect(res.version).toBe(9);
+      expect(res.acceptedAt).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne(`${API_URL}/v1/quotes/${folio}/accept`);
+    req.flush({ error: 'Not Found' }, { status: 404, statusText: 'Not Found' });
+  });
 });
