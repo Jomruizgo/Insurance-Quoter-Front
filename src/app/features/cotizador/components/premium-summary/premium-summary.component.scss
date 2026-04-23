@@ -16,23 +16,23 @@
 
     &--dark {
       background: var(--ink-900, #1a1a2e);
-      color: var(--ink-0, #ffffff);
+      color: var(--ink-0, var(--surface));
     }
 
     &--brand {
-      background: var(--brand-500, #4f46e5);
-      color: #ffffff;
+      background: var(--brand-500);
+      color: var(--surface);
     }
 
     &--neutral {
-      background: var(--surface-1, #f9fafb);
-      border: 1px solid var(--border, #e5e7eb);
-      color: var(--text-primary, #111827);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
     }
   }
 
   &__card-label {
-    font-size: 0.875rem;
+    font-size: var(--fs-14);
     font-weight: 500;
     opacity: 0.8;
     text-transform: uppercase;
@@ -59,16 +59,16 @@
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.875rem;
+    font-size: var(--fs-14);
   }
 
   &__location-name {
-    color: var(--text-secondary, #4b5563);
+    color: var(--text-dim);
     flex: 1;
   }
 
   &__location-value {
     font-weight: 600;
-    color: var(--text-primary, #111827);
+    color: var(--text);
   }
 }

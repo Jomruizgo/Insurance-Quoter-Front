@@ -17,7 +17,6 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { SectionHeaderComponent } from '../../../../shared/ui/atoms/section-header/section-header.component';
-import { BtnComponent } from '../../../../shared/ui/atoms/btn/btn.component';
 import { IconComponent } from '../../../../shared/ui/atoms/icon/icon.component';
 import {
   LayoutConfigResponse,
@@ -42,7 +41,6 @@ interface LocationTypeOption {
     CommonModule,
     ReactiveFormsModule,
     SectionHeaderComponent,
-    BtnComponent,
     IconComponent,
   ],
   templateUrl: './layout-config-form.component.html',
@@ -104,6 +102,15 @@ export class LayoutConfigFormComponent implements OnChanges {
     if (!ctrl || !ctrl.dirty || ctrl.valid) return '';
     if (ctrl.hasError('required')) return 'Selecciona un tipo de ubicación';
     return '';
+  }
+
+  submit(): void {
+    this.onSubmit();
+  }
+
+  getValues(): { numberOfLocations: number; locationType: LocationType } | null {
+    if (this.form.invalid) return null;
+    return this.form.value as { numberOfLocations: number; locationType: LocationType };
   }
 
   onSubmit(): void {

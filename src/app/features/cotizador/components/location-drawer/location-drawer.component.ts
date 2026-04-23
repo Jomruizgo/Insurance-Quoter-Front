@@ -148,71 +148,72 @@ const GUARANTEE_CODES = ['GUA-FIRE', 'GUA-CONT', 'GUA-THEFT', 'GUA-GLASS', 'GUA-
     .drawer {
       position: fixed; top: 0; right: 0; bottom: 0;
       width: 560px; max-width: 100vw;
-      background: #fff; z-index: 50;
+      background: var(--surface); z-index: 50;
       display: flex; flex-direction: column;
-      box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+      box-shadow: var(--sh-pop);
+      border-left: 1px solid var(--border);
     }
     .drawer-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 1.25rem; border-bottom: 1px solid #e5e7eb;
+      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
     }
     .drawer-header__info { display: flex; align-items: center; gap: 0.75rem; }
-    .drawer-header__index { font-size: 1rem; font-weight: 600; color: #111827; }
+    .drawer-header__index { font-size: var(--fs-16); font-weight: 600; color: var(--text); }
     .drawer-close-btn {
       background: none; border: none; font-size: 1.1rem;
-      cursor: pointer; color: #6b7280; padding: 0.25rem;
+      cursor: pointer; color: var(--text-dim); padding: 0.25rem;
     }
-    .drawer-close-btn:hover { color: #111827; }
+    .drawer-close-btn:hover { color: var(--text); }
     .badge {
       display: inline-flex; align-items: center;
-      padding: 0.2rem 0.5rem; border-radius: 9999px;
-      font-size: 0.75rem; font-weight: 600;
+      padding: 0.2rem 0.5rem; border-radius: var(--r-pill);
+      font-size: var(--fs-12); font-weight: 500;
     }
-    .badge--complete { background-color: #d1fae5; color: #065f46; }
-    .badge--incomplete { background-color: #fee2e2; color: #991b1b; }
+    .badge--complete { background-color: color-mix(in oklch, var(--ok) 15%, transparent); color: var(--ok); }
+    .badge--incomplete { background-color: color-mix(in oklch, var(--err) 12%, transparent); color: var(--err); }
     .drawer-tabs {
-      display: flex; border-bottom: 1px solid #e5e7eb;
+      display: flex; border-bottom: 1px solid var(--border);
       padding: 0 1.25rem; gap: 0;
     }
     .drawer-tab {
-      padding: 0.625rem 1rem; font-size: 0.875rem;
+      padding: 0.625rem 1rem; font-size: var(--fs-13);
       background: none; border: none; cursor: pointer;
-      color: #6b7280; border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
+      color: var(--text-dim); border-bottom: 2px solid transparent;
+      margin-bottom: -1px; font-family: inherit;
     }
-    .drawer-tab--active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 600; }
+    .drawer-tab--active { color: var(--text); border-bottom-color: var(--brand-500); font-weight: 600; }
     .drawer-body {
       flex: 1; overflow-y: auto; padding: 0 1.25rem;
     }
     .drawer-footer {
-      border-top: 1px solid #e5e7eb;
+      border-top: 1px solid var(--border);
       padding: 0.875rem 1.25rem;
       display: flex; flex-direction: column; gap: 0.5rem;
     }
     .footer-alerts { display: flex; flex-wrap: wrap; gap: 0.375rem; }
     .footer-alert-chip {
-      background-color: #fef3c7; color: #92400e;
-      padding: 0.2rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;
+      background-color: color-mix(in oklch, var(--warn) 12%, transparent); color: var(--warn);
+      padding: 0.2rem 0.5rem; border-radius: var(--r-pill); font-size: var(--fs-12); font-weight: 500;
     }
-    .footer-alert { padding: 0.5rem 0.75rem; border-radius: 0.375rem; font-size: 0.8125rem; }
-    .footer-alert--error { background-color: #fee2e2; color: #991b1b; }
-    .footer-alert--conflict { background-color: #fff7ed; color: #9a3412; }
+    .footer-alert { padding: 0.5rem 0.75rem; border-radius: var(--r-md); font-size: var(--fs-13); }
+    .footer-alert--error { background-color: color-mix(in oklch, var(--err) 10%, transparent); color: var(--err); }
+    .footer-alert--conflict { background-color: color-mix(in oklch, var(--warn) 10%, transparent); color: var(--warn); }
     .footer-meta { display: flex; align-items: center; justify-content: flex-start; }
     .version-badge {
-      font-size: 0.75rem; color: #6b7280;
-      background: #f3f4f6; padding: 0.2rem 0.5rem; border-radius: 0.25rem;
+      font-size: var(--fs-12); color: var(--text-dim);
+      background: var(--surface-2); padding: 0.2rem 0.5rem; border-radius: var(--r-xs);
     }
     .footer-actions { display: flex; justify-content: flex-end; gap: 0.75rem; }
     .btn {
-      padding: 0.5rem 1.25rem; border-radius: 0.375rem;
-      font-size: 0.875rem; font-weight: 600; cursor: pointer;
-      border: 1px solid transparent;
+      padding: 0.5rem 1.25rem; border-radius: var(--r-md);
+      font-size: var(--fs-14); font-weight: 500; cursor: pointer;
+      border: 1px solid transparent; font-family: inherit;
     }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn--primary { background-color: #2563eb; color: #fff; border-color: #2563eb; }
-    .btn--primary:hover:not(:disabled) { background-color: #1d4ed8; }
-    .btn--secondary { background-color: #fff; color: #374151; border-color: #d1d5db; }
-    .btn--secondary:hover:not(:disabled) { background-color: #f9fafb; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn--primary { background-color: var(--brand-500); color: var(--ink-900); border-color: var(--brand-500); }
+    .btn--primary:hover:not(:disabled) { background-color: var(--brand-600); border-color: var(--brand-600); }
+    .btn--secondary { background-color: var(--surface); color: var(--text); border-color: var(--border-strong); }
+    .btn--secondary:hover:not(:disabled) { background-color: var(--surface-2); }
   `],
 })
 export class LocationDrawerComponent implements OnInit {

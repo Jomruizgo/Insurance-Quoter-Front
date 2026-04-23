@@ -14,18 +14,27 @@
     flex-wrap: wrap;
   }
 
+  &__eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: var(--fs-12);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-mute);
+  }
+
   &__title {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: var(--fs-24);
     font-weight: 700;
-    color: var(--text, #111827);
+    color: var(--text);
     line-height: 1.2;
   }
 
   &__subtitle {
     margin: 0.25rem 0 0;
-    font-size: 0.875rem;
-    color: var(--text-dim, #6b7280);
+    font-size: var(--fs-14);
+    color: var(--text-dim);
   }
 
   &__header-actions {
@@ -36,6 +45,12 @@
   }
 
   // ─── Stats ────────────────────────────────────────────────────
+  &__stats-note {
+    margin: 0;
+    font-size: var(--fs-13);
+    color: var(--text-dim);
+  }
+
   &__stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -53,8 +68,8 @@
   // ─── Filters ──────────────────────────────────────────────────
   &__filters {
     padding: 0.75rem 1rem;
-    background: var(--surface, #fff);
-    border: 1px solid var(--border, #e5e7eb);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 8px;
   }
 
@@ -70,19 +85,19 @@
     align-items: center;
     gap: 0.75rem;
     padding: 4rem 1rem;
-    color: var(--text-dim, #6b7280);
+    color: var(--text-dim);
 
     p {
       margin: 0;
-      font-size: 0.875rem;
+      font-size: var(--fs-14);
     }
   }
 
   &__spinner {
     width: 32px;
     height: 32px;
-    border: 3px solid var(--border, #e5e7eb);
-    border-top-color: var(--brand-500, #2563eb);
+    border: 3px solid var(--border);
+    border-top-color: var(--brand-500);
     border-radius: 50%;
     animation: dashboard-spin 0.7s linear infinite;
   }
@@ -94,13 +109,13 @@
     align-items: center;
     gap: 0.75rem;
     padding: 4rem 1rem;
-    color: var(--error, #dc2626);
+    color: var(--err);
     text-align: center;
 
     p {
       margin: 0;
-      font-size: 0.875rem;
-      color: var(--text-dim, #6b7280);
+      font-size: var(--fs-14);
+      color: var(--text-dim);
     }
   }
 
@@ -111,12 +126,12 @@
     align-items: center;
     gap: 0.75rem;
     padding: 4rem 1rem;
-    color: var(--text-dim, #6b7280);
+    color: var(--text-dim);
     text-align: center;
 
     p {
       margin: 0;
-      font-size: 0.875rem;
+      font-size: var(--fs-14);
     }
   }
 }

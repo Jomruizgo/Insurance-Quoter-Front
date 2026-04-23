@@ -119,6 +119,6 @@ export class CalculationPage implements OnInit {
   }
 
   onContinue(): void {
-    this.router.navigate(['/quotes', this.folioNumber, 'terms-and-conditions']);
+    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'terms-and-conditions']);
   }
 }

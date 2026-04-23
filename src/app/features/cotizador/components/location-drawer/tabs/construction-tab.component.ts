@@ -67,9 +67,9 @@ interface ConstructionOption {
     .tab-content { padding: 1rem 0; display: flex; flex-direction: column; gap: 1.25rem; }
     .form-label {
       display: block;
-      font-size: 0.8125rem;
+      font-size: var(--fs-13);
       font-weight: 500;
-      color: #374151;
+      color: var(--text-dim);
       margin-bottom: 0.5rem;
     }
     .radio-cards {
@@ -82,15 +82,15 @@ interface ConstructionOption {
       align-items: center;
       gap: 0.5rem;
       padding: 0.625rem 0.75rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-md);
       cursor: pointer;
-      transition: border-color 0.15s, background-color 0.15s;
+      transition: border-color var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
     }
-    .radio-card:hover { border-color: #3b82f6; background-color: #eff6ff; }
-    .radio-card--selected { border-color: #3b82f6; background-color: #eff6ff; }
-    .radio-card__input { margin: 0; accent-color: #3b82f6; }
-    .radio-card__label { font-size: 0.875rem; color: #374151; }
+    .radio-card:hover { border-color: var(--brand-500); background-color: color-mix(in oklch, var(--brand-500) 8%, transparent); }
+    .radio-card--selected { border-color: var(--brand-500); background-color: color-mix(in oklch, var(--brand-500) 8%, transparent); }
+    .radio-card__input { margin: 0; accent-color: var(--brand-500); }
+    .radio-card__label { font-size: var(--fs-14); color: var(--text-dim); }
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -99,13 +99,16 @@ interface ConstructionOption {
     .form-input {
       width: 100%;
       padding: 0.5rem 0.75rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-md);
+      font-size: var(--fs-14);
       outline: none;
       box-sizing: border-box;
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
     }
-    .form-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
+    .form-input:focus { border-color: var(--brand-500); box-shadow: 0 0 0 3px color-mix(in oklch, var(--brand-500) 20%, transparent); }
   `],
 })
 export class LocationConstructionTabComponent {

@@ -104,62 +104,65 @@ import { Location, ValidationStatus } from '../../models/location.model';
     .locations-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.875rem;
+      font-size: var(--fs-13);
     }
     .locations-table th,
     .locations-table td {
       padding: 0.625rem 0.75rem;
       text-align: left;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border);
     }
     .locations-table th {
-      background-color: #f9fafb;
-      font-weight: 600;
-      color: #374151;
+      background-color: var(--surface-2);
+      font-weight: 500;
+      color: var(--text-dim);
+      font-size: var(--fs-12);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .locations-table tbody tr {
       cursor: pointer;
-      transition: background-color 0.1s;
+      transition: background-color var(--t-fast) var(--ease);
     }
     .locations-table tbody tr:hover {
-      background-color: #f3f4f6;
+      background-color: var(--surface-2);
     }
     .locations-table tbody tr.selected {
-      background-color: #eff6ff;
+      background-color: color-mix(in oklch, var(--brand-500) 10%, transparent);
     }
     .col-check { width: 2.5rem; }
-    .zip-code { font-size: 0.8rem; color: #6b7280; }
-    .zip-code--error { color: #dc2626; font-weight: 600; }
-    .fire-key { font-size: 0.8rem; color: #6b7280; }
-    .fire-key--error { color: #dc2626; font-weight: 600; }
-    .sub-info { font-size: 0.8rem; color: #6b7280; }
-    .empty-cell { color: #9ca3af; font-style: italic; }
+    .zip-code { font-size: var(--fs-12); color: var(--text-dim); }
+    .zip-code--error { color: var(--err); font-weight: 600; }
+    .fire-key { font-size: var(--fs-12); color: var(--text-dim); }
+    .fire-key--error { color: var(--err); font-weight: 600; }
+    .sub-info { font-size: var(--fs-12); color: var(--text-dim); }
+    .empty-cell { color: var(--text-mute); font-style: italic; }
     .badge {
       display: inline-flex;
       align-items: center;
       padding: 0.2rem 0.5rem;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      border-radius: var(--r-pill);
+      font-size: var(--fs-12);
+      font-weight: 500;
     }
-    .badge--complete { background-color: #d1fae5; color: #065f46; }
-    .badge--incomplete { background-color: #fee2e2; color: #991b1b; }
+    .badge--complete { background-color: color-mix(in oklch, var(--ok) 15%, transparent); color: var(--ok); }
+    .badge--incomplete { background-color: color-mix(in oklch, var(--err) 12%, transparent); color: var(--err); }
     .footer-row td {
-      background-color: #f9fafb;
+      background-color: var(--surface-2);
       font-weight: 600;
     }
-    .footer-label { color: #374151; }
+    .footer-label { color: var(--text-dim); }
     .footer-total { text-align: right; }
     .add-btn {
       background: none;
-      border: 1px dashed #9ca3af;
-      border-radius: 0.25rem;
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--r-xs);
       padding: 0.25rem 0.75rem;
       cursor: pointer;
-      color: #6b7280;
-      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-size: var(--fs-12);
     }
-    .add-btn:hover { background-color: #f3f4f6; }
+    .add-btn:hover { background-color: var(--surface-2); }
   `],
 })
 export class LocationsTableComponent implements OnChanges {

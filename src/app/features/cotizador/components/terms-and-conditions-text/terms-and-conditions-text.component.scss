@@ -6,15 +6,15 @@
 
 .terms-text {
   padding: 16px;
-  background: var(--color-surface-alt, #f9fafb);
-  border: 1px solid var(--color-border, #e5e7eb);
-  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
 
   &__title {
     font-size: 0.9375rem;
     font-weight: 600;
     margin: 0 0 16px;
-    color: var(--color-text, #111827);
+    color: var(--text);
   }
 
   &__section {
@@ -26,16 +26,16 @@
   }
 
   &__section-title {
-    font-size: 0.875rem;
+    font-size: var(--fs-14);
     font-weight: 600;
     margin: 0 0 8px;
-    color: var(--color-text, #111827);
+    color: var(--text);
   }
 
   &__section-body {
     font-size: 0.8125rem;
     line-height: 1.6;
-    color: var(--color-text-muted, #4b5563);
+    color: var(--text-mute);
     margin: 0;
   }
 }

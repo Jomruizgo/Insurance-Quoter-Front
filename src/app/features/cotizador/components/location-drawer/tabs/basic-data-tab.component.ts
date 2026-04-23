@@ -118,35 +118,38 @@ import { debounceTime, distinctUntilChanged, filter, Subject, takeUntil } from '
     .form-field--full { grid-column: 1 / -1; }
     .form-label {
       display: block;
-      font-size: 0.8125rem;
+      font-size: var(--fs-13);
       font-weight: 500;
-      color: #374151;
+      color: var(--text-dim);
       margin-bottom: 0.25rem;
     }
     .form-input {
       width: 100%;
       padding: 0.5rem 0.75rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-md);
+      font-size: var(--fs-14);
       outline: none;
       box-sizing: border-box;
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
     }
-    .form-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
-    .form-input--readonly { background-color: #f9fafb; color: #6b7280; }
+    .form-input:focus { border-color: var(--brand-500); box-shadow: 0 0 0 3px color-mix(in oklch, var(--brand-500) 20%, transparent); }
+    .form-input--readonly { background-color: var(--surface-2); color: var(--text-dim); }
     .catastrophic-badge {
       margin-top: 1rem;
       padding: 0.5rem 0.75rem;
-      background-color: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 0.375rem;
-      font-size: 0.8125rem;
+      background-color: color-mix(in oklch, var(--info) 10%, transparent);
+      border: 1px solid color-mix(in oklch, var(--info) 30%, transparent);
+      border-radius: var(--r-md);
+      font-size: var(--fs-13);
       display: flex;
       gap: 0.5rem;
       align-items: center;
     }
-    .badge-label { color: #1e40af; font-weight: 600; }
-    .badge-value { color: #1d4ed8; }
+    .badge-label { color: var(--info); font-weight: 600; }
+    .badge-value { color: var(--info); }
   `],
 })
 export class LocationBasicDataTabComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, DestroyRef } from '@angular/core';
+import { Component, OnInit, inject, signal, DestroyRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -15,6 +15,8 @@ import { QuoteStateService } from '../../../core/services/quote-state.service';
   styleUrl: './layout.page.scss',
 })
 export class LayoutPage implements OnInit {
+  @ViewChild(LayoutConfigFormComponent) private formRef?: LayoutConfigFormComponent;
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly layoutConfigService = inject(LayoutConfigService);
@@ -32,6 +34,23 @@ export class LayoutPage implements OnInit {
   ngOnInit(): void {
     this.folioNumber = this.route.snapshot.params['folioNumber'] ?? '';
     this.doLoad();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'general-info']);
+  }
+
+  onNext(): void {
+    this.formRef?.submit();
+  }
+
+  saveDraft(): void {
+    const values = this.formRef?.getValues();
+    if (!values) return;
+    this.layoutConfigService
+      .save(this.folioNumber, values, this.layoutData()?.version ?? 0)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   protected retryLoad(): void {
@@ -74,7 +93,7 @@ export class LayoutPage implements OnInit {
           this.saving.set(false);
           // R-003: trigger stepper re-fetch in MainLayoutComponent via refresh$
           this.quoteStateService.refresh();
-          this.router.navigate(['/quotes', this.folioNumber, 'locations']);
+          this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'locations']);
         },
         error: (err: { status: number; error?: { code?: string; fields?: unknown[] } }) => {
           this.saving.set(false);

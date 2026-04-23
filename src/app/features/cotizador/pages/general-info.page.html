@@ -29,13 +29,17 @@
     />
 
     <div class="page-actions">
-      <button type="submit" class="btn btn-primary" [disabled]="loading">
-        @if (loading) {
-          Guardando...
-        } @else {
-          Guardar y continuar
-        }
+      <button type="button" class="btn btn--ghost" (click)="goBack()">
+        ← Anterior
       </button>
+      <div class="page-actions__end">
+        <button type="button" class="btn btn--secondary" [disabled]="loading" (click)="saveDraft()">
+          Guardar borrador
+        </button>
+        <button type="submit" class="btn btn--primary" [disabled]="loading">
+          @if (loading) { Guardando... } @else { Siguiente → }
+        </button>
+      </div>
     </div>
   </form>
 </div>

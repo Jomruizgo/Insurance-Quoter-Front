@@ -1,7 +1,7 @@
 .summary-card {
-  background: var(--color-surface, #fff);
-  border: 1px solid var(--color-border, #e5e7eb);
-  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   padding: 24px;
   margin-bottom: 24px;
 
@@ -13,7 +13,7 @@
   }
 
   &__folio {
-    font-size: 1.25rem;
+    font-size: var(--fs-20);
     font-weight: 600;
     margin: 0;
   }
@@ -32,8 +32,8 @@
   }
 
   &__label {
-    font-size: 0.75rem;
-    color: var(--color-text-muted, #6b7280);
+    font-size: var(--fs-12);
+    color: var(--text-mute);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -42,15 +42,15 @@
   &__value {
     font-size: 0.9375rem;
     font-weight: 500;
-    color: var(--color-text, #111827);
+    color: var(--text);
   }
 
   &__primas {
     display: flex;
     gap: 32px;
     padding: 16px 0;
-    border-top: 1px solid var(--color-border, #e5e7eb);
-    border-bottom: 1px solid var(--color-border, #e5e7eb);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     margin-bottom: 20px;
   }
 
@@ -63,14 +63,14 @@
   &__prima-value {
     font-size: 1.125rem;
     font-weight: 700;
-    color: var(--color-brand, #2563eb);
+    color: var(--brand-500);
   }
 
   &__locations-title {
-    font-size: 0.875rem;
+    font-size: var(--fs-14);
     font-weight: 600;
     margin: 0 0 12px;
-    color: var(--color-text, #111827);
+    color: var(--text);
   }
 
   &__locations-list {
@@ -87,18 +87,18 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
-    background: var(--color-surface-alt, #f9fafb);
+    background: var(--surface-2);
     border-radius: 4px;
   }
 
   &__location-name {
-    font-size: 0.875rem;
-    color: var(--color-text, #111827);
+    font-size: var(--fs-14);
+    color: var(--text);
   }
 
   &__location-prima {
-    font-size: 0.875rem;
+    font-size: var(--fs-14);
     font-weight: 600;
-    color: var(--color-text, #111827);
+    color: var(--text);
   }
 }

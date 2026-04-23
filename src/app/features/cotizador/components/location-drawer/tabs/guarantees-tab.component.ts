@@ -58,47 +58,50 @@ interface GuaranteeConfig {
       align-items: center;
       gap: 0.75rem;
       padding: 0.625rem 0.75rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 0.375rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
     }
-    .guarantee-check input { accent-color: #3b82f6; width: 1rem; height: 1rem; cursor: pointer; }
+    .guarantee-check input { accent-color: var(--brand-500); width: 1rem; height: 1rem; cursor: pointer; }
     .guarantee-label {
       flex: 1;
-      font-size: 0.875rem;
-      color: #374151;
+      font-size: var(--fs-14);
+      color: var(--text-dim);
       cursor: pointer;
       display: flex;
       flex-direction: column;
     }
-    .guarantee-code { font-size: 0.75rem; color: #9ca3af; }
+    .guarantee-code { font-size: var(--fs-12); color: var(--text-mute); }
     .guarantee-amount {
       display: flex;
       align-items: center;
       gap: 0.25rem;
     }
-    .amount-prefix { font-size: 0.875rem; color: #6b7280; }
+    .amount-prefix { font-size: var(--fs-14); color: var(--text-dim); }
     .amount-input {
       width: 8rem;
       padding: 0.375rem 0.5rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.25rem;
-      font-size: 0.875rem;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-sm);
+      font-size: var(--fs-14);
       text-align: right;
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
     }
-    .amount-input:focus { outline: none; border-color: #3b82f6; }
-    .amount-input--disabled { background-color: #f9fafb; color: #9ca3af; }
+    .amount-input:focus { outline: none; border-color: var(--brand-500); }
+    .amount-input--disabled { background-color: var(--surface-2); color: var(--text-mute); }
     .total-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0.75rem;
       margin-top: 0.75rem;
-      background-color: #f9fafb;
-      border-radius: 0.375rem;
-      border: 1px solid #e5e7eb;
+      background-color: var(--surface-2);
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
     }
-    .total-label { font-size: 0.875rem; font-weight: 600; color: #374151; }
-    .total-value { font-size: 1rem; font-weight: 700; color: #111827; }
+    .total-label { font-size: var(--fs-14); font-weight: 600; color: var(--text-dim); }
+    .total-value { font-size: var(--fs-16); font-weight: 700; color: var(--text); }
   `],
 })
 export class LocationGuaranteesTabComponent implements OnInit, OnDestroy {

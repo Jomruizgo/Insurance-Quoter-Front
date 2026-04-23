@@ -1,7 +1,7 @@
 .incomplete-alert {
-  background: var(--warn-50, #fffbeb);
-  border: 1px solid var(--warn-300, #fcd34d);
-  border-radius: 8px;
+  background: color-mix(in oklch, var(--warn) 12%, transparent);
+  border: 1px solid var(--warn);
+  border-radius: var(--r-lg);
   padding: 1rem 1.25rem;
 
   &__header {
@@ -12,14 +12,14 @@
   }
 
   &__icon {
-    color: var(--warn-600, #d97706);
+    color: var(--warn);
     flex-shrink: 0;
   }
 
   &__title {
     font-weight: 600;
     font-size: 0.9375rem;
-    color: var(--warn-800, #92400e);
+    color: var(--warn);
   }
 
   &__list {
@@ -32,12 +32,12 @@
   }
 
   &__item {
-    font-size: 0.875rem;
-    color: var(--warn-700, #b45309);
+    font-size: var(--fs-14);
+    color: var(--warn);
     padding-left: 1.5rem;
 
     strong {
-      color: var(--warn-800, #92400e);
+      color: var(--warn);
     }
   }
 }

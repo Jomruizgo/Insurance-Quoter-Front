@@ -1,23 +1,11 @@
 <div class="layout-page">
 
-  @if (loading()) {
-    <div class="layout-page__spinner">
-      <p>Cargando configuración...</p>
-    </div>
-  }
-
   @if (errorMessage()) {
-    <div class="layout-page__alert layout-page__alert--error" role="alert">
-      {{ errorMessage() }}
-    </div>
+    <div class="alert alert-err" role="alert">{{ errorMessage() }}</div>
   }
 
-  @if (loadFailed() && !loading()) {
-    <div class="layout-page__retry">
-      <button type="button" class="layout-page__retry-btn" (click)="retryLoad()">
-        Reintentar carga
-      </button>
-    </div>
+  @if (loading()) {
+    <p style="color: var(--text-mute); font-size: var(--fs-13)">Cargando configuración...</p>
   }
 
   @if (!loading()) {
@@ -29,10 +17,19 @@
     />
   }
 
-  @if (saving()) {
-    <div class="layout-page__saving" aria-live="polite">
-      Guardando configuración...
+  <!-- Barra de navegación -->
+  <div class="page-nav">
+    <button class="btn btn--ghost" type="button" (click)="goBack()">
+      ← Anterior
+    </button>
+    <div class="row gap-2">
+      <button class="btn btn--ghost" type="button" (click)="saveDraft()">
+        Guardar borrador
+      </button>
+      <button class="btn btn--primary" type="button" (click)="onNext()" [disabled]="loadFailed() || loading()">
+        Siguiente →
+      </button>
     </div>
-  }
+  </div>
 
 </div>

@@ -26,13 +26,13 @@ import { LocationsSummary } from '../../models/location.model';
       align-items: center;
       gap: 0.75rem;
       padding: 0.75rem 1rem;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
+      border-radius: var(--r-md);
+      font-size: var(--fs-14);
     }
     .alert-banner--warn {
-      background-color: #fff7ed;
-      border: 1px solid #fed7aa;
-      color: #9a3412;
+      background-color: color-mix(in oklch, var(--warn) 10%, transparent);
+      border: 1px solid color-mix(in oklch, var(--warn) 35%, transparent);
+      color: var(--warn);
     }
     .alert-banner__icon {
       font-size: 1rem;
@@ -45,9 +45,9 @@ import { LocationsSummary } from '../../models/location.model';
       padding: 0.25rem 0.75rem;
       background: transparent;
       border: 1px solid currentColor;
-      border-radius: 0.25rem;
+      border-radius: var(--r-xs);
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: var(--fs-12);
       color: inherit;
     }
     .alert-banner__btn:hover {
