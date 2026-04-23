@@ -43,6 +43,11 @@ import { LocationDrawerComponent } from '../../components/location-drawer/locati
           }
         </div>
         <div class="page-header__actions">
+          @if (selectedIndices.length > 0) {
+            <button class="btn btn--danger" type="button" (click)="deleteSelected()">
+              Eliminar ({{ selectedIndices.length }})
+            </button>
+          }
           <button class="btn btn--primary" type="button" (click)="addLocation()">
             + Añadir ubicación
           </button>
@@ -132,6 +137,8 @@ import { LocationDrawerComponent } from '../../components/location-drawer/locati
     .btn--primary:hover { background-color: #1d4ed8; }
     .btn--secondary { background-color: #fff; color: #374151; border-color: #d1d5db; }
     .btn--secondary:hover { background-color: #f9fafb; }
+    .btn--danger { background-color: #dc2626; color: #fff; border-color: #dc2626; }
+    .btn--danger:hover { background-color: #b91c1c; }
   `],
 })
 export class LocationsPageComponent implements OnInit {
@@ -258,6 +265,24 @@ export class LocationsPageComponent implements OnInit {
 
   onSelectionChanged(indices: number[]): void {
     this.selectedIndices = indices;
+  }
+
+  deleteSelected(): void {
+    const toDelete = new Set(this.selectedIndices);
+    const remaining = this.locations.filter(l => !toDelete.has(l.index));
+    this.locationService
+      .reemplazarLista(this.folio, remaining, this.currentVersion)
+      .subscribe({
+        next: (res) => {
+          this.locations = res.locations;
+          this.currentVersion = res.version;
+          this.totalExpected = res.locations.length;
+          this.selectedIndices = [];
+        },
+        error: () => {
+          this.error = 'No se pudieron eliminar las ubicaciones. Intenta de nuevo.';
+        },
+      });
   }
 
   scrollToTable(): void {

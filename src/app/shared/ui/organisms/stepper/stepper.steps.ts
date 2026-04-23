@@ -5,5 +5,5 @@ export const QUOTE_STEPS: StepDefinition[] = [
   { key: 'layout',          label: 'Layout',          route: 'layout' },
   { key: 'locations',       label: 'Ubicaciones',     route: 'locations' },
   { key: 'coverageOptions', label: 'Coberturas',      route: 'technical-info' },
-  { key: 'calculation',     label: 'Cálculo',         route: 'terms-and-conditions' },
+  { key: 'calculation',     label: 'Cálculo',         route: 'calculation' },
 ];

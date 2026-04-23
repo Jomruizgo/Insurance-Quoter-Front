@@ -115,7 +115,7 @@ export class CalculationPage implements OnInit {
   }
 
   protected onDownloadPdf(): void {
-    // PDF generation not yet implemented (FE-09)
+    window.print();
   }
 
   onContinue(): void {
