@@ -1,0 +1,23 @@
+<div class="context-bar">
+  <div class="context-bar__info">
+    <span class="context-bar__location">{{ locationName }}</span>
+    <span class="context-bar__separator">·</span>
+    <span class="context-bar__count">{{ activeCount }} de {{ totalCount }} coberturas activas</span>
+  </div>
+
+  @if (hasOtherLocations) {
+    <div class="context-bar__copy">
+      <label class="context-bar__copy-label" for="copyFromSelect">Copiar desde:</label>
+      <select
+        id="copyFromSelect"
+        class="context-bar__copy-select"
+        (change)="onCopyFrom($event)"
+      >
+        <option value="">— seleccionar —</option>
+        @for (loc of otherLocations; track loc.index) {
+          <option [value]="loc.index">{{ formatLocationLabel(loc) }}</option>
+        }
+      </select>
+    </div>
+  }
+</div>

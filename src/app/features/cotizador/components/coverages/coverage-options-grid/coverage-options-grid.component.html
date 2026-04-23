@@ -1,0 +1,8 @@
+<div class="coverage-grid">
+  @for (coverage of coverageOptions; track coverage.code) {
+    <app-coverage-card
+      [coverage]="coverage"
+      (changed)="onCardChanged($event)"
+    />
+  }
+</div>

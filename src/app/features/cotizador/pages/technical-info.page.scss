@@ -1,0 +1,57 @@
+.technical-info-page {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__loading,
+  &__error,
+  &__success {
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__loading {
+    background: var(--color-bg-subtle, #f1f5f9);
+    color: var(--color-text-muted, #64748b);
+  }
+
+  &__error {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    flex-direction: column;
+    align-items: flex-start;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__success {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 8px;
+  }
+}
