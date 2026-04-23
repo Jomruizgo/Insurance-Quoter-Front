@@ -91,7 +91,7 @@ export class CotizadorDashboardPage implements OnInit {
     if (!folioNumber?.trim()) {
       return;
     }
-    this.router.navigate(['/quotes', folioNumber, 'general-info']);
+    this.router.navigate(['/cotizador', 'quotes', folioNumber, 'general-info']);
   }
 
   protected openNewFolioModal(): void {

@@ -1,12 +1,15 @@
-<div class="card" [formGroup]="form">
+<div class="card card-pad" [formGroup]="form">
   <div class="card-header">
-    <app-section-header eyebrow="Paso 1" title="Datos del asegurado" />
+    <div>
+      <p class="card-title">Asegurado</p>
+      <p class="card-subtitle">Persona moral o física titular del contrato</p>
+    </div>
     <app-badge [variant]="isComplete ? 'ok' : 'warn'">
-      {{ isComplete ? 'Completo' : 'Pendiente' }}
+      {{ isComplete ? '● Completo' : 'Pendiente' }}
     </app-badge>
   </div>
 
-  <div class="card-body grid-2">
+  <div class="fields-grid">
     <app-field label="Razón social" [required]="true" [error]="nameError">
       <app-input formControlName="name" />
     </app-field>
@@ -15,7 +18,7 @@
       <app-input formControlName="rfc" appUpperCaseRfc />
     </app-field>
 
-    <app-field label="Correo electrónico" [required]="true" [error]="emailError">
+    <app-field label="Correo de contacto" [required]="true" [error]="emailError">
       <app-input formControlName="email" />
     </app-field>
 

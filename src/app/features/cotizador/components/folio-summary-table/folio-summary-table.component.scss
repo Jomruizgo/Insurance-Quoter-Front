@@ -1,26 +1,26 @@
 .folio-table-wrapper {
   overflow-x: auto;
-  border: 1px solid var(--border, #e5e7eb);
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
 .folio-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
-  background: var(--surface, #fff);
+  font-size: var(--fs-14);
+  background: var(--surface);
 
   &__head {
-    background: var(--surface-alt, #f9fafb);
-    border-bottom: 1px solid var(--border, #e5e7eb);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
   }
 
   &__th {
     padding: 0.625rem 1rem;
     text-align: left;
     font-weight: 600;
-    font-size: 0.75rem;
-    color: var(--text-dim, #6b7280);
+    font-size: var(--fs-12);
+    color: var(--text-mute);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     white-space: nowrap;
@@ -41,12 +41,12 @@
   }
 
   &__row {
-    border-bottom: 1px solid var(--border, #e5e7eb);
+    border-bottom: 1px solid var(--border);
     cursor: pointer;
     transition: background 0.12s;
 
     &:hover {
-      background: var(--surface-hover, #f3f4f6);
+      background: var(--surface-2);
     }
 
     &:last-child {
@@ -64,7 +64,7 @@
 
   &__td {
     padding: 0.75rem 1rem;
-    color: var(--text, #111827);
+    color: var(--text);
     vertical-align: middle;
 
     &--check {
@@ -94,7 +94,7 @@
 
     &--date {
       width: 130px;
-      color: var(--text-dim, #6b7280);
+      color: var(--text-dim);
       font-variant-numeric: tabular-nums;
     }
 
@@ -110,31 +110,31 @@
 
   &__mono {
     font-family: 'Fira Code', 'Cascadia Code', monospace;
-    font-size: 0.8125rem;
-    color: var(--text, #111827);
+    font-size: var(--fs-13);
+    color: var(--text);
   }
 
   &__agent-name {
     display: block;
-    color: var(--text, #111827);
+    color: var(--text);
   }
 
   &__agent-code {
     display: block;
-    font-size: 0.75rem;
-    color: var(--text-dim, #6b7280);
+    font-size: var(--fs-12);
+    color: var(--text-dim);
     margin-top: 0.125rem;
   }
 
   &__pct {
-    font-size: 0.75rem;
-    color: var(--text-dim, #6b7280);
+    font-size: var(--fs-12);
+    color: var(--text-dim);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
 
   &__muted {
-    color: var(--text-dim, #6b7280);
+    color: var(--text-dim);
   }
 
   &__options-btn {
@@ -146,13 +146,13 @@
     border: none;
     background: transparent;
     border-radius: 4px;
-    color: var(--text-dim, #6b7280);
+    color: var(--text-dim);
     cursor: pointer;
     transition: background 0.12s, color 0.12s;
 
     &:hover {
-      background: var(--border, #e5e7eb);
-      color: var(--text, #111827);
+      background: var(--border);
+      color: var(--text);
     }
   }
 
@@ -167,12 +167,12 @@
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
-    color: var(--text-dim, #6b7280);
+    color: var(--text-dim);
     padding: 1rem 0;
 
     p {
       margin: 0;
-      font-size: 0.875rem;
+      font-size: var(--fs-14);
     }
   }
 }

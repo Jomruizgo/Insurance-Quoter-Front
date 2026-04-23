@@ -77,7 +77,7 @@ export class NewFolioModalComponent implements OnInit {
         this.isLoading = false;
         this.folioCreated.emit(res.folioNumber);
         this.closed.emit();
-        this.router.navigate(['/quotes', res.folioNumber, 'general-info']);
+        this.router.navigate(['/cotizador', 'quotes', res.folioNumber, 'general-info']);
       },
       error: err => {
         this.isLoading = false;

@@ -1,8 +1,8 @@
 <div class="main-layout">
-  @if (isFolioRoute() && activeFolio() && quoteState()?.sections) {
+  @if (isFolioRoute() && activeFolio()) {
     <app-stepper
       [folio]="activeFolio()!"
-      [sections]="quoteState()!.sections"
+      [sections]="quoteState()?.sections ?? null"
       [activeRoute]="activeRoute()"
     />
   }

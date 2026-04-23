@@ -115,6 +115,28 @@ export class GeneralInfoPage implements OnInit {
     }
   }
 
+  goBack(): void {
+    this.router.navigate(['/cotizador']);
+  }
+
+  saveDraft(): void {
+    if (this.form.invalid) return;
+    this.loading = true;
+    this.errorMessage = '';
+    const request: GeneralInfoRequest = {
+      insuredData:      this.form.value.insuredData,
+      underwritingData: this.form.value.underwritingData,
+      version:          this.currentVersion,
+    };
+    this.generalInfoService
+      .guardar(this.folioNumber, request)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => { this.currentVersion = res.version; this.loading = false; },
+        error: () => { this.loading = false; },
+      });
+  }
+
   onSave(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -137,7 +159,7 @@ export class GeneralInfoPage implements OnInit {
         next: (res) => {
           this.currentVersion = res.version;
           this.loading = false;
-          this.router.navigate(['/quotes', this.folioNumber, 'layout']);
+          this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'layout']);
         },
         error: (err) => {
           this.loading = false;

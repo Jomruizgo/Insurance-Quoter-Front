@@ -2,41 +2,44 @@
   <!-- ─── HEADER ─── -->
   <header class="dashboard__header">
     <div class="dashboard__header-left">
+      <p class="dashboard__eyebrow">Cotizaciones</p>
       <h1 class="dashboard__title">Panel de folios</h1>
       <p class="dashboard__subtitle">Gestiona cotizaciones de seguros de daños patrimoniales</p>
     </div>
     <div class="dashboard__header-actions">
-      <!-- Exportar: visual only -->
       <app-btn variant="secondary" size="sm">
         Exportar
       </app-btn>
       <app-btn variant="primary" size="sm" (click)="openNewFolioModal()">
-        Nuevo folio
+        + Nuevo folio
       </app-btn>
     </div>
   </header>
 
   <!-- ─── STAT CARDS ─── -->
   <section class="dashboard__stats" aria-label="Métricas del portafolio">
-    <p class="dashboard__stats-note">Las métricas reflejan el total de tu portafolio</p>
     <app-stat-card
       label="Folios totales"
       [value]="isLoading ? '—' : stats.total.toString()"
+      subtext="últimos 30 días"
       tone="neutral"
     />
     <app-stat-card
       label="En progreso"
       [value]="isLoading ? '—' : stats.inProgress.toString()"
+      subtext="requieren atención"
       tone="info"
     />
     <app-stat-card
-      label="Calculados y emitidos"
+      label="Calculados"
       [value]="isLoading ? '—' : stats.readyToIssue.toString()"
+      subtext="listos para emisión"
       tone="brand"
     />
     <app-stat-card
-      label="Prima comercial acumulada"
+      label="Prima comercial"
       [value]="isLoading ? '—' : formatPremium(stats.accumulatedPremium)"
+      subtext="acumulado"
       tone="brand"
     />
   </section>

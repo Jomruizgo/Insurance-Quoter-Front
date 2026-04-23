@@ -21,7 +21,7 @@ export class MainLayoutComponent {
   private readonly quoteStateService = inject(QuoteStateService);
 
   readonly activeFolio = toSignal(
-    this.route.paramMap.pipe(map(p => p.get('folio'))),
+    this.route.paramMap.pipe(map(p => p.get('folioNumber'))),
     { initialValue: null as string | null }
   );
 
@@ -36,7 +36,7 @@ export class MainLayoutComponent {
 
   readonly quoteState = toSignal(
     combineLatest([
-      this.route.paramMap.pipe(map(p => p.get('folio'))),
+      this.route.paramMap.pipe(map(p => p.get('folioNumber'))),
       this.quoteStateService.refresh$.pipe(startWith(undefined)),
     ]).pipe(
       switchMap(([folio]) =>

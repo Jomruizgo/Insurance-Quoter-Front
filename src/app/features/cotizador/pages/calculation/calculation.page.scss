@@ -9,9 +9,9 @@
   &__error {
     background: var(--error-50, #fef2f2);
     border: 1px solid var(--error-300, #fca5a5);
-    border-radius: 8px;
+    border-radius: var(--r-lg);
     padding: 1rem 1.25rem;
-    color: var(--error-700, #b91c1c);
+    color: var(--err);
     font-size: 0.9375rem;
   }
 }

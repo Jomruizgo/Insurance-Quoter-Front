@@ -1,35 +1,53 @@
 <header class="app-header">
-  <div class="app-header__brand">
+  <!-- Brand + Breadcrumb -->
+  <div class="app-header__left">
     <a [routerLink]="['/cotizador']" class="app-header__logo">
-      <span class="app-header__logo-mark">IQ</span>
-      <span class="app-header__logo-text">Sofka IQ / Cotizador de Daños</span>
+      <div class="app-header__logo-mark">IQ</div>
+      <div class="app-header__logo-text">
+        <span class="app-header__logo-name">Sofka IQ</span>
+        <span class="app-header__logo-sub">Cotizador de Daños</span>
+      </div>
     </a>
 
     <nav class="app-header__breadcrumb" aria-label="Migas de pan">
-      <a [routerLink]="['/cotizador']" class="app-header__breadcrumb-link">Cotizaciones</a>
+      <span class="app-header__sep">/</span>
+      <a [routerLink]="['/cotizador']" class="app-header__bc-link">Cotizaciones</a>
       @if (folioNumber) {
-        <span class="app-header__breadcrumb-sep">
-          <app-icon name="chevron-right" [size]="14" />
-        </span>
-        <span class="app-header__breadcrumb-current">{{ folioNumber }}</span>
+        <span class="app-header__sep">/</span>
+        <span class="app-header__bc-current">{{ folioNumber }}</span>
       }
     </nav>
   </div>
 
+  <!-- Spacer -->
+  <div class="app-header__grow"></div>
+
+  <!-- Actions -->
   <div class="app-header__actions">
-    <div class="app-header__search" role="search">
-      <app-icon name="search" [size]="16" className="app-header__search-icon" />
+    <!-- Search -->
+    <div class="app-header__search">
+      <app-icon name="search" [size]="13" className="app-header__search-icon" />
       <input
         type="text"
         class="app-header__search-input"
         placeholder="Buscar…"
         aria-label="Buscar (⌘K)"
       />
-      <kbd class="app-header__search-kbd">⌘K</kbd>
+      <kbd class="kbd">⌘K</kbd>
     </div>
 
+    <!-- Preferences (cog) -->
+    <button class="btn btn--ghost btn--icon" aria-label="Preferencias" type="button">
+      <app-icon name="cog" [size]="15" />
+    </button>
+
+    <!-- Tweaks panel -->
+    <app-tweaks-panel />
+
+    <!-- Profile -->
+    <div class="app-header__divider"></div>
     <div class="app-header__profile">
-      <div class="app-header__avatar" aria-label="Perfil de usuario">
+      <div class="app-header__avatar">
         {{ userName.charAt(0).toUpperCase() }}
       </div>
       <div class="app-header__user-info">

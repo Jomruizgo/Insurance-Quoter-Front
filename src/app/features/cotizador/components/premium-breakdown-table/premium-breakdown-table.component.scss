@@ -1,36 +1,36 @@
 .breakdown-table-wrapper {
   overflow-x: auto;
-  border: 1px solid var(--border, #e5e7eb);
+  border: 1px solid var(--border);
   border-radius: 12px;
 }
 
 .breakdown-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: var(--fs-14);
 
   thead tr {
-    background: var(--surface-2, #f3f4f6);
-    border-bottom: 2px solid var(--border, #e5e7eb);
+    background: var(--surface-2);
+    border-bottom: 2px solid var(--border);
   }
 
   th {
     padding: 0.75rem 1rem;
     text-align: left;
     font-weight: 600;
-    color: var(--text-secondary, #4b5563);
+    color: var(--text-dim);
     white-space: nowrap;
   }
 
   td {
     padding: 0.625rem 1rem;
-    color: var(--text-primary, #111827);
-    border-bottom: 1px solid var(--border, #e5e7eb);
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
     text-align: right;
   }
 
   tbody tr:hover {
-    background: var(--surface-1, #f9fafb);
+    background: var(--surface-2);
   }
 
   tbody tr:last-child td {
@@ -48,13 +48,13 @@
 
   &__col-total {
     min-width: 140px;
-    background: var(--surface-2, #f3f4f6);
+    background: var(--surface-2);
   }
 
   &__component-name {
     text-align: left !important;
     font-weight: 500;
-    color: var(--text-primary, #111827);
+    color: var(--text);
   }
 
   &__cell {
@@ -66,7 +66,7 @@
   }
 
   &__total-cell {
-    background: var(--surface-2, #f3f4f6);
+    background: var(--surface-2);
     font-weight: 600;
     text-align: right;
   }
@@ -76,12 +76,12 @@
   }
 
   &__muted {
-    color: var(--text-mute, #9ca3af);
+    color: var(--text-mute);
   }
 
   &__net-row {
-    background: var(--surface-1, #f9fafb);
-    border-top: 2px solid var(--border, #e5e7eb);
+    background: var(--surface-2);
+    border-top: 2px solid var(--border);
 
     td {
       border-bottom: none;

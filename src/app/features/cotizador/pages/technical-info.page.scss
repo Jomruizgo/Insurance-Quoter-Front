@@ -10,21 +10,21 @@
   &__error,
   &__success {
     padding: 16px;
-    border-radius: 8px;
+    border-radius: var(--r-lg);
     display: flex;
     align-items: center;
     gap: 12px;
   }
 
   &__loading {
-    background: var(--color-bg-subtle, #f1f5f9);
-    color: var(--color-text-muted, #64748b);
+    background: var(--surface-2);
+    color: var(--text-mute);
   }
 
   &__error {
-    background: #fef2f2;
-    color: #b91c1c;
-    border: 1px solid #fecaca;
+    background: color-mix(in oklch, var(--err) 10%, transparent);
+    color: var(--err);
+    border: 1px solid color-mix(in oklch, var(--err) 30%, transparent);
     flex-direction: column;
     align-items: flex-start;
 
@@ -34,9 +34,9 @@
   }
 
   &__success {
-    background: #f0fdf4;
-    color: #15803d;
-    border: 1px solid #bbf7d0;
+    background: color-mix(in oklch, var(--ok) 10%, transparent);
+    color: var(--ok);
+    border: 1px solid color-mix(in oklch, var(--ok) 30%, transparent);
 
     p {
       margin: 0;

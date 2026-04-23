@@ -1,22 +1,31 @@
-<div class="card" [formGroup]="form">
+<div class="card card-pad" [formGroup]="form">
   <div class="card-header">
-    <app-section-header eyebrow="Suscripción" title="Datos de conducción" />
+    <div>
+      <p class="card-title">Suscripción</p>
+      <p class="card-subtitle">Asignación técnica y clasificación de riesgo</p>
+    </div>
     <app-badge [variant]="isComplete ? 'ok' : 'warn'">
-      {{ isComplete ? 'Completo' : 'Pendiente' }}
+      {{ isComplete ? '● Completo' : 'Pendiente' }}
     </app-badge>
   </div>
 
-  <div class="alert alert-info">
-    Versionado optimista activo &mdash; versión actual:
-    <span class="mono">v{{ version }}</span>
+  <div class="version-notice">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/>
+      <path stroke-linecap="round" d="M12 16v-4m0-4h.01"/>
+    </svg>
+    <span>
+      Versionado optimista activo. Cualquier cambio incrementará la versión del folio.
+      Actual: <strong>v{{ version }}</strong>
+    </span>
   </div>
 
-  <div class="card-body grid-2">
+  <div class="fields-grid">
     <app-field label="Suscriptor" [required]="true" [error]="subscriberIdError">
       <app-select formControlName="subscriberId" (change)="onSubscriberChange($event)">
         <option value="">Selecciona un suscriptor</option>
         @for (sub of subscribers; track sub.id) {
-          <option [value]="sub.id">{{ sub.name }}</option>
+          <option [value]="sub.id">{{ sub.id }} — {{ sub.name }}</option>
         }
       </app-select>
     </app-field>
@@ -25,7 +34,7 @@
       <app-select formControlName="agentCode">
         <option value="">Selecciona un agente</option>
         @for (agent of agents; track agent.code) {
-          <option [value]="agent.code">{{ agent.name }}</option>
+          <option [value]="agent.code">{{ agent.code }} — {{ agent.name }}</option>
         }
       </app-select>
     </app-field>

@@ -3,7 +3,6 @@ import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { FieldComponent } from '../../../../shared/ui/atoms/field/field.component';
 import { SelectComponent } from '../../../../shared/ui/atoms/select/select.component';
 import { BadgeComponent } from '../../../../shared/ui/atoms/badge/badge.component';
-import { SectionHeaderComponent } from '../../../../shared/ui/atoms/section-header/section-header.component';
 import { Subscriber, Agent } from '../../../../core/models/catalog.model';
 
 @Component({
@@ -14,7 +13,6 @@ import { Subscriber, Agent } from '../../../../core/models/catalog.model';
     FieldComponent,
     SelectComponent,
     BadgeComponent,
-    SectionHeaderComponent,
   ],
   templateUrl: './underwriting-data-form.component.html',
   styleUrl: './underwriting-data-form.component.scss',
@@ -29,9 +27,9 @@ export class UnderwritingDataFormComponent {
   @Output() subscriberChanged = new EventEmitter<string>();
 
   readonly riskOptions = [
-    { value: 'STANDARD', label: 'Estándar' },
-    { value: 'PREFERRED', label: 'Preferente' },
-    { value: 'SUBSTANDARD', label: 'Subestándar' },
+    { value: 'STANDARD', label: 'Riesgo estándar' },
+    { value: 'PREFERRED', label: 'Riesgo preferente' },
+    { value: 'SUBSTANDARD', label: 'Riesgo subestándar' },
   ];
 
   readonly businessOptions = [

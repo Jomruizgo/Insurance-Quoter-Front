@@ -1,28 +1,33 @@
-<nav class="stepper" aria-label="Progreso de cotización">
+<div class="stepper" style="flex-wrap: wrap">
   @for (step of steps; track step.key; let i = $index) {
-    <button
-      type="button"
-      class="stepper__step"
-      [class.stepper__step--active]="isActive(step.route)"
-      [class.stepper__step--complete]="statusOf(step.key) === 'COMPLETE'"
-      [class.stepper__step--incomplete]="statusOf(step.key) === 'INCOMPLETE'"
+    <div
+      class="step"
+      [attr.data-complete]="statusOf(step.key) === 'COMPLETE'"
+      [attr.aria-current]="isActive(step.route)"
       (click)="navigate(step.route)"
-      [attr.aria-current]="isActive(step.route) ? 'step' : null"
+      (keydown.enter)="navigate(step.route)"
+      role="button"
+      tabindex="0"
     >
-      <span class="stepper__icon">
+      <div class="step-num">
         @if (statusOf(step.key) === 'COMPLETE') {
-          <app-icon name="check-circle" [size]="18" />
-        } @else if (statusOf(step.key) === 'INCOMPLETE') {
-          <app-icon name="alert" [size]="18" />
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5"/>
+          </svg>
         } @else {
-          <span class="stepper__number">{{ stepNumber(i) }}</span>
+          {{ i + 1 }}
         }
-      </span>
-      <span class="stepper__label">{{ step.label }}</span>
-    </button>
-
+      </div>
+      <span>{{ step.label }}</span>
+      @if (statusOf(step.key) === 'INCOMPLETE') {
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color: var(--warn); flex-shrink: 0" aria-label="Incompleto">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <path d="M12 9v4M12 17h.01"/>
+        </svg>
+      }
+    </div>
     @if (i < steps.length - 1) {
-      <span class="stepper__connector" aria-hidden="true"></span>
+      <div class="step-sep" aria-hidden="true"></div>
     }
   }
-</nav>
+</div>

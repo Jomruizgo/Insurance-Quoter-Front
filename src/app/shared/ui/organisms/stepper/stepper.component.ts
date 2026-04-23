@@ -1,20 +1,18 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IconComponent } from '../../atoms/icon/icon.component';
 import { QuoteState, SectionStatus } from '../../../../core/models/folio.model';
 import { QUOTE_STEPS } from './stepper.steps';
 
 @Component({
   selector: 'app-stepper',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.scss',
 })
 export class StepperComponent {
   @Input() folio: string = '';
-  @Input() sections!: QuoteState['sections'];
+  @Input() sections: QuoteState['sections'] | null = null;
   @Input() activeRoute: string = '';
   @Output() stepClick = new EventEmitter<string>();
 
@@ -40,6 +38,6 @@ export class StepperComponent {
 
   navigate(route: string): void {
     this.stepClick.emit(route);
-    this.router.navigate(['/quotes', this.folio, route]);
+    this.router.navigate(['/cotizador', 'quotes', this.folio, route]);
   }
 }

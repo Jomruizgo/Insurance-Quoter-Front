@@ -3,7 +3,6 @@ import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { FieldComponent } from '../../../../shared/ui/atoms/field/field.component';
 import { InputComponent } from '../../../../shared/ui/atoms/input/input.component';
 import { BadgeComponent } from '../../../../shared/ui/atoms/badge/badge.component';
-import { SectionHeaderComponent } from '../../../../shared/ui/atoms/section-header/section-header.component';
 import { UpperCaseRfcDirective } from '../../directives/upper-case-rfc.directive';
 
 @Component({
@@ -14,7 +13,6 @@ import { UpperCaseRfcDirective } from '../../directives/upper-case-rfc.directive
     FieldComponent,
     InputComponent,
     BadgeComponent,
-    SectionHeaderComponent,
     UpperCaseRfcDirective,
   ],
   templateUrl: './insured-data-form.component.html',

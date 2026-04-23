@@ -115,10 +115,10 @@ export class CalculationPage implements OnInit {
   }
 
   protected onDownloadPdf(): void {
-    // PDF generation not yet implemented (FE-09)
+    window.print();
   }
 
   onContinue(): void {
-    this.router.navigate(['/quotes', this.folioNumber, 'terms-and-conditions']);
+    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'terms-and-conditions']);
   }
 }

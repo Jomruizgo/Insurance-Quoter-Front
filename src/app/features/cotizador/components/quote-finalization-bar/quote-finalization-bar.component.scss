@@ -3,8 +3,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--color-surface, #fff);
-  border-top: 1px solid var(--color-border, #e5e7eb);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
   padding: 16px 24px;
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
 
   &__timestamp {
     font-size: 0.8125rem;
-    color: var(--color-text-muted, #6b7280);
+    color: var(--text-mute);
     flex-shrink: 0;
   }
 

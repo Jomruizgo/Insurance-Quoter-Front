@@ -43,6 +43,11 @@ import { LocationDrawerComponent } from '../../components/location-drawer/locati
           }
         </div>
         <div class="page-header__actions">
+          @if (selectedIndices.length > 0) {
+            <button class="btn btn--danger" type="button" (click)="deleteSelected()">
+              Eliminar ({{ selectedIndices.length }})
+            </button>
+          }
           <button class="btn btn--primary" type="button" (click)="addLocation()">
             + Añadir ubicación
           </button>
@@ -107,31 +112,34 @@ import { LocationDrawerComponent } from '../../components/location-drawer/locati
       justify-content: space-between;
     }
     .page-header__main { flex: 1; }
-    .page-title { margin: 0; font-size: 1.25rem; font-weight: 700; color: #111827; }
-    .page-subtitle { margin: 0.25rem 0 0; font-size: 0.875rem; color: #6b7280; }
+    .page-title { margin: 0; font-size: var(--fs-20); font-weight: 700; color: var(--text); }
+    .page-subtitle { margin: 0.25rem 0 0; font-size: var(--fs-14); color: var(--text-dim); }
     .page-header__stats { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .stat-chip {
-      padding: 0.25rem 0.75rem; border-radius: 9999px;
-      font-size: 0.8125rem; background-color: #f3f4f6; color: #374151;
+      padding: 0.25rem 0.75rem; border-radius: var(--r-pill);
+      font-size: var(--fs-13); background-color: var(--surface-2); color: var(--text-dim);
+      border: 1px solid var(--border);
     }
-    .stat-chip--complete { background-color: #d1fae5; color: #065f46; }
-    .stat-chip--warn { background-color: #fee2e2; color: #991b1b; }
+    .stat-chip--complete { background-color: color-mix(in oklch, var(--ok) 12%, transparent); color: var(--ok); border-color: color-mix(in oklch, var(--ok) 30%, transparent); }
+    .stat-chip--warn { background-color: color-mix(in oklch, var(--err) 10%, transparent); color: var(--err); border-color: color-mix(in oklch, var(--err) 30%, transparent); }
     .page-header__actions { display: flex; align-items: center; }
     .banner-container { max-width: 100%; }
     .loading-state, .error-state {
       display: flex; align-items: center; justify-content: center;
-      gap: 1rem; padding: 2rem; color: #6b7280;
+      gap: 1rem; padding: 2rem; color: var(--text-dim);
     }
     .table-container { overflow-x: auto; }
     .btn {
-      padding: 0.5rem 1.25rem; border-radius: 0.375rem;
-      font-size: 0.875rem; font-weight: 600; cursor: pointer;
-      border: 1px solid transparent;
+      padding: 0.5rem 1.25rem; border-radius: var(--r-md);
+      font-size: var(--fs-14); font-weight: 500; cursor: pointer;
+      border: 1px solid transparent; font-family: inherit;
     }
-    .btn--primary { background-color: #2563eb; color: #fff; border-color: #2563eb; }
-    .btn--primary:hover { background-color: #1d4ed8; }
-    .btn--secondary { background-color: #fff; color: #374151; border-color: #d1d5db; }
-    .btn--secondary:hover { background-color: #f9fafb; }
+    .btn--primary { background-color: var(--brand-500); color: var(--ink-900); border-color: var(--brand-500); }
+    .btn--primary:hover { background-color: var(--brand-600); border-color: var(--brand-600); }
+    .btn--secondary { background-color: var(--surface); color: var(--text); border-color: var(--border-strong); }
+    .btn--secondary:hover { background-color: var(--surface-2); }
+    .btn--danger { background-color: var(--err); color: var(--ink-0); border-color: var(--err); }
+    .btn--danger:hover { opacity: 0.9; }
   `],
 })
 export class LocationsPageComponent implements OnInit {
@@ -258,6 +266,24 @@ export class LocationsPageComponent implements OnInit {
 
   onSelectionChanged(indices: number[]): void {
     this.selectedIndices = indices;
+  }
+
+  deleteSelected(): void {
+    const toDelete = new Set(this.selectedIndices);
+    const remaining = this.locations.filter(l => !toDelete.has(l.index));
+    this.locationService
+      .reemplazarLista(this.folio, remaining, this.currentVersion)
+      .subscribe({
+        next: (res) => {
+          this.locations = res.locations;
+          this.currentVersion = res.version;
+          this.totalExpected = res.locations.length;
+          this.selectedIndices = [];
+        },
+        error: () => {
+          this.error = 'No se pudieron eliminar las ubicaciones. Intenta de nuevo.';
+        },
+      });
   }
 
   scrollToTable(): void {
