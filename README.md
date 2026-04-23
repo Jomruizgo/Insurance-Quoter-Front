@@ -1,59 +1,76 @@
-# CotizadorDanosWeb
+# Cotizador Daños Web — Insurance-Quoter-Front
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.24.
+**Repositorio:** https://github.com/Jomruizgo/Insurance-Quoter-Front
 
-## Development server
+SPA Angular 19 (standalone) del cotizador de seguros de daños. Consume los microservicios `plataforma-danos-back` y `plataforma-core-ohs`.
 
-To start a local development server, run:
+## Ecosistema
+
+| Servicio | Repositorio |
+|----------|-------------|
+| Frontend Angular (este repo) | https://github.com/Jomruizgo/Insurance-Quoter-Front |
+| Backend core / catálogos | https://github.com/Jomruizgo/Insurance-Quoter-Core |
+| Backend quoter | https://github.com/Jomruizgo/Insurance-Quoter-Back |
+
+## Stack
+
+| Tecnología | Versión |
+|-----------|---------|
+| Angular | 19 (standalone) |
+| TypeScript | 5.x |
+| Jasmine + Karma | — |
+| Node | 20 |
+
+## Ejecutar en local (desarrollo)
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La app queda en `http://localhost:4200`. Usa `localhost:8080` y `localhost:8081` como URLs de API por defecto (ver `AppConfigService`).
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Ejecutar tests
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+Solo se testean services, guards y pipes. Los componentes y templates no se prueban.
 
-For end-to-end (e2e) testing, run:
+## Cobertura
 
 ```bash
-ng e2e
+ng test --code-coverage
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Build de producción
 
-## Additional Resources
+```bash
+npm run build -- --configuration=production
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Los artefactos quedan en `dist/cotizador-danos-web/`.
+
+## Configuración de API en Docker
+
+El archivo `src/assets/config.json` define las URLs de API para producción:
+
+```json
+{
+  "apiUrl": "/api",
+  "coreUrl": "/api-core"
+}
+```
+
+Nginx hace proxy de `/api/` → `backend:8080` y `/api-core/` → `core:8081`.
+
+## Rutas de la aplicación
+
+| Ruta | Descripción |
+|------|-------------|
+| `/cotizador` | Selección o creación de folio |
+| `/quotes/:folio/general-info` | Datos generales |
+| `/quotes/:folio/locations` | Ubicaciones |
+| `/quotes/:folio/technical-info` | Información técnica y coberturas |
+| `/quotes/:folio/terms-and-conditions` | Cálculo y resultados |
