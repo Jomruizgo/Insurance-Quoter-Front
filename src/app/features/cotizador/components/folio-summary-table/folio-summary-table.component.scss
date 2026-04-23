@@ -1,0 +1,178 @@
+.folio-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+}
+
+.folio-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  background: var(--surface, #fff);
+
+  &__head {
+    background: var(--surface-alt, #f9fafb);
+    border-bottom: 1px solid var(--border, #e5e7eb);
+  }
+
+  &__th {
+    padding: 0.625rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--text-dim, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+
+    &--check {
+      width: 40px;
+      padding: 0.625rem 0.75rem;
+    }
+
+    &--num {
+      text-align: right;
+    }
+
+    &--opts {
+      width: 40px;
+      text-align: center;
+    }
+  }
+
+  &__row {
+    border-bottom: 1px solid var(--border, #e5e7eb);
+    cursor: pointer;
+    transition: background 0.12s;
+
+    &:hover {
+      background: var(--surface-hover, #f3f4f6);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--empty {
+      cursor: default;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+
+  &__td {
+    padding: 0.75rem 1rem;
+    color: var(--text, #111827);
+    vertical-align: middle;
+
+    &--check {
+      width: 40px;
+      padding: 0.75rem 0.75rem;
+    }
+
+    &--folio {
+      width: 170px;
+    }
+
+    &--agent {
+      width: 150px;
+    }
+
+    &--num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    &--progress {
+      width: 160px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    &--date {
+      width: 130px;
+      color: var(--text-dim, #6b7280);
+      font-variant-numeric: tabular-nums;
+    }
+
+    &--opts {
+      width: 40px;
+      text-align: center;
+    }
+
+    &--empty {
+      padding: 3rem 1rem;
+    }
+  }
+
+  &__mono {
+    font-family: 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.8125rem;
+    color: var(--text, #111827);
+  }
+
+  &__agent-name {
+    display: block;
+    color: var(--text, #111827);
+  }
+
+  &__agent-code {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-dim, #6b7280);
+    margin-top: 0.125rem;
+  }
+
+  &__pct {
+    font-size: 0.75rem;
+    color: var(--text-dim, #6b7280);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__muted {
+    color: var(--text-dim, #6b7280);
+  }
+
+  &__options-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    color: var(--text-dim, #6b7280);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+
+    &:hover {
+      background: var(--border, #e5e7eb);
+      color: var(--text, #111827);
+    }
+  }
+
+  &__checkbox {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+  }
+
+  &__empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-dim, #6b7280);
+    padding: 1rem 0;
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+  }
+}

@@ -10,7 +10,7 @@ import { TermsPage } from './pages/terms.page';
 export const COTIZADOR_ROUTES: Routes = [
   { path: '', component: CotizadorDashboardPage },
   {
-    path: 'quotes/:folio',
+    path: 'quotes/:folioNumber',
     component: MainLayoutComponent,
     children: [
       { path: 'general-info',         component: GeneralInfoPage },

@@ -1,0 +1,74 @@
+<div class="folio-table-wrapper">
+  <table class="folio-table" aria-label="Inventario de folios">
+    <thead class="folio-table__head">
+      <tr>
+        <th class="folio-table__th folio-table__th--check" scope="col">
+          <input type="checkbox" class="folio-table__checkbox" aria-label="Seleccionar todos" disabled title="Próximamente" />
+        </th>
+        <th class="folio-table__th" scope="col">Folio</th>
+        <th class="folio-table__th" scope="col">Cliente</th>
+        <th class="folio-table__th" scope="col">Agente</th>
+        <th class="folio-table__th" scope="col">Estado</th>
+        <th class="folio-table__th folio-table__th--num" scope="col">Ubic.</th>
+        <th class="folio-table__th" scope="col">Progreso</th>
+        <th class="folio-table__th folio-table__th--num" scope="col">Prima comercial</th>
+        <th class="folio-table__th" scope="col">Actualizado</th>
+        <th class="folio-table__th folio-table__th--opts" scope="col" aria-label="Opciones"></th>
+      </tr>
+    </thead>
+    <tbody class="folio-table__body">
+      @for (folio of folios; track folio.folioNumber) {
+        <tr class="folio-table__row" (click)="onRowClick($event, folio.folioNumber)">
+          <td class="folio-table__td folio-table__td--check">
+            <input type="checkbox" class="folio-table__checkbox" aria-label="Seleccionar folio" disabled title="Próximamente" />
+          </td>
+          <td class="folio-table__td folio-table__td--folio">
+            <span class="folio-table__mono">{{ folio.folioNumber }}</span>
+          </td>
+          <td class="folio-table__td">{{ folio.client }}</td>
+          <td class="folio-table__td folio-table__td--agent">
+            <span class="folio-table__agent-name">{{ folio.agentName }}</span>
+            <span class="folio-table__agent-code">{{ folio.agentCode }}</span>
+          </td>
+          <td class="folio-table__td">
+            <app-status-badge [status]="folio.status" />
+          </td>
+          <td class="folio-table__td folio-table__td--num">{{ folio.locationCount }}</td>
+          <td class="folio-table__td folio-table__td--progress">
+            <app-sparkline [pct]="folio.completionPct" />
+            <span class="folio-table__pct">{{ folio.completionPct }}%</span>
+          </td>
+          <td class="folio-table__td folio-table__td--num">
+            @if (folio.commercialPremium !== null) {
+              {{ folio.commercialPremium | currency:'MXN':'symbol-narrow':'1.0-0':'es-MX' }}
+            } @else {
+              <span class="folio-table__muted">—</span>
+            }
+          </td>
+          <td class="folio-table__td folio-table__td--date">
+            {{ folio.updatedAt | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="folio-table__td folio-table__td--opts">
+            <button class="folio-table__options-btn" type="button" aria-label="Opciones del folio" disabled title="Próximamente">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      } @empty {
+        <tr class="folio-table__row folio-table__row--empty">
+          <td class="folio-table__td folio-table__td--empty" colspan="10">
+            <div class="folio-table__empty-state">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              <p>No se encontraron folios con estos filtros</p>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

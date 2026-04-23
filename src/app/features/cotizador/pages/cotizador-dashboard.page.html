@@ -1,0 +1,106 @@
+<div class="dashboard">
+  <!-- ─── HEADER ─── -->
+  <header class="dashboard__header">
+    <div class="dashboard__header-left">
+      <h1 class="dashboard__title">Panel de folios</h1>
+      <p class="dashboard__subtitle">Gestiona cotizaciones de seguros de daños patrimoniales</p>
+    </div>
+    <div class="dashboard__header-actions">
+      <!-- Exportar: visual only -->
+      <app-btn variant="secondary" size="sm">
+        Exportar
+      </app-btn>
+      <app-btn variant="primary" size="sm" (click)="openNewFolioModal()">
+        Nuevo folio
+      </app-btn>
+    </div>
+  </header>
+
+  <!-- ─── STAT CARDS ─── -->
+  <section class="dashboard__stats" aria-label="Métricas del portafolio">
+    <p class="dashboard__stats-note">Las métricas reflejan el total de tu portafolio</p>
+    <app-stat-card
+      label="Folios totales"
+      [value]="isLoading ? '—' : stats.total.toString()"
+      tone="neutral"
+    />
+    <app-stat-card
+      label="En progreso"
+      [value]="isLoading ? '—' : stats.inProgress.toString()"
+      tone="info"
+    />
+    <app-stat-card
+      label="Calculados y emitidos"
+      [value]="isLoading ? '—' : stats.readyToIssue.toString()"
+      tone="brand"
+    />
+    <app-stat-card
+      label="Prima comercial acumulada"
+      [value]="isLoading ? '—' : formatPremium(stats.accumulatedPremium)"
+      tone="brand"
+    />
+  </section>
+
+  <!-- ─── FILTERS ─── -->
+  <section class="dashboard__filters">
+    <app-folio-filters
+      [filters]="filters"
+      [viewMode]="viewMode"
+      (filtersChange)="onFiltersChange($event)"
+      (viewModeChange)="onViewModeChange($event)"
+    />
+  </section>
+
+  <!-- ─── CONTENT ─── -->
+  <section class="dashboard__content">
+    @if (isLoading) {
+      <div class="dashboard__loading" aria-live="polite" aria-busy="true">
+        <div class="dashboard__spinner" role="status" aria-label="Cargando folios..."></div>
+        <p>Cargando...</p>
+      </div>
+    } @else if (hasError) {
+      <div class="dashboard__error" role="alert">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>No se pudieron cargar los folios. Intenta de nuevo.</p>
+        <app-btn variant="secondary" size="sm" (click)="retry()">
+          Reintentar
+        </app-btn>
+      </div>
+    } @else if (filteredFolios.length === 0 && folios.length === 0) {
+      <div class="dashboard__empty" role="status">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        <p>No hay folios aún</p>
+        <app-btn variant="primary" size="sm" (click)="openNewFolioModal()">
+          Crear primer folio
+        </app-btn>
+      </div>
+    } @else {
+      @if (viewMode === 'list') {
+        <app-folio-summary-table
+          [folios]="filteredFolios"
+          (folioClick)="onFolioClick($event)"
+        />
+      } @else {
+        <app-folio-summary-grid
+          [folios]="filteredFolios"
+          (folioClick)="onFolioClick($event)"
+        />
+      }
+    }
+  </section>
+</div>
+
+<!-- ─── NEW FOLIO MODAL ─── -->
+@if (isModalOpen) {
+  <app-new-folio-modal
+    [isOpen]="isModalOpen"
+    (closed)="onModalClosed()"
+  />
+}
