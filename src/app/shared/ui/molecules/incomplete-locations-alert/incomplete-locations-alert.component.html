@@ -1,0 +1,18 @@
+@if (isVisible) {
+  <div class="incomplete-alert" role="alert">
+    <div class="incomplete-alert__header">
+      <app-icon name="alert" [size]="20" class="incomplete-alert__icon"></app-icon>
+      <span class="incomplete-alert__title">Ubicaciones no calculadas</span>
+    </div>
+    <ul class="incomplete-alert__list">
+      @for (loc of incompleteLocations; track loc.index) {
+        <li class="incomplete-alert__item">
+          <strong>#{{ loc.index }} {{ loc.locationName }}:</strong>
+          @for (alert of loc.blockingAlerts; track alert.code) {
+            {{ alert.message }}
+          }
+        </li>
+      }
+    </ul>
+  </div>
+}

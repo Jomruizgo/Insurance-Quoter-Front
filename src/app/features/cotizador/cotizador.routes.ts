@@ -6,6 +6,7 @@ import { LayoutPage } from './pages/layout.page';
 import { LocationsPageComponent } from './pages/locations/locations-page.component';
 import { TechnicalInfoPage } from './pages/technical-info.page';
 import { TermsPage } from './pages/terms.page';
+import { CalculationPage } from './pages/calculation/calculation.page';
 
 export const COTIZADOR_ROUTES: Routes = [
   { path: '', component: CotizadorDashboardPage },
@@ -17,6 +18,7 @@ export const COTIZADOR_ROUTES: Routes = [
       { path: 'layout',               component: LayoutPage },
       { path: 'locations',            component: LocationsPageComponent },
       { path: 'technical-info',       component: TechnicalInfoPage },
+      { path: 'calculation',          component: CalculationPage },
       { path: 'terms-and-conditions', component: TermsPage },
       { path: '', redirectTo: 'general-info', pathMatch: 'full' },
     ],

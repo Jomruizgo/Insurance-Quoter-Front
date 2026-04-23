@@ -1,0 +1,38 @@
+<div class="premium-summary">
+  <!-- Card prima neta -->
+  <div class="premium-summary__card premium-summary__card--dark">
+    <span class="premium-summary__card-label">Prima neta</span>
+    <span class="premium-summary__card-value">
+      {{ result.netPremium | currency:'MXN':'symbol':'1.2-2':'es-MX' }}
+    </span>
+  </div>
+
+  <!-- Card prima comercial -->
+  <div class="premium-summary__card premium-summary__card--brand">
+    <span class="premium-summary__card-label">Prima comercial</span>
+    <span class="premium-summary__card-value">
+      {{ result.commercialPremium | currency:'MXN':'symbol':'1.2-2':'es-MX' }}
+    </span>
+  </div>
+
+  <!-- Card por ubicación -->
+  <div class="premium-summary__card premium-summary__card--neutral">
+    <span class="premium-summary__card-label">Por ubicación</span>
+    <ul class="premium-summary__location-list">
+      @for (p of locationList; track p.index) {
+        <li class="premium-summary__location-item">
+          <span class="premium-summary__location-name">
+            #{{ p.index }} {{ p.locationName }}
+          </span>
+          @if (p.calculable) {
+            <span class="premium-summary__location-value">
+              {{ p.commercialPremium | currency:'MXN':'symbol':'1.0-0':'es-MX' }}
+            </span>
+          } @else {
+            <app-badge variant="warn">No calculable</app-badge>
+          }
+        </li>
+      }
+    </ul>
+  </div>
+</div>
