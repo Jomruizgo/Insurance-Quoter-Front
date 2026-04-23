@@ -1,0 +1,48 @@
+<div class="coverage-card" [class.coverage-card--active]="coverage.selected">
+
+  <!-- Header -->
+  <div class="coverage-card__header" [class.coverage-card__header--active]="coverage.selected">
+    <div class="coverage-card__header-left">
+      <app-switch [on]="coverage.selected" (change)="onToggle($event)" />
+      <div class="coverage-card__title">
+        <span class="coverage-card__name">{{ coverage.description }}</span>
+        <code class="coverage-card__code">{{ coverage.code }}</code>
+      </div>
+    </div>
+    @if (coverage.selected) {
+      <app-badge variant="ok">Activa</app-badge>
+    }
+  </div>
+
+  <!-- Body -->
+  <div class="coverage-card__body" [class.coverage-card__body--disabled]="!coverage.selected">
+    <div class="coverage-card__field">
+      <label [for]="coverage.code + '-deductible'" class="coverage-card__label">Deducible (%)</label>
+      <input
+        [id]="coverage.code + '-deductible'"
+        class="coverage-card__input"
+        type="number"
+        [value]="coverage.deductiblePercentage"
+        [step]="0.5"
+        min="0"
+        [disabled]="!coverage.selected"
+        (change)="onDeductibleChange($event)"
+      />
+    </div>
+    <div class="coverage-card__field">
+      <label [for]="coverage.code + '-coinsurance'" class="coverage-card__label">Coaseguro (%)</label>
+      <input
+        [id]="coverage.code + '-coinsurance'"
+        class="coverage-card__input"
+        type="number"
+        [value]="coverage.coinsurancePercentage"
+        [step]="5"
+        min="0"
+        max="100"
+        [disabled]="!coverage.selected"
+        (change)="onCoinsuranceChange($event)"
+      />
+    </div>
+  </div>
+
+</div>

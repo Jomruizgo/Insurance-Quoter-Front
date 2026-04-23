@@ -1,0 +1,60 @@
+<div class="summary-card">
+  <div class="summary-card__header">
+    <h2 class="summary-card__folio">Folio {{ folioNumber }}</h2>
+    <app-badge variant="brand">CALCULADA</app-badge>
+  </div>
+
+  <div class="summary-card__grid">
+    <div class="summary-card__field">
+      <span class="summary-card__label">Cliente</span>
+      <span class="summary-card__value">{{ generalInfo.insuredData.name }}</span>
+    </div>
+    <div class="summary-card__field">
+      <span class="summary-card__label">Suscriptor</span>
+      <span class="summary-card__value">{{ generalInfo.underwritingData.subscriberId }}</span>
+    </div>
+    <div class="summary-card__field">
+      <span class="summary-card__label">Agente</span>
+      <span class="summary-card__value">{{ generalInfo.underwritingData.agentCode }}</span>
+    </div>
+    <div class="summary-card__field">
+      <span class="summary-card__label">Número de ubicaciones</span>
+      <span class="summary-card__value">{{ result.premiumsByLocation.length }}</span>
+    </div>
+    <div class="summary-card__field">
+      <span class="summary-card__label">Fecha de cálculo</span>
+      <span class="summary-card__value">{{ result.calculatedAt | date:'dd MMM yyyy HH:mm' }}</span>
+    </div>
+  </div>
+
+  <div class="summary-card__primas">
+    <div class="summary-card__prima">
+      <span class="summary-card__label">Prima neta total</span>
+      <span class="summary-card__prima-value">
+        {{ result.netPremium | currency:'MXN':'symbol-narrow':'1.2-2' }}
+      </span>
+    </div>
+    <div class="summary-card__prima">
+      <span class="summary-card__label">Prima comercial total</span>
+      <span class="summary-card__prima-value">
+        {{ result.commercialPremium | currency:'MXN':'symbol-narrow':'1.2-2' }}
+      </span>
+    </div>
+  </div>
+
+  @if (calculableLocations.length > 0) {
+    <div class="summary-card__locations">
+      <h3 class="summary-card__locations-title">Ubicaciones calculables</h3>
+      <ul class="summary-card__locations-list">
+        @for (loc of calculableLocations; track loc.index) {
+          <li class="summary-card__location-item">
+            <span class="summary-card__location-name">{{ loc.locationName }}</span>
+            <span class="summary-card__location-prima">
+              {{ loc.netPremium | currency:'MXN':'symbol-narrow':'1.2-2' }}
+            </span>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

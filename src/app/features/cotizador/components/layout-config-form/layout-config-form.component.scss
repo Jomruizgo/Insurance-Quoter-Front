@@ -1,0 +1,36 @@
+.req { color: var(--err); margin-left: 2px; }
+
+.ltype-option {
+  flex: 1;
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.ltype-card {
+  padding: 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  transition: all 120ms;
+
+  &--selected {
+    border-color: var(--brand-500);
+    background: color-mix(in oklch, var(--brand-500) 10%, transparent);
+  }
+
+  &__label {
+    font-weight: 500;
+    font-size: var(--fs-13);
+  }
+
+  &__check {
+    color: var(--brand-700);
+    flex-shrink: 0;
+  }
+}
+
+.ltype-info {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0;
+}

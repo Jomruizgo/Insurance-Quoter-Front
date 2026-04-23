@@ -1,0 +1,27 @@
+<div class="tab-selector">
+  <div class="tab-selector__tabs">
+    @for (location of locations; track location.index) {
+      <button
+        class="tab-selector__tab"
+        [class.tab-selector__tab--active]="location.index === activeIndex"
+        (click)="onTabClick(location.index)"
+        type="button"
+      >
+        <span class="tab-selector__tab-label">{{ formatLocationLabel(location.index) }}</span>
+        <span class="tab-selector__tab-name">{{ location.locationName }}</span>
+        <span class="tab-selector__tab-count">{{ activeCount }}/{{ totalCount }} coberturas activas</span>
+      </button>
+    }
+  </div>
+
+  <div class="tab-selector__actions">
+    <app-btn
+      variant="secondary"
+      size="sm"
+      [disabled]="isApplyToAllDisabled"
+      (click)="onApplyToAll()"
+    >
+      Aplicar a todas
+    </app-btn>
+  </div>
+</div>

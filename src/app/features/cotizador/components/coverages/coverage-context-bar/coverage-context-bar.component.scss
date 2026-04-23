@@ -1,0 +1,55 @@
+.context-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__location {
+    font-size: var(--fs-14);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  &__separator {
+    color: var(--text-mute);
+  }
+
+  &__count {
+    font-size: var(--fs-14);
+    color: var(--text-mute);
+  }
+
+  &__copy {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__copy-label {
+    font-size: 13px;
+    color: var(--text-mute);
+    white-space: nowrap;
+  }
+
+  &__copy-select {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 4px 8px;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: var(--brand-500);
+    }
+  }
+}

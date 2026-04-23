@@ -1,0 +1,20 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "custom-property-no-missing-var-function": true,
+    "no-duplicate-selectors": true,
+    "color-no-invalid-hex": true,
+    "declaration-block-no-duplicate-properties": true,
+    "scss/no-duplicate-dollar-variables": true,
+    "lightness-notation": "number",
+    "hue-degree-notation": "number",
+    "alpha-value-notation": "number",
+    "color-function-notation": "modern",
+    "custom-property-empty-line-before": "never",
+    "declaration-block-single-line-max-declarations": null,
+    "no-empty-source": null,
+    "scss/operator-no-unspaced": null,
+    "comment-empty-line-before": null
+  },
+  "ignoreFiles": ["dist/**", "node_modules/**"]
+}

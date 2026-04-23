@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.terms-text {
+  padding: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+
+  &__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: var(--text);
+  }
+
+  &__section {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__section-title {
+    font-size: var(--fs-14);
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--text);
+  }
+
+  &__section-body {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--text-mute);
+    margin: 0;
+  }
+}

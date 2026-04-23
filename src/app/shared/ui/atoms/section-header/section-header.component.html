@@ -1,0 +1,14 @@
+<header class="section-header">
+  <div class="section-header-main">
+    @if (eyebrow) {
+      <p class="section-header-eyebrow">{{ eyebrow }}</p>
+    }
+    <h1 class="section-header-title">{{ title }}</h1>
+    @if (subtitle) {
+      <p class="section-header-subtitle">{{ subtitle }}</p>
+    }
+  </div>
+  <div class="section-header-actions">
+    <ng-content select="[slot=actions]" />
+  </div>
+</header>

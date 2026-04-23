@@ -1,0 +1,64 @@
+<!-- Estado A: Pre-cálculo -->
+@if (!result) {
+  <app-section-header
+    [eyebrow]="'Folio ' + folioNumber + ' · Paso 5 de 5'"
+    title="Cálculo de prima"
+  >
+    <div slot="actions">
+      <app-btn
+        variant="primary"
+        [disabled]="true"
+      >
+        Continuar a términos y condiciones
+      </app-btn>
+    </div>
+  </app-section-header>
+
+  <div class="calculation-page__content">
+    @if (error) {
+      <div class="calculation-page__error" role="alert">
+        {{ error }}
+      </div>
+    }
+
+    <app-calculation-trigger
+      [calculableCount]="calculableCount"
+      [incompleteCount]="incompleteCount"
+      [calculating]="calculating"
+      (calculate)="onCalculate()"
+    ></app-calculation-trigger>
+  </div>
+}
+
+<!-- Estado B: Resultado del cálculo -->
+@if (result) {
+  <app-section-header
+    [eyebrow]="'Folio ' + folioNumber + ' · Resultado'"
+    title="Desglose de prima"
+  >
+    <div slot="actions">
+      <app-btn variant="secondary" (click)="onDownloadPdf()" [disabled]="true">
+        Descargar PDF
+      </app-btn>
+      <app-btn variant="secondary" (click)="onRecalculate()">
+        Recalcular
+      </app-btn>
+      <app-btn
+        variant="primary"
+        (click)="onContinue()"
+      >
+        Continuar a términos y condiciones
+      </app-btn>
+    </div>
+  </app-section-header>
+
+  <div class="calculation-page__content">
+    <app-premium-summary [result]="result"></app-premium-summary>
+
+    <app-incomplete-locations-alert
+      [incompleteLocations]="incompleteLocations"
+    ></app-incomplete-locations-alert>
+
+    <app-premium-breakdown-table [result]="result"></app-premium-breakdown-table>
+  </div>
+}

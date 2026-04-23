@@ -1,0 +1,7 @@
+<div class="stat-card" [style.--accent]="accentColor">
+  <p class="stat-card-label">{{ label }}</p>
+  <p class="stat-card-value">{{ value }}</p>
+  @if (subtext) {
+    <p class="stat-card-subtext">{{ subtext }}</p>
+  }
+</div>

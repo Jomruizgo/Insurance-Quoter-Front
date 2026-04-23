@@ -1,0 +1,68 @@
+@if (isOpen) {
+  <div class="modal-backdrop" (click)="cancel()" aria-hidden="true"></div>
+
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal__header">
+      <h2 class="modal__title" id="modal-title">Crear nuevo folio</h2>
+      <button type="button" class="modal__close" (click)="cancel()" aria-label="Cerrar">
+        <app-icon name="x" [size]="20" />
+      </button>
+    </div>
+
+    <div class="modal__body">
+      @if (errorMessage) {
+        <div class="modal__alert" role="alert">
+          <app-icon name="alert" [size]="16" />
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+      <div class="modal__info" role="note">
+        <app-icon name="info" [size]="16" />
+        <span>Seleccione el suscriptor y agente para iniciar una nueva cotización.</span>
+      </div>
+
+      <form [formGroup]="form" class="modal__form" (ngSubmit)="submit()">
+        <div class="modal__field">
+          <label class="modal__label" for="subscriberId">Suscriptor</label>
+          <app-select formControlName="subscriberId" id="subscriberId">
+            <option value="">— Seleccionar suscriptor —</option>
+            @for (sub of subscribers; track sub.id) {
+              <option [value]="sub.id">{{ sub.name }}</option>
+            }
+          </app-select>
+        </div>
+
+        <div class="modal__field">
+          <label class="modal__label" for="agentCode">Agente</label>
+          <app-select formControlName="agentCode" id="agentCode">
+            <option value="">— Seleccionar agente —</option>
+            @for (agent of filteredAgents; track agent.code) {
+              <option [value]="agent.code">{{ agent.name }}</option>
+            }
+          </app-select>
+          @if (form.value.subscriberId && filteredAgents.length === 0) {
+            <span class="modal__hint">No hay agentes para este suscriptor.</span>
+          }
+        </div>
+      </form>
+    </div>
+
+    <div class="modal__footer">
+      <app-btn variant="secondary" (click)="cancel()" [disabled]="isLoading">
+        Cancelar
+      </app-btn>
+      <app-btn
+        variant="primary"
+        [disabled]="form.invalid || isLoading"
+        (click)="submit()"
+      >
+        @if (isLoading) {
+          Creando…
+        } @else {
+          Crear folio
+        }
+      </app-btn>
+    </div>
+  </div>
+}

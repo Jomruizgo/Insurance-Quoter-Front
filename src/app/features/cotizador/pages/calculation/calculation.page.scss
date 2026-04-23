@@ -1,0 +1,17 @@
+.calculation-page {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem 0;
+  }
+
+  &__error {
+    background: var(--error-50, #fef2f2);
+    border: 1px solid var(--error-300, #fca5a5);
+    border-radius: var(--r-lg);
+    padding: 1rem 1.25rem;
+    color: var(--err);
+    font-size: 0.9375rem;
+  }
+}

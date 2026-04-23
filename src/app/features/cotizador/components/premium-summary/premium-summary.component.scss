@@ -1,0 +1,74 @@
+.premium-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+
+    &--dark {
+      background: var(--ink-900, #1a1a2e);
+      color: var(--ink-0, var(--surface));
+    }
+
+    &--brand {
+      background: var(--brand-500);
+      color: var(--surface);
+    }
+
+    &--neutral {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+  }
+
+  &__card-label {
+    font-size: var(--fs-14);
+    font-weight: 500;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__card-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  &__location-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__location-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-14);
+  }
+
+  &__location-name {
+    color: var(--text-dim);
+    flex: 1;
+  }
+
+  &__location-value {
+    font-weight: 600;
+    color: var(--text);
+  }
+}

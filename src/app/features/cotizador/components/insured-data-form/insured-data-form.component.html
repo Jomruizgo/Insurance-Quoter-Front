@@ -1,0 +1,29 @@
+<div class="card card-pad" [formGroup]="form">
+  <div class="card-header">
+    <div>
+      <p class="card-title">Asegurado</p>
+      <p class="card-subtitle">Persona moral o física titular del contrato</p>
+    </div>
+    <app-badge [variant]="isComplete ? 'ok' : 'warn'">
+      {{ isComplete ? '● Completo' : 'Pendiente' }}
+    </app-badge>
+  </div>
+
+  <div class="fields-grid">
+    <app-field label="Razón social" [required]="true" [error]="nameError">
+      <app-input formControlName="name" />
+    </app-field>
+
+    <app-field label="RFC" [required]="true" [error]="rfcError">
+      <app-input formControlName="rfc" appUpperCaseRfc />
+    </app-field>
+
+    <app-field label="Correo de contacto" [required]="true" [error]="emailError">
+      <app-input formControlName="email" />
+    </app-field>
+
+    <app-field label="Teléfono" [required]="true" [error]="phoneError">
+      <app-input formControlName="phone" />
+    </app-field>
+  </div>
+</div>

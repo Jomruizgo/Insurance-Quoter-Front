@@ -1,0 +1,78 @@
+<app-section-header
+  [eyebrow]="'Folio ' + folio + ' · Paso 2 de 5'"
+  title="Layout de ubicaciones"
+  subtitle="Configura la cantidad y el tipo de ubicaciones a registrar en esta cotización."
+/>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" style="margin-top: 24px">
+  <div class="card card-pad">
+    <div class="grid grid-2">
+
+      <!-- Número de ubicaciones -->
+      <div class="field">
+        <label class="field-label" for="numberOfLocations">
+          Número de ubicaciones <span class="req">*</span>
+        </label>
+        <input
+          id="numberOfLocations"
+          class="input"
+          type="number"
+          formControlName="numberOfLocations"
+          min="1"
+          max="50"
+          step="1"
+          inputmode="numeric"
+        />
+        <span class="field-help">Entre 1 y 50</span>
+        @if (numberOfLocationsError) {
+          <span class="field-error">{{ numberOfLocationsError }}</span>
+        }
+      </div>
+
+      <!-- Tipo de ubicación -->
+      <div class="field">
+        <p id="locationType-label" class="field-label">
+          Tipo de ubicación <span class="req">*</span>
+        </p>
+        <div
+          class="row gap-2"
+          style="flex-wrap: wrap"
+          role="radiogroup"
+          aria-labelledby="locationType-label"
+        >
+          @for (option of locationTypeOptions; track option.value) {
+            <label class="ltype-option">
+              <input
+                type="radio"
+                name="ltype"
+                [checked]="isLocationTypeSelected(option.value)"
+                (change)="selectLocationType(option.value)"
+                style="display: none"
+              />
+              <div
+                class="ltype-card"
+                [class.ltype-card--selected]="isLocationTypeSelected(option.value)"
+              >
+                <div class="row between">
+                  <span class="ltype-card__label">{{ option.label }}</span>
+                  @if (isLocationTypeSelected(option.value)) {
+                    <app-icon name="check-circle" [size]="14" class="ltype-card__check" />
+                  }
+                </div>
+              </div>
+            </label>
+          }
+        </div>
+        @if (locationTypeError) {
+          <span class="field-error">{{ locationTypeError }}</span>
+        }
+      </div>
+
+    </div>
+
+    <div class="divider"></div>
+    <p class="ltype-info">
+      Este layout se replicará como plantilla al registrar ubicaciones. Podrás sobrescribirlo ubicación por ubicación.
+    </p>
+  </div>
+</form>

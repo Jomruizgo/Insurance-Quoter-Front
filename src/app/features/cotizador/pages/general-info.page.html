@@ -1,0 +1,45 @@
+<div class="page">
+  <div class="page-header">
+    <app-section-header
+      [eyebrow]="'Folio ' + folioNumber + ' · Paso 1 de 5'"
+      title="Datos generales"
+      subtitle="Captura la información del asegurado y asignación de suscripción. Todos los campos marcados con * son obligatorios."
+    />
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-error" role="alert">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <form [formGroup]="form" class="page-form" (ngSubmit)="onSave()">
+    <app-insured-data-form
+      [form]="insuredDataForm"
+      [isComplete]="isInsuredComplete"
+    />
+
+    <app-underwriting-data-form
+      [form]="underwritingDataForm"
+      [subscribers]="allSubscribers"
+      [agents]="filteredAgents"
+      [version]="currentVersion"
+      [isComplete]="isUnderwritingComplete"
+      (subscriberChanged)="onSubscriberChanged($event)"
+    />
+
+    <div class="page-actions">
+      <button type="button" class="btn btn--ghost" (click)="goBack()">
+        ← Anterior
+      </button>
+      <div class="page-actions__end">
+        <button type="button" class="btn btn--secondary" [disabled]="loading" (click)="saveDraft()">
+          Guardar borrador
+        </button>
+        <button type="submit" class="btn btn--primary" [disabled]="loading">
+          @if (loading) { Guardando... } @else { Siguiente → }
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

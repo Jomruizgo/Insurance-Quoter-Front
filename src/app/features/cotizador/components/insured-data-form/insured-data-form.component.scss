@@ -1,0 +1,10 @@
+.fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-4);
+  padding-top: var(--s-4);
+}
+
+@media (max-width: 640px) {
+  .fields-grid { grid-template-columns: 1fr; }
+}

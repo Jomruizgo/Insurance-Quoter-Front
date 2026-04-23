@@ -1,0 +1,81 @@
+<div class="technical-info-page">
+
+  <!-- Header -->
+  <app-section-header
+    [eyebrow]="'Folio ' + folioNumber + ' · Paso 4 de 5'"
+    title="Opciones de cobertura por ubicación"
+  />
+
+  <!-- Loading state -->
+  @if (loading) {
+    <div class="technical-info-page__loading">
+      <p>Cargando coberturas...</p>
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (error && !loading) {
+    <div class="technical-info-page__error">
+      <p>{{ error }}</p>
+      <app-btn variant="secondary" (click)="onRetry()">Reintentar</app-btn>
+    </div>
+  }
+
+  <!-- Success message -->
+  @if (successMessage) {
+    <div class="technical-info-page__success">
+      <p>{{ successMessage }}</p>
+    </div>
+  }
+
+  <!-- Main content -->
+  @if (!loading && !error) {
+    <div class="technical-info-page__content">
+
+      <!-- Location tab selector -->
+      @if (locations.length > 0) {
+        <app-location-tab-selector
+          [locations]="locations"
+          [activeIndex]="activeLocationIndex"
+          [coverageOptions]="coverageOptions"
+          (tabSelected)="onTabSelected($event)"
+          (applyToAll)="onApplyToAll()"
+        />
+      }
+
+      <!-- Context bar for active location -->
+      @if (activeLocation) {
+        <app-coverage-context-bar
+          [locationName]="activeLocation.locationName"
+          [activeCount]="activeCount"
+          [totalCount]="coverageOptions.length"
+          [otherLocations]="otherLocations"
+          (copyFrom)="onCopyFrom($event)"
+        />
+      }
+
+      <!-- Coverage grid -->
+      <app-coverage-options-grid
+        [coverageOptions]="coverageOptions"
+        (coverageChanged)="onCoverageChanged($event)"
+      />
+
+      <!-- Save action -->
+      <div class="technical-info-page__actions">
+        <app-btn
+          variant="primary"
+          [disabled]="saving"
+          (click)="onSave()"
+        >
+          @if (saving) {
+            Guardando...
+          } @else {
+            Guardar coberturas
+          }
+        </app-btn>
+      </div>
+
+    </div>
+  }
+
+</div>

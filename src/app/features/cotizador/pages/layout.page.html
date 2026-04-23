@@ -1,0 +1,35 @@
+<div class="layout-page">
+
+  @if (errorMessage()) {
+    <div class="alert alert-err" role="alert">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <p style="color: var(--text-mute); font-size: var(--fs-13)">Cargando configuración...</p>
+  }
+
+  @if (!loading()) {
+    <app-layout-config-form
+      [folio]="folioNumber"
+      [initialData]="layoutData()"
+      [saveDisabled]="loadFailed()"
+      (saved)="onSaved($event)"
+    />
+  }
+
+  <!-- Barra de navegación -->
+  <div class="page-nav">
+    <button class="btn btn--ghost" type="button" (click)="goBack()">
+      ← Anterior
+    </button>
+    <div class="row gap-2">
+      <button class="btn btn--ghost" type="button" (click)="saveDraft()">
+        Guardar borrador
+      </button>
+      <button class="btn btn--primary" type="button" (click)="onNext()" [disabled]="loadFailed() || loading()">
+        Siguiente →
+      </button>
+    </div>
+  </div>
+
+</div>

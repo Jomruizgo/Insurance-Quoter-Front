@@ -1,0 +1,17 @@
+<div class="main-layout">
+  @if (isFolioRoute() && activeFolio()) {
+    <app-stepper
+      [folio]="activeFolio()!"
+      [sections]="quoteState()?.sections ?? null"
+      [activeRoute]="activeRoute()"
+    />
+  }
+
+  <main class="main-layout__content">
+    <router-outlet />
+  </main>
+
+  @if (isFolioRoute() && quoteState()) {
+    <app-status-bar [state]="quoteState()!" />
+  }
+</div>

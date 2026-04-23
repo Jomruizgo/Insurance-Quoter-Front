@@ -1,0 +1,57 @@
+@if (folios.length > 0) {
+  <div class="folio-grid">
+    @for (folio of folios; track folio.folioNumber) {
+      <article
+        class="folio-card"
+        (click)="onCardClick(folio.folioNumber)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="onCardClick(folio.folioNumber)"
+        (keydown.space)="onCardClick(folio.folioNumber)"
+        [attr.aria-label]="'Folio ' + folio.folioNumber"
+      >
+        <!-- Top row: folioNumber + status badge -->
+        <div class="folio-card__top">
+          <span class="folio-card__folio-number">{{ folio.folioNumber }}</span>
+          <app-status-badge [status]="folio.status" />
+        </div>
+
+        <!-- Client name -->
+        <p class="folio-card__client">{{ folio.client }}</p>
+
+        <!-- Agent and locations -->
+        <p class="folio-card__meta">
+          <span>{{ folio.agentName }}</span>
+          <span class="folio-card__sep">·</span>
+          <span>{{ folio.locationCount }} {{ folio.locationCount === 1 ? 'ubicación' : 'ubicaciones' }}</span>
+        </p>
+
+        <!-- Progress bar -->
+        <div class="folio-card__progress">
+          <app-sparkline [pct]="folio.completionPct" />
+          <span class="folio-card__pct">{{ folio.completionPct }}%</span>
+        </div>
+
+        <!-- Bottom row: date + premium -->
+        <div class="folio-card__bottom">
+          <span class="folio-card__date">{{ folio.updatedAt | date:'dd/MM/yyyy' }}</span>
+          @if (folio.commercialPremium !== null) {
+            <span class="folio-card__premium">
+              {{ folio.commercialPremium | currency:'MXN':'symbol-narrow':'1.0-0':'es-MX' }}
+            </span>
+          } @else {
+            <span class="folio-card__premium folio-card__premium--empty">—</span>
+          }
+        </div>
+      </article>
+    }
+  </div>
+} @else {
+  <div class="folio-grid__empty">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+    </svg>
+    <p>No se encontraron folios con estos filtros</p>
+  </div>
+}

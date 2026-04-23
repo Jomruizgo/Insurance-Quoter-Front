@@ -1,0 +1,27 @@
+<div class="finalization-bar">
+  <span class="finalization-bar__timestamp">
+    Cotización calculada el {{ calculatedAt | date:'dd MMM yyyy HH:mm' }}
+  </span>
+
+  <div class="finalization-bar__actions">
+    <app-btn
+      variant="secondary"
+      (click)="downloadPdf.emit()"
+      [disabled]="accepting"
+    >
+      Descargar PDF
+    </app-btn>
+
+    <app-btn
+      variant="primary"
+      [disabled]="!submitEnabled || accepting"
+      (click)="accept.emit()"
+    >
+      @if (accepting) {
+        <span>Procesando...</span>
+      } @else {
+        <span>Aceptar y finalizar cotización</span>
+      }
+    </app-btn>
+  </div>
+</div>

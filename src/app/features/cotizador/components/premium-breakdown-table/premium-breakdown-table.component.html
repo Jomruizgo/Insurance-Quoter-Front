@@ -1,0 +1,51 @@
+<div class="breakdown-table-wrapper">
+  <table class="breakdown-table">
+    <thead>
+      <tr>
+        <th class="breakdown-table__col-component">Componente</th>
+        @for (loc of calculableLocations; track loc.index) {
+          <th class="breakdown-table__col-location">
+            #{{ loc.index }} {{ loc.locationName }}
+          </th>
+        }
+        <th class="breakdown-table__col-total">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (comp of technicalComponents; track comp.key) {
+        <tr>
+          <td class="breakdown-table__component-name">{{ comp.label }}</td>
+          @for (loc of calculableLocations; track loc.index) {
+            <td class="breakdown-table__cell">
+              @if (getCellValue(loc, comp.key); as val) {
+                {{ val | currency:'MXN':'symbol':'1.2-2':'es-MX' }}
+              } @else {
+                <span class="breakdown-table__muted">—</span>
+              }
+            </td>
+          }
+          <td class="breakdown-table__total-cell">
+            @if (getRowTotal(comp.key); as total) {
+              {{ total | currency:'MXN':'symbol':'1.2-2':'es-MX' }}
+            } @else {
+              <span class="breakdown-table__muted">—</span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+    <tfoot>
+      <tr class="breakdown-table__net-row">
+        <td class="breakdown-table__component-name">Prima neta por ubicación</td>
+        @for (loc of calculableLocations; track loc.index) {
+          <td class="breakdown-table__cell breakdown-table__cell--bold">
+            {{ loc.netPremium | currency:'MXN':'symbol':'1.2-2':'es-MX' }}
+          </td>
+        }
+        <td class="breakdown-table__total-cell breakdown-table__total-cell--bold">
+          {{ getNetPremiumTotal() | currency:'MXN':'symbol':'1.2-2':'es-MX' }}
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

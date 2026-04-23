@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 56px;
+  z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+}

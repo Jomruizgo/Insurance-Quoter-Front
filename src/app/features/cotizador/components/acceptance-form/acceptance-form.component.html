@@ -1,0 +1,45 @@
+<form [formGroup]="form" class="acceptance-form">
+  <h3 class="acceptance-form__title">Declaración de aceptación</h3>
+
+  <div class="acceptance-form__field">
+    <label class="acceptance-form__checkbox-label">
+      <input
+        type="checkbox"
+        formControlName="termsAccepted"
+        class="acceptance-form__checkbox"
+      />
+      <span>He leído y acepto los términos y condiciones del seguro de daños</span>
+    </label>
+  </div>
+
+  <div class="acceptance-form__field">
+    <label class="acceptance-form__checkbox-label">
+      <input
+        type="checkbox"
+        formControlName="truthDeclaration"
+        class="acceptance-form__checkbox"
+      />
+      <span>Declaro que la información proporcionada es verídica y completa</span>
+    </label>
+  </div>
+
+  <div class="acceptance-form__field">
+    <label class="acceptance-form__input-label" for="acceptedBy">
+      Nombre completo del aceptante
+    </label>
+    <input
+      id="acceptedBy"
+      type="text"
+      formControlName="acceptedBy"
+      class="acceptance-form__input"
+      placeholder="Escribe tu nombre completo"
+      autocomplete="name"
+    />
+    @if (form.controls.acceptedBy.touched && form.controls.acceptedBy.hasError('minlength')) {
+      <span class="acceptance-form__error">El nombre debe tener al menos 3 caracteres</span>
+    }
+    @if (form.controls.acceptedBy.touched && form.controls.acceptedBy.hasError('required')) {
+      <span class="acceptance-form__error">El nombre es obligatorio</span>
+    }
+  </div>
+</form>
