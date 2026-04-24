@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoverageService } from '../services/coverage.service';
@@ -30,6 +30,7 @@ import { CoverageOptionsGridComponent } from '../components/coverages/coverage-o
 })
 export class TechnicalInfoPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly coverageService = inject(CoverageService);
   private readonly coverageStateService = inject(CoverageStateService);
   private readonly locationService = inject(LocationService);
@@ -92,6 +93,14 @@ export class TechnicalInfoPage implements OnInit {
 
   onRetry(): void {
     this.loadData();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'locations']);
+  }
+
+  goNext(): void {
+    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'calculation']);
   }
 
   onTabSelected(index: number): void {

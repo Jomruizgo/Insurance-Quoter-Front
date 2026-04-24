@@ -60,22 +60,18 @@
         (coverageChanged)="onCoverageChanged($event)"
       />
 
-      <!-- Save action -->
-      <div class="technical-info-page__actions">
-        <app-btn
-          variant="primary"
-          [disabled]="saving"
-          (click)="onSave()"
-        >
-          @if (saving) {
-            Guardando...
-          } @else {
-            Guardar coberturas
-          }
-        </app-btn>
-      </div>
-
     </div>
   }
+
+  <!-- Navigation -->
+  <div class="technical-info-page__nav">
+    <app-btn variant="ghost" (click)="goBack()">← Anterior</app-btn>
+    <div class="technical-info-page__nav-right">
+      <app-btn variant="secondary" [disabled]="saving" (click)="onSave()">
+        @if (saving) { Guardando... } @else { Guardar coberturas }
+      </app-btn>
+      <app-btn variant="primary" (click)="goNext()">Siguiente →</app-btn>
+    </div>
+  </div>
 
 </div>

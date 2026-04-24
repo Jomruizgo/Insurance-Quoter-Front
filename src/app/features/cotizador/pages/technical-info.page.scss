@@ -49,9 +49,16 @@
     gap: 16px;
   }
 
-  &__actions {
+  &__nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  &__nav-right {
+    display: flex;
+    gap: 8px;
   }
 }

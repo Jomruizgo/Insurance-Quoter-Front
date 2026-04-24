@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Location, LocationsSummary } from '../../models/location.model';
 import { BusinessLine } from '../../models/catalog.model';
@@ -103,6 +103,12 @@ import { LocationDrawerComponent } from '../../components/location-drawer/locati
           (saved)="onLocationSaved($event)"
         />
       }
+
+      <!-- Navigation -->
+      <div class="page-nav">
+        <button class="btn btn--ghost" type="button" (click)="goBack()">← Anterior</button>
+        <button class="btn btn--primary" type="button" (click)="goNext()">Siguiente →</button>
+      </div>
     </div>
   `,
   styles: [`
@@ -122,28 +128,19 @@ import { LocationDrawerComponent } from '../../components/location-drawer/locati
     }
     .stat-chip--complete { background-color: color-mix(in oklch, var(--ok) 12%, transparent); color: var(--ok); border-color: color-mix(in oklch, var(--ok) 30%, transparent); }
     .stat-chip--warn { background-color: color-mix(in oklch, var(--err) 10%, transparent); color: var(--err); border-color: color-mix(in oklch, var(--err) 30%, transparent); }
-    .page-header__actions { display: flex; align-items: center; }
+    .page-header__actions { display: flex; align-items: center; gap: 0.5rem; }
     .banner-container { max-width: 100%; }
     .loading-state, .error-state {
       display: flex; align-items: center; justify-content: center;
       gap: 1rem; padding: 2rem; color: var(--text-dim);
     }
     .table-container { overflow-x: auto; }
-    .btn {
-      padding: 0.5rem 1.25rem; border-radius: var(--r-md);
-      font-size: var(--fs-14); font-weight: 500; cursor: pointer;
-      border: 1px solid transparent; font-family: inherit;
-    }
-    .btn--primary { background-color: var(--brand-500); color: var(--ink-900); border-color: var(--brand-500); }
-    .btn--primary:hover { background-color: var(--brand-600); border-color: var(--brand-600); }
-    .btn--secondary { background-color: var(--surface); color: var(--text); border-color: var(--border-strong); }
-    .btn--secondary:hover { background-color: var(--surface-2); }
-    .btn--danger { background-color: var(--err); color: var(--ink-0); border-color: var(--err); }
-    .btn--danger:hover { opacity: 0.9; }
+    .page-nav { display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--border); }
   `],
 })
 export class LocationsPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly locationService = inject(LocationService);
   private readonly catalogService = inject(CatalogService);
 
@@ -289,5 +286,13 @@ export class LocationsPageComponent implements OnInit {
   scrollToTable(): void {
     const el = document.querySelector('.table-container');
     el?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/cotizador', 'quotes', this.folio, 'layout']);
+  }
+
+  goNext(): void {
+    this.router.navigate(['/cotizador', 'quotes', this.folio, 'technical-info']);
   }
 }
