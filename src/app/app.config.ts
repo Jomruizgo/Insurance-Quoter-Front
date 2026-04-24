@@ -1,5 +1,5 @@
-import { APP_INITIALIZER, ApplicationConfig, isDevMode, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { APP_INITIALIZER, ApplicationConfig, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter, withRouterConfig } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeEsMX from '@angular/common/locales/es-MX';
@@ -13,7 +13,7 @@ registerLocaleData(localeEsMX);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'always' })),
     provideHttpClient(),
     { provide: LOCALE_ID, useValue: 'es-MX' },
     {
@@ -22,6 +22,6 @@ export const appConfig: ApplicationConfig = {
       deps: [AppConfigService],
       multi: true,
     },
-    { provide: USE_MOCK_FOLIOS, useValue: isDevMode() },
+    { provide: USE_MOCK_FOLIOS, useValue: false },
   ],
 };
