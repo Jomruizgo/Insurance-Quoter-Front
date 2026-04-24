@@ -5,6 +5,7 @@ import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoverageService } from '../services/coverage.service';
 import { CoverageStateService } from '../services/coverage-state.service';
+import { QuoteStateService } from '../../../core/services/quote-state.service';
 import { LocationService } from '../services/location.service';
 import { CoverageOption, CoverageOptionRequest } from '../models/coverage.model';
 import { LocationSummaryItem } from '../models/location.model';
@@ -33,6 +34,7 @@ export class TechnicalInfoPage implements OnInit {
   private readonly router = inject(Router);
   private readonly coverageService = inject(CoverageService);
   private readonly coverageStateService = inject(CoverageStateService);
+  private readonly quoteStateService = inject(QuoteStateService);
   private readonly locationService = inject(LocationService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -143,6 +145,7 @@ export class TechnicalInfoPage implements OnInit {
           this.coverageOptions = res.coverageOptions;
           this.saving = false;
           this.successMessage = 'Coberturas guardadas correctamente.';
+          this.quoteStateService.refresh();
         },
         error: (err) => {
           this.saving = false;
