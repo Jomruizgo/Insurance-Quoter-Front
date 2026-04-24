@@ -40,6 +40,15 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit {
     this.value = val ?? '';
     if (this.selectEl) {
       this.selectEl.nativeElement.value = this.value;
+      // If option not yet rendered (dynamic @for list), retry after CD cycle
+      if (this.selectEl.nativeElement.value !== this.value) {
+        setTimeout(() => {
+          if (this.selectEl) {
+            this.selectEl.nativeElement.value = this.value;
+            this.cdr.markForCheck();
+          }
+        });
+      }
     }
     this.cdr.markForCheck();
   }
