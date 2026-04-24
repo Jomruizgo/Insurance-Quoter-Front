@@ -3,7 +3,6 @@ import { CoverageStateService } from './coverage-state.service';
 import {
   CoverageOption,
   CoverageOptionRequest,
-  DEFAULT_COVERAGE_OPTIONS,
 } from '../models/coverage.model';
 
 describe('CoverageStateService', () => {
@@ -18,15 +17,9 @@ describe('CoverageStateService', () => {
   // initializeOptions
   // ---------------------------------------------------------------------------
   describe('initializeOptions', () => {
-    it('should return DEFAULT_COVERAGE_OPTIONS when api array is empty', () => {
+    it('should return empty array when api array is empty', () => {
       const result = service.initializeOptions([]);
-      expect(result.length).toBe(DEFAULT_COVERAGE_OPTIONS.length);
-      result.forEach((opt, i) => {
-        expect(opt.code).toBe(DEFAULT_COVERAGE_OPTIONS[i].code);
-        expect(opt.selected).toBe(DEFAULT_COVERAGE_OPTIONS[i].selected);
-        expect(opt.deductiblePercentage).toBe(DEFAULT_COVERAGE_OPTIONS[i].deductiblePercentage);
-        expect(opt.coinsurancePercentage).toBe(DEFAULT_COVERAGE_OPTIONS[i].coinsurancePercentage);
-      });
+      expect(result).toEqual([]);
     });
 
     it('should return the api options when array is not empty', () => {
@@ -41,11 +34,6 @@ describe('CoverageStateService', () => {
       ];
       const result = service.initializeOptions(apiOptions);
       expect(result).toBe(apiOptions);
-    });
-
-    it('should return a deep clone, not the same reference, when api array is empty', () => {
-      const result = service.initializeOptions([]);
-      expect(result).not.toBe(DEFAULT_COVERAGE_OPTIONS);
     });
   });
 
@@ -132,13 +120,24 @@ describe('CoverageStateService', () => {
       expect(result[0].coinsurancePercentage).toBe(80.0);
     });
 
-    it('should include all 6 items', () => {
-      const result = service.buildRequests(DEFAULT_COVERAGE_OPTIONS);
+    it('should include all items from the input array', () => {
+      const sixOptions: CoverageOption[] = [
+        { code: 'COV-FIRE',  description: 'Incendio y riesgos adicionales',       selected: false, deductiblePercentage: 2.0,  coinsurancePercentage: 80.0  },
+        { code: 'COV-CAT',   description: 'Cobertura catastrófica CATTEV/CATFHM', selected: false, deductiblePercentage: 3.0,  coinsurancePercentage: 90.0  },
+        { code: 'COV-THEFT', description: 'Robo con violencia',                   selected: false, deductiblePercentage: 5.0,  coinsurancePercentage: 100.0 },
+        { code: 'COV-BI',    description: 'Pérdida de rentas / BI',               selected: false, deductiblePercentage: 3.0,  coinsurancePercentage: 80.0  },
+        { code: 'COV-ELEC',  description: 'Equipo electrónico',                   selected: false, deductiblePercentage: 10.0, coinsurancePercentage: 100.0 },
+        { code: 'COV-GLASS', description: 'Vidrios',                              selected: false, deductiblePercentage: 5.0,  coinsurancePercentage: 100.0 },
+      ];
+      const result = service.buildRequests(sixOptions);
       expect(result.length).toBe(6);
     });
 
     it('should not include the description field', () => {
-      const result = service.buildRequests(DEFAULT_COVERAGE_OPTIONS);
+      const options: CoverageOption[] = [
+        { code: 'COV-FIRE', description: 'Incendio y riesgos adicionales', selected: true, deductiblePercentage: 2.0, coinsurancePercentage: 80.0 },
+      ];
+      const result = service.buildRequests(options);
       result.forEach((req: CoverageOptionRequest) => {
         expect((req as CoverageOptionRequest & { description?: string }).description).toBeUndefined();
       });

@@ -21,7 +21,6 @@ export class UnderwritingDataFormComponent {
   @Input() form!: FormGroup;
   @Input() subscribers: Subscriber[] = [];
   @Input() agents: Agent[] = [];
-  @Input() version = 0;
   @Input() isComplete = false;
 
   @Output() subscriberChanged = new EventEmitter<string>();

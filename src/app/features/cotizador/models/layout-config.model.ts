@@ -1,4 +1,4 @@
-export type LocationType = 'SINGLE' | 'MULTIPLE' | 'DISTRIBUTED';
+export type LocationType = 'SINGLE' | 'MULTIPLE';
 
 export interface LayoutConfiguration {
   numberOfLocations: number;

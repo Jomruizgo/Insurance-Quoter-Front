@@ -23,7 +23,9 @@
           step="1"
           inputmode="numeric"
         />
-        <span class="field-help">Entre 1 y 50</span>
+        <span class="field-help">
+          {{ form.get('numberOfLocations')?.disabled ? 'Fijo para ubicación única' : 'Entre 1 y 50' }}
+        </span>
         @if (numberOfLocationsError) {
           <span class="field-error">{{ numberOfLocationsError }}</span>
         }

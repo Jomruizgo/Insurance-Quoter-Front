@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   CoverageOption,
   CoverageOptionRequest,
-  DEFAULT_COVERAGE_OPTIONS,
 } from '../models/coverage.model';
 
 /**
@@ -13,15 +12,8 @@ import {
 @Injectable({ providedIn: 'root' })
 export class CoverageStateService {
 
-  /**
-   * Returns the given api options if the array is not empty.
-   * When the api array is empty, returns a deep clone of DEFAULT_COVERAGE_OPTIONS.
-   */
   initializeOptions(apiOptions: CoverageOption[]): CoverageOption[] {
-    if (apiOptions.length > 0) {
-      return apiOptions;
-    }
-    return structuredClone(DEFAULT_COVERAGE_OPTIONS);
+    return apiOptions;
   }
 
   /**
