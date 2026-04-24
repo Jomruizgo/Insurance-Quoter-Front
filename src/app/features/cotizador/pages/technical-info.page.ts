@@ -1,10 +1,11 @@
 import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoverageService } from '../services/coverage.service';
 import { CoverageStateService } from '../services/coverage-state.service';
+import { QuoteStateService } from '../../../core/services/quote-state.service';
 import { LocationService } from '../services/location.service';
 import { CoverageOption, CoverageOptionRequest } from '../models/coverage.model';
 import { LocationSummaryItem } from '../models/location.model';
@@ -30,8 +31,10 @@ import { CoverageOptionsGridComponent } from '../components/coverages/coverage-o
 })
 export class TechnicalInfoPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly coverageService = inject(CoverageService);
   private readonly coverageStateService = inject(CoverageStateService);
+  private readonly quoteStateService = inject(QuoteStateService);
   private readonly locationService = inject(LocationService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -94,6 +97,14 @@ export class TechnicalInfoPage implements OnInit {
     this.loadData();
   }
 
+  goBack(): void {
+    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'locations']);
+  }
+
+  goNext(): void {
+    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'calculation']);
+  }
+
   onTabSelected(index: number): void {
     this.activeLocationIndex = index;
   }
@@ -134,6 +145,7 @@ export class TechnicalInfoPage implements OnInit {
           this.coverageOptions = res.coverageOptions;
           this.saving = false;
           this.successMessage = 'Coberturas guardadas correctamente.';
+          this.quoteStateService.refresh();
         },
         error: (err) => {
           this.saving = false;

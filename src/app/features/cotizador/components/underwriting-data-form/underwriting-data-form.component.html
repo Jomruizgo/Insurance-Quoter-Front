@@ -9,17 +9,6 @@
     </app-badge>
   </div>
 
-  <div class="version-notice">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-      <circle cx="12" cy="12" r="10"/>
-      <path stroke-linecap="round" d="M12 16v-4m0-4h.01"/>
-    </svg>
-    <span>
-      Versionado optimista activo. Cualquier cambio incrementará la versión del folio.
-      Actual: <strong>v{{ version }}</strong>
-    </span>
-  </div>
-
   <div class="fields-grid">
     <app-field label="Suscriptor" [required]="true" [error]="subscriberIdError">
       <app-select formControlName="subscriberId" (change)="onSubscriberChange($event)">

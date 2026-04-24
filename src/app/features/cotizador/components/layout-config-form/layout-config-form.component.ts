@@ -57,7 +57,6 @@ export class LayoutConfigFormComponent implements OnChanges {
   protected readonly locationTypeOptions: LocationTypeOption[] = [
     { value: 'SINGLE', label: 'Ubicación única' },
     { value: 'MULTIPLE', label: 'Múltiples ubicaciones' },
-    { value: 'DISTRIBUTED', label: 'Distribuida' },
   ];
 
   protected form: FormGroup = this.fb.group({
@@ -70,16 +69,27 @@ export class LayoutConfigFormComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initialData'] && this.initialData?.layoutConfiguration) {
-      this.form.patchValue({
-        numberOfLocations: this.initialData.layoutConfiguration.numberOfLocations,
-        locationType: this.initialData.layoutConfiguration.locationType,
-      });
+      const { numberOfLocations, locationType } = this.initialData.layoutConfiguration;
+      this.form.patchValue({ numberOfLocations, locationType });
+      this.applyLocationTypeConstraints(locationType);
     }
   }
 
   protected selectLocationType(value: LocationType): void {
     this.form.get('locationType')?.setValue(value);
     this.form.get('locationType')?.markAsTouched();
+    this.applyLocationTypeConstraints(value);
+  }
+
+  private applyLocationTypeConstraints(type: LocationType): void {
+    const ctrl = this.form.get('numberOfLocations');
+    if (!ctrl) return;
+    if (type === 'SINGLE') {
+      ctrl.setValue(1);
+      ctrl.disable();
+    } else {
+      ctrl.enable();
+    }
   }
 
   protected isLocationTypeSelected(value: LocationType): boolean {
@@ -110,7 +120,7 @@ export class LayoutConfigFormComponent implements OnChanges {
 
   getValues(): { numberOfLocations: number; locationType: LocationType } | null {
     if (this.form.invalid) return null;
-    return this.form.value as { numberOfLocations: number; locationType: LocationType };
+    return this.form.getRawValue() as { numberOfLocations: number; locationType: LocationType };
   }
 
   onSubmit(): void {
@@ -119,7 +129,7 @@ export class LayoutConfigFormComponent implements OnChanges {
       return;
     }
 
-    const formValue = this.form.value as {
+    const formValue = this.form.getRawValue() as {
       numberOfLocations: number;
       locationType: LocationType;
     };

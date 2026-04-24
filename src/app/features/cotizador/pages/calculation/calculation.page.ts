@@ -2,6 +2,7 @@ import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HttpErrorResponse } from '@angular/common/http';
 import { CalculationService } from '../../services/calculation.service';
 import { QuoteStateService } from '../../../../core/services/quote-state.service';
 import { LocationService } from '../../services/location.service';
@@ -62,9 +63,7 @@ export class CalculationPage implements OnInit {
           this.calculableCount = summary.completeLocations;
           this.incompleteCount = summary.incompleteLocations;
         },
-        error: () => {
-          // Non-blocking — continue with defaults (0 counts)
-        },
+        error: () => {},
       });
 
     this.quoteStateService
@@ -74,8 +73,21 @@ export class CalculationPage implements OnInit {
         next: (state) => {
           this.version = state.version;
         },
-        error: () => {
-          // Non-blocking — version defaults to 0
+        error: () => {},
+      });
+
+    this.calculationService
+      .obtenerResultado(this.folioNumber)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.result = res;
+          this.version = res.version;
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status !== 404) {
+            this.error = 'No se pudo cargar el resultado previo del cálculo.';
+          }
         },
       });
   }
