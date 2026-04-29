@@ -102,7 +102,9 @@ export class TechnicalInfoPage implements OnInit {
   }
 
   goNext(): void {
-    this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'calculation']);
+    this.saveAndThen(() => {
+      this.router.navigate(['/cotizador', 'quotes', this.folioNumber, 'calculation']);
+    });
   }
 
   onTabSelected(index: number): void {
@@ -130,6 +132,12 @@ export class TechnicalInfoPage implements OnInit {
   }
 
   onSave(): void {
+    this.saveAndThen(() => {
+      this.successMessage = 'Coberturas guardadas correctamente.';
+    });
+  }
+
+  private saveAndThen(onSuccess: () => void): void {
     this.saving = true;
     this.error = null;
     this.successMessage = null;
@@ -144,14 +152,13 @@ export class TechnicalInfoPage implements OnInit {
           this.version = res.version;
           this.coverageOptions = res.coverageOptions;
           this.saving = false;
-          this.successMessage = 'Coberturas guardadas correctamente.';
           this.quoteStateService.refresh();
+          onSuccess();
         },
         error: (err) => {
           this.saving = false;
           if (err.status === 409) {
-            this.error =
-              'Los datos han cambiado en otro proceso. Recarga para continuar.';
+            this.error = 'Los datos han cambiado en otro proceso. Recarga para continuar.';
           } else {
             this.error = `Error al guardar las coberturas (${err.status ?? 'desconocido'}).`;
           }

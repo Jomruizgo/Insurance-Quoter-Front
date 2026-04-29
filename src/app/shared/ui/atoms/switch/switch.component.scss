@@ -3,8 +3,9 @@
 .switch {
   --switch-h: calc(var(--btn-h) * 0.61);
   --thumb-size: calc(var(--switch-h) - 6px);
-  --thumb-travel: calc(var(--switch-h) - var(--thumb-size) - 3px);
   --switch-w: calc(var(--switch-h) * 1.82);
+  // Travel = track width - thumb width - 2× side padding (3px each side)
+  --thumb-travel: calc(var(--switch-w) - var(--thumb-size) - 6px);
 
   position: relative;
   display: inline-flex;
@@ -16,9 +17,12 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  overflow: hidden;
   appearance: none;
   -webkit-appearance: none;
   transition: background var(--t-fast) var(--ease);
+
+  &::before, &::after { display: none; }
 
   &:focus-visible {
     outline: 2px solid var(--brand-500);
